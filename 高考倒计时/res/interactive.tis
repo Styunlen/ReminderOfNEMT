@@ -1,0 +1,71 @@
+/*
+前后端交互用脚本文件
+所有函数前缀均为IA（交互的意思）
+因为这些位于交互层的代码，是前端与后端之间的桥梁与纽带
+有的与前端交互，直接操作UI，有的则与后端交互，负责数据传输
+ */
+
+//设置窗口样式
+function IA_setStyle(style)
+{
+    var currentThemeUrl = "./themes/style_circle.css"; //The Default Theme is Circle 默认圆形窗口主题
+    var elStyle = $(style#current-theme);
+    switch (style) {
+        case "Circle":
+            elStyle.deactivate(); // remove all rules
+            elStyle.attributes["src"] = currentThemeUrl; // set src
+            elStyle.activate(); // add rules
+            stdout.println("Use The Circle Theme");
+            break;
+        case "REdge":
+            currentThemeUrl = "./themes/style_redge.css"; //The Rounded-Edge Theme 圆角矩形窗口主题
+            elStyle.deactivate(); // remove all rules
+            elStyle.attributes["src"] = currentThemeUrl; // set src
+            elStyle.activate(); // add rules
+            stdout.println("Use The Rounded-Edge Theme");
+            break;
+        case "Rect":
+            currentThemeUrl = "./themes/style_rect.css"; //The Rect Theme 直角矩形主题
+            elStyle.deactivate(); // remove all rules
+            elStyle.attributes["src"] = currentThemeUrl; // set src
+            elStyle.activate(); // add rules
+            stdout.println("Use The Rect Theme");
+            break;
+        case "NULL":
+            elStyle.deactivate(); // remove all rules
+            elStyle.attributes["src"] = currentThemeUrl; // set src
+            elStyle.activate(); // add rules
+            stdout.println("Null Theme Not Supported,Use The Default Theme");
+            break;
+            // code
+        default:
+            elStyle.deactivate(); // remove all rules
+            elStyle.attributes["src"] = currentThemeUrl; // set src
+            elStyle.activate(); // add rules
+            stdout.println("Unknown Style Type("+ style +"),Use The Default Theme");
+            break;
+            // code
+    }
+}
+function IA_debugLogs(logs)
+{
+    stdout.println(logs);
+}
+//用于开启窗体UI调试
+function IA_uiDebugMode(isEnabled)
+{
+    var debugStyleUrl = "./style_debug.css"; //The Default Theme is Circle 默认圆形窗口主题
+    var uiDebugStyle = $(style#ui-debug);
+    if(isEnabled)
+    {
+        uiDebugStyle.deactivate();
+        uiDebugStyle.attributes["src"] = debugStyleUrl;
+        uiDebugStyle.activate();
+    }
+    else
+    {
+        uiDebugStyle.deactivate();
+        uiDebugStyle.attributes["src"] = null;
+        uiDebugStyle.activate();
+    }
+}

@@ -1,49 +1,64 @@
 #pragma once
 
-#include "targetver.h"
-
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
-// Windows Header Files:
-#include <windows.h>
-
+#ifndef _CCOUNTDOWNTIMER_H
+#define _CCOUNTDOWNTIMER_H
+/********************
+  头文件及宏定义区
+********************/
 // C RunTime Header Files
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
 
-#include "sciter-x.h"
-#include "sciter-x-host-callback.h"
+//#include "sciter-x.h"
+//#include "sciter-x-host-callback.h"
+#include "sciter-x-window.hpp"
 #include "resource.h"
-using namespace std;
+#define debugLogs(logs) pwin->call_function("IA_debugLogs",sciter::value(logs))
 
+/********************
+	前向声明区
+********************/
+using namespace std;
+class MainWindow;
+
+/********************
+	全局变量声明区
+********************/
+extern MainWindow *pwin;
+extern string g_iniPath;
 extern HINSTANCE ghInstance;
 
-class window : public sciter::host<window>
-{
-	HWND _hwnd;
+/********************
+	普通方法声明区
+********************/
+string	getCurrentWorkDir();
+string getWindowStyle();
 
-	static LRESULT CALLBACK	wnd_proc(HWND, UINT, WPARAM, LPARAM);
-	static window* ptr(HWND hwnd);
-	static bool init_class();
+
+/********************
+	  类声明区
+********************/
+
+class MainWindow : public sciter::window {
 public:
-	// notification_handler traits:
-	HWND      get_hwnd() { return _hwnd; }
-	HINSTANCE get_resource_instance() { return ghInstance; }
-
-	window();
-	bool init(); // instance
-	bool is_valid() const { return _hwnd != 0; }
+BEGIN_FUNCTION_MAP
+	FUNCTION_0("Test", Test);
+	FUNCTION_0("NA_getWorkDir", NA_getWorkDir); //NA means native
+	FUNCTION_0("NA_getStyle", NA_getStyle);
+	FUNCTION_0("NA_getTime", NA_getTime);
+	FUNCTION_1("NA_setStyle", NA_setStyle);
+	FUNCTION_1("NA_setTime", NA_setTime);
+END_FUNCTION_MAP
+	sciter::value  Test();
+	sciter::value NA_getWorkDir();
+	sciter::value NA_getStyle();
+	sciter::value NA_getTime();
+	sciter::value NA_setStyle(sciter::value style);
+	sciter::value NA_setTime(sciter::value time);
+	void onReady();
+	MainWindow() : window(SW_ALPHA | SW_MAIN | SW_ENABLE_DEBUG) {}
 };
 
-
-//class frame : public sciter::window {
-//public:
-//	BEGIN_FUNCTION_MAP
-//		//FUNCTION_0("DoTask", DoTask);
-//	END_FUNCTION_MAP
-//	//sciter::value  DoTask();
-//	frame() : window(SW_RESIZEABLE | SW_CONTROLS | SW_MAIN | SW_ENABLE_DEBUG) {}
-//};
-//
-//extern frame *pwin;
+#endif

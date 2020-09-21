@@ -13,12 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="旧版本代码备份">
+      <UniqueIdentifier>{79ed2a22-384b-4cfe-a1d6-30d169693ced}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CCountDownTimer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="include\sciter-win-main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,6 +40,15 @@
     <None Include="res\main.html">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="res\interactive.tis">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\scripts.tis">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\style-circle.css">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res.rc">
@@ -44,5 +59,10 @@
     <Image Include="res\favicon.ico">
       <Filter>资源文件</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="backup.txt">
+      <Filter>旧版本代码备份</Filter>
+    </Text>
   </ItemGroup>
 </Project>

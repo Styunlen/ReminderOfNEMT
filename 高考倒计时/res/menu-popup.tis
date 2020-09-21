@@ -1,0 +1,84 @@
+    $(img#menu-button) << event click
+    {
+        this.popup( $(popup.menu), (2 /*popup middle-top*/ << 16) | 8 /*at anchor's middle-bottom*/);
+    }
+    class  MenuPopup  :  Element
+    {
+    
+        const RADIUS = 10dip;
+        const ARROW_HEIGHT = 12dip;
+        
+        function attached() { 
+            this.paintBackground = this.drawBackground;
+        }
+        
+        function getShape()
+        {
+            var shape = this.shape;
+            if(!shape) 
+            {
+            shape = this.shape = new Graphics.Path();
+            this.shapeWidth = null;
+            this.shapeHeight = null;
+            }
+            
+            var (x,y,w,h) = this.$(div.content).box(#rectw,#border,#parent);
+            
+            if( this.shapeWidth == w && this.shapeHeight == h)
+                return shape; // nothing to do already calculated
+            
+            shape.reset();
+
+            const borderWidth = this.style#border-top-width;          
+
+            const stoke_width = this.toPixels(borderWidth,#width);
+            //stdout.println(borderWidth," ",stoke_width);
+            // lines shall go through pixels middles:
+            //x += stoke_width / 2; y -= stoke_width / 2; w -= stoke_width; h -= stoke_width;
+            
+            const r = this.toPixels(RADIUS,#width);
+            const ah = this.toPixels(ARROW_HEIGHT,#height);
+            //stdout.println("x",x,",y",y,",w",w,",h",h,",r",r);
+            shape
+            .moveTo(x+r, y+h)
+            // that arrow
+            .lineTo(x+w/2-ah,y+h)
+            .lineTo(x+w/2,y+h+ah)
+            .lineTo(x+w/2+ah,y+h)
+            // round rect
+            .arcTo(x+w, y+h, x+w, y, r)
+            .arcTo(x+w, y, x, y, r)
+            .arcTo(x, y, x, y+h, r)
+            .arcTo(x, y+h, x+w, y+h, r)              
+            .close();
+            //从左下角开始，逆时针绘画
+            return shape; 
+        }      
+        
+        function drawBackground( gfx ) {
+
+            if(var shape = this.getShape()) {
+
+            const filter = [#drop-shadow: 0dip, 0dip, 0dip, 0dip, rgba(255,255,255,0.50)]; // CSS: drop-sahdow(...);
+            const backColor = this.style.variable("shape-color");
+            const hasBorder = this.style#border-top-style == "solid";
+
+            gfx.pushLayer(#margin-box,filter);
+
+            if( hasBorder ) {
+                const borderColor = this.style#border-top-color;
+                const borderWidth = this.style#border-top-width;
+                gfx.lineWidth(borderWidth)
+                    .lineColor(borderColor)
+                    .fillColor(backColor)
+                    .drawPath( shape );
+            } else 
+                gfx.fillColor(backColor)
+                    .drawPath( shape );
+
+            gfx.popLayer();
+
+            return true;
+            }
+        }
+    }

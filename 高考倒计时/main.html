@@ -140,24 +140,39 @@
         }
         
         .rightcircle{
-
-          border-bottom:20dip solid #5514f2;
-          border-top:20dip solid #5514f2;
-          border-right:20dip solid #5514f2;
+          border-bottom:20dip solid #00c3ff;
+          border-top:20dip solid #00c3ff;
+          border-right:20dip solid #00c3ff;
           border-radius: 0 160dip 160dip 0;
-          transform: rotate(180deg);
+          transform: rotate(0deg);
           transform-origin:0 160dip; 
           z-index:-1;
           right:0;
         }
         .leftcircle{
-          border-top:20dip solid #5514f2;
-          border-bottom:20dip solid #5514f2;
-          border-left:20dip solid #5514f2;
+          border-top:20dip solid #00c3ff;
+          border-bottom:20dip solid #00c3ff;
+          border-left:20dip solid #00c3ff;
           border-radius:160dip 0 0 160dip;
-          transform: rotate(180deg);
+          transform: rotate(0deg);
           transform-origin:160dip 160dip;   
           z-index:-1;     
+          left:0;
+        }
+        .rightcircle_background{
+          border-bottom:20dip solid #f3f4f5;
+          border-top:20dip solid #f3f4f5;
+          border-right:20dip solid #f3f4f5;
+          border-radius: 0 160dip 160dip 0;
+          z-index:-2;
+          right:0;
+        }
+        .leftcircle_background{
+          border-top:20dip solid #f3f4f5;
+          border-bottom:20dip solid #f3f4f5;
+          border-left:20dip solid #f3f4f5;
+          border-radius:160dip 0 0 160dip;  
+          z-index:-2;     
           left:0;
         }
         .leftcircle_fix{z-index:-2;}
@@ -221,7 +236,7 @@
         }
         function toInt(i)
         {
-          var res = i > i.toInteger()? i.toInteger() + 1: i.toInteger();
+          var res = i.toInteger();
           return res;
         }
 
@@ -234,14 +249,15 @@
           var millisecondsRemaining = dateTarget.valueOf() - dateNow.valueOf();
           if(millisecondsRemaining >= 0)
           {
-            iPer = (1 - millisecondsRemaining / ( dateTarget.valueOf() - datePbStart.valueOf() ) ) * 100;
+            //Fixed(2020-8-29): 时间算法更新
+            iPer = (millisecondsRemaining / ( dateTarget.valueOf() - datePbStart.valueOf() ) ) * 100;
             var daysRemaining = millisecondsRemaining / 86400000;
             var hoursR,minR,secR;
             hoursR = toInt((millisecondsRemaining - daysRemaining.toInteger()*86400000.0) / 3600000.0);
-            minR = toInt((millisecondsRemaining - daysRemaining.toInteger()*86400000.0) / 60000.0 - (hoursR-1)*60);
-            secR = toInt((millisecondsRemaining - daysRemaining.toInteger()*86400000.0) / 1000.0 - (hoursR-1)*3600 - (minR-1)*60 - 1);
-            minR = minR - 1; //这里减一的原因是因为计算出来的结果是1~60(toInt函数会将零点几转换成1),而我们习惯中的倒计时是0~59(60进制)
-            hoursR = hoursR - 1;
+            minR = toInt((millisecondsRemaining - daysRemaining.toInteger()*86400000.0) / 60000.0 - (hoursR)*60);
+            secR = toInt((millisecondsRemaining - daysRemaining.toInteger()*86400000.0) / 1000.0 - (hoursR)*3600 - (minR)*60 - 1);
+            //minR = minR - 1; //这里减一的原因是因为计算出来的结果是1~60(toInt函数会将零点几转换成1),而我们习惯中的倒计时是0~59(60进制)
+            //hoursR = hoursR - 1;
             $(#day).text = toInt(daysRemaining).toString();
             $(#hour).text = hoursR.toString().length>1? hoursR.toString(): "0" + hoursR.toString();
             $(#min).text = minR.toString().length>1? minR.toString(): "0" + minR.toString();
@@ -272,17 +288,18 @@
         {  
           var iDeg = 0.0;
           //stdout.println(iDeg);
+          //FIXED(2020.8.29):倒计时动画更改为从100%到0%(应大部分人的要求)
           if(iPer <=50)
           {
-            iDeg = 180.0 + iPer/100.0*(360);
-            $$(.rightcircle)[0].style#transition = "transform(back-out,500ms)";
+            iDeg = iPer/100.0*(360) - 180;
+            $$(.leftcircle)[0].style#transition = "transform(linear,500ms)";
+            $$(.leftcircle)[0].style#transform = "rotate(-180deg)";
+            $$(.rightcircle)[0].style#transition = "transform(back-out,500ms，500ms)";
             $$(.rightcircle)[0].style#transform = "rotate(" + iDeg.toString() + "deg)";
           }
           else
           {
-            iDeg = 180.0 + (iPer-50)/100.0*(360);
-            $$(.rightcircle)[0].style#transition = "transform(linear,500ms)";
-            $$(.rightcircle)[0].style#transform = "rotate(360deg)";
+            iDeg = (iPer-50)/100.0*(360) - 180;
             $$(.leftcircle)[0].style#transition = "transform(back-out,500ms,500ms)";
             $$(.leftcircle)[0].style#transform = "rotate(" + iDeg.toString() + "deg)";
             $$(.leftcircle_fix)[0].style#transition = "transform(linear,1000ms,500ms)";
@@ -398,11 +415,13 @@
       <div id="progressBar">
         <div class="wrapper" id="pr1">
           <div class="circleProgress leftcircle"></div>
+          <div class="circleProgress leftcircle_background"></div>
           <!-- 修复进度条接近百分百时左右两圆被割裂开的bug而添加的附加圆环(进度条小于75时不可见) -->
           <div class="circleProgress leftcircle leftcircle_fix"></div>
         </div>
         <div class="wrapper" id="pr2">
           <div class="circleProgress rightcircle"></div>
+          <div class="circleProgress rightcircle_background"></div>
         </div>
       </div>
     </section>
