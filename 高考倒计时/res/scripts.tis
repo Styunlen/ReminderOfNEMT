@@ -29,21 +29,22 @@ function toInt(i) {
 
 var iPer = 0.0; //进度条
 var strTimeset = view.NA_getTime().toString();
-var dateNow = new Date();
 var dateTarget;
 var datePbStart = Date.local(2020, 6, 7, 00, 00, 00); //进度条开始时间
 function timeInit()//初始化时间
 {
+    var dateNow = new Date();
     //stdout.println(typeof(view.NA_getTime().toString()));
     stdout.println(strTimeset);
     if(strTimeset == "NULL")
         dateTarget = new Date(2021,01,06,00,00,00);
     else
         dateTarget = new Date(view.NA_getTime().toString());
-    stdout.printf("timeNow: %s, timeSet: %s",dateNow.toString(), dateTarget.toString());
+    stdout.printf("timeNow: %s, timeSet: %s\n",dateNow.toString(), dateTarget.toString());
 }
 timeInit();
 function updateTimeRemaining() {
+    var dateNow = new Date();
     var millisecondsRemaining = dateTarget.valueOf() - dateNow.valueOf();
     if (millisecondsRemaining >= 0) {
         //Fixed (2020-8-29): 时间算法更新
