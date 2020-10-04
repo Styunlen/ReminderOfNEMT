@@ -140,6 +140,16 @@ sciter::value MainWindow::NA_setTime(sciter::value time)
 	return sciter::value(setProfileOptions("UserInfo", "Time", WcharToChar(time.to_string().c_str())));
 }
 
+sciter::value MainWindow::NA_getPos()
+{
+	return sciter::value(getProfileOptions("UserInfo", "WindowPos"));
+}
+
+sciter::value MainWindow::NA_setPos(sciter::value pos)
+{
+	return sciter::value(setProfileOptions("UserInfo", "WindowPos", WcharToChar(pos.to_string().c_str())));
+}
+
 void MainWindow::onReady()
 {
 	if (getDebugMode())

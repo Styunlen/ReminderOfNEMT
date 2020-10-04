@@ -50,6 +50,8 @@ BEGIN_FUNCTION_MAP
 	FUNCTION_0("NA_getTime", NA_getTime);
 	FUNCTION_1("NA_setStyle", NA_setStyle);
 	FUNCTION_1("NA_setTime", NA_setTime);
+	FUNCTION_0("NA_getPos", NA_getPos);
+	FUNCTION_1("NA_setPos", NA_setPos);
 END_FUNCTION_MAP
 	sciter::value  Test();
 	sciter::value NA_getWorkDir();
@@ -57,6 +59,8 @@ END_FUNCTION_MAP
 	sciter::value NA_getTime();
 	sciter::value NA_setStyle(sciter::value style);
 	sciter::value NA_setTime(sciter::value time);
+	sciter::value NA_getPos();
+	sciter::value NA_setPos(sciter::value pos);
 	void onReady();
 	MainWindow() : window(SW_ALPHA | SW_MAIN | SW_ENABLE_DEBUG) {}
 };

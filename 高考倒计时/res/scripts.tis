@@ -72,7 +72,18 @@ function self.ready() {
     var (w, h) = self.$(body).box(#dimension);
     w += w / 2; // to accomodate expanding radii
     h += h / 2;
-    view.move(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
+    var pos = view.NA_getPos().toString().split(',');
+    if(pos.length > 1)
+    {
+        stdout.println("x:",pos[0]," y:",pos[1]);
+        view.move(pos[0].toInteger(),pos[1].toInteger());
+    }
+    else
+    {
+        view.move(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
+    }
+    stdout.println(sx,sy,sw,sh,w,h);
+    stdout.println(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
     //stdout.printf("TimeNow: %s ,Timeset: %s\n", new Date(), new Date(view.NA_getTime().toString()));
     view.windowIcon = "./favicon.ico";
     body.timer(1, ::this.attributes.addClass("shown"));
@@ -113,6 +124,14 @@ function updateProgressBar() {
 ****************/
 
 $(#close).onClick = function() {
+    //view.msgbox(#info,view.box(#position));
+    var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
+    var (w, h) = self.$(body).box(#dimension);
+    w += w / 2; // to accomodate expanding radii
+    h += h / 2;
+    (sx,sy) = (sx + (sw - w) / 2, sy + (sh - h) / 2);
+    var pos = sx.toString() + "," + sy.toString();
+    view.NA_setPos(pos);
     body.onAnimationEnd = ::view.close();
     body.attributes.removeClass("shown");
 }
@@ -148,6 +167,7 @@ function onWinStateChange() {
 }
 
 function onWinClosing() {
+    var pos = view.
     body.onAnimationEnd = ::view.close();
     body.attributes.removeClass("shown");
     return false;
@@ -161,7 +181,7 @@ function movable() // install movable window handler
     stdout.print("movableArea:");
     stdout.println($(section.main));
     function doDrag() {
-        while (dragging) view.doEvent();
+        while (dragging) {stdout.println(view.box(#position));view.doEvent();}
     }
 
     function onMouseDown(evt) {

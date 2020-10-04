@@ -209,9 +209,12 @@
             if(strTimeset == "NULL")
                 dateTarget = new Date(2021,01,06,00,00,00);
             else
-                dateTarget = new Date(hostview.NA_getTime().toString());
+                dateTarget = new Date(strTimeset);
             stdout.println("Timeset formatted: ",dateTarget.toString("%F"));
-            $(#calendar).value = dateTarget.toString("%F");
+            $(#calendar).value = dateTarget.toString("%F");//日历表的初始化格式为YYYY-MM-DD
+            //Fixed 修复若打开设置窗口后没有使用日历表更改时间，则关闭窗口保存设置时目标日期永远是1月6号的Bug
+            // @Time 2020-10-03
+            time = dateTarget;
         }   
         $(form).on("change", function() {
             //stdout.println(typeof($(#themes).value.themeName));
@@ -226,7 +229,6 @@
         })
         function onWinSettingClosing{
             stdout.println("Setting saving...");
-            stdout.printf("$(#themes).value.themeName's type:%v\nits value:%v\n",typeof($(#themes).value.themeName),$(#themes).value.themeName);
             stdout.println("Current Window Style change to: ", style);
             stdout.println("Current Time set to: ", time.toString());
             hostview.NA_setTime(time);
@@ -270,7 +272,7 @@
             </section>
             <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
                 <center><h1>关于</h1></center>
-                <p>本软件已开源，遵循协议待定</p>
+                <p>本软件已遵循GPL v3协议开源</p>
                 <p>Developer: Styunlen(九仞)</p>
                 <p>Language: C++, HTML+CSS, Tiscript</p>
                 <p>UI: Sciter</br>
@@ -281,11 +283,8 @@
                 <p>QQ: 1208533483 (请备注来源)</p>
                 <p>E-mail: 1208533483@qq.com</p>
             </section>
-            <section style="background:rgba(red, green, blue, 0.8)">
-                <center><h1>这里啥也没有哦</h1></center>
-            </section>
             <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
-                <center><h1>嘿嘿，被发现了</h1></center>
+                <center><h1>每日励志</h1></center>
                 <ol>
                     <li>我要成功，我能成功，我必成功，我必成功！</li>
                     <li>要成功，先发疯，下定决心向前冲；不成功，不放松，咬紧牙关冲冲冲</li>
@@ -297,17 +296,6 @@
                     <li>立志高远，脚踏实地；刻苦钻研，勤学苦思;稳定心态，不馁不弃；全力以赴，夺取胜利。</li>
                     <li>把握现在、就是创造未来。</li>
                 </ol>
-            </section>
-            <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
-                <center><h1>最后夹带一点私货</h1></center>
-                <center><h2>谓时之思(其二)</h2></center>
-                <center><h3>九仞</h3></center>
-                <center><p>昼夜旬旬，晦朔春秋。</p></center>
-                <center><p>时不待我，奔流不息。</p></center>
-                <center><p>人生如梯，一步一级。</p></center>
-                <center><p>彼适千里，乐此不疲。</p></center>
-                <br/>  
-                <p>本文采用 CC BY-NC-SA 4.0 许可协议，著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
             </section>
         </widget>
         <p #copyright>Copyright 2020 九仞 版权所有</p>
