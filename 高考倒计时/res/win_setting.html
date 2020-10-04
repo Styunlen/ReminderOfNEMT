@@ -133,6 +133,25 @@
         margin: auto auto;
         font-weight: bold;
       }
+      .StatusTitle{
+          display:block;
+          float: left;
+          padding:3px;
+          font-size: 12px;
+          font-weight: bold;
+          color:#E8E8E8;
+          text-align:center;
+          background-color:#555555;
+      }
+      .StatusContent{
+          display:block;
+          float: left;
+          margin-right:5px;
+          padding:3px;
+          font-size: 12px;
+          font-weight: bold;
+      }
+      .StatusTitle:hover,.StatusContent:hover{transform: scale(0.8);transition: transform(cubic-out, 600ms, none);}
     </style>
 
     <script type="text/tiscript">
@@ -215,6 +234,9 @@
             //Fixed 修复若打开设置窗口后没有使用日历表更改时间，则关闭窗口保存设置时目标日期永远是1月6号的Bug
             // @Time 2020-10-03
             time = dateTarget;
+            $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
+            (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
+            (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
         }   
         $(form).on("change", function() {
             //stdout.println(typeof($(#themes).value.themeName));
@@ -237,6 +259,12 @@
             view.close("设置窗口关闭");
         }
         view.on("closing", onWinSettingClosing);
+        self.on("click", "a[href^=http]", function(evt) {
+            var href = this.attributes["href"];
+            stdout.println("Links(",href,") was clicked");
+            Sciter.launch(href); // will open the url in default browser
+            return true; // consume the event
+        });
     </script>
 </head>
 <body>
@@ -273,6 +301,7 @@
             <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
                 <center><h1>关于</h1></center>
                 <p>本软件已遵循GPL v3协议开源</p>
+                <p></p>
                 <p>Developer: Styunlen(九仞)</p>
                 <p>Language: C++, HTML+CSS, Tiscript</p>
                 <p>UI: Sciter</br>
@@ -282,6 +311,11 @@
                 <p>Github: <a href="https://github.com/Styunlen/ReminderOfNEMT" target="_blank">https://github.com/Styunlen/ReminderOfNEMT</a></p>
                 <p>QQ: 1208533483 (请备注来源)</p>
                 <p>E-mail: 1208533483@qq.com</p>
+                <div style="position: relative;left:45dip;">
+                    <div class="StatusTitle">Version</div><div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">1.1.0 build-74</div>
+                    <div class="StatusTitle">Sciter</div><div class="StatusContent" #EngineVer style="color: #FAFDF2;background-color: #B2D742;"></div>
+                    <div class="StatusTitle" style="margin-top:5px;clear:left">License</div><div class="StatusContent" style="margin-top:5px;color: #FFE9DE;background-color: #FE7D37;">GPL v3</div>
+                </div>
             </section>
             <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
                 <center><h1>每日励志</h1></center>
@@ -298,7 +332,7 @@
                 </ol>
             </section>
         </widget>
-        <p #copyright>Copyright 2020 九仞 版权所有</p>
+        <p #copyright>Copyright(c) 2020 九仞 版权所有</p>
     </section>
 </body>
 </html>

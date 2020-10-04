@@ -75,15 +75,17 @@ function self.ready() {
     var pos = view.NA_getPos().toString().split(',');
     if(pos.length > 1)
     {
-        stdout.println("x:",pos[0]," y:",pos[1]);
-        view.move(pos[0].toInteger(),pos[1].toInteger());
+        stdout.print("Restore the last Window Position ");
+        stdout.println("x:",pos[0],",y:",pos[1]);
+        view.move(pos[0].toInteger(),pos[1].toInteger(),w,h);
     }
     else
     {
+        stdout.print("Default display in the center of the screen");
         view.move(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
     }
-    stdout.println(sx,sy,sw,sh,w,h);
-    stdout.println(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
+    stdout.printf("sx:%d,sy:%d,sw:%d,sh:%d,w:%d,h:%d\n",sx,sy,sw,sh,w,h);
+    stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
     //stdout.printf("TimeNow: %s ,Timeset: %s\n", new Date(), new Date(view.NA_getTime().toString()));
     view.windowIcon = "./favicon.ico";
     body.timer(1, ::this.attributes.addClass("shown"));
@@ -125,13 +127,9 @@ function updateProgressBar() {
 
 $(#close).onClick = function() {
     //view.msgbox(#info,view.box(#position));
-    var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
-    var (w, h) = self.$(body).box(#dimension);
-    w += w / 2; // to accomodate expanding radii
-    h += h / 2;
-    (sx,sy) = (sx + (sw - w) / 2, sy + (sh - h) / 2);
-    var pos = sx.toString() + "," + sy.toString();
-    view.NA_setPos(pos);
+    var (x,y) = view.box(#position,#border,#screen);
+    var pos = x.toString() + "," + y.toString();
+    view.NA_setPos(pos);//只有通过菜单关闭才会保存位置(间接完成了窗口超出屏幕范围的判断)
     body.onAnimationEnd = ::view.close();
     body.attributes.removeClass("shown");
 }
@@ -167,7 +165,6 @@ function onWinStateChange() {
 }
 
 function onWinClosing() {
-    var pos = view.
     body.onAnimationEnd = ::view.close();
     body.attributes.removeClass("shown");
     return false;
@@ -178,10 +175,16 @@ function movable() // install movable window handler
     var xoff, yoff;
     var dragging = false;
     var movableArea = $(section.main);
-    stdout.print("movableArea:");
+    stdout.print("MovableArea:");
     stdout.println($(section.main));
     function doDrag() {
-        while (dragging) {stdout.println(view.box(#position));view.doEvent();}
+        while (dragging) {
+            var (x,y) = view.box(#position,#border,#screen);
+            stdout.printf("Border(x:%d,y:%d)",x,y);
+            (x,y) = view.box(#position,#client,#screen);
+            stdout.printf(",Client(x:%d,y:%d)\n",x,y);
+            view.doEvent();
+        }
     }
 
     function onMouseDown(evt) {

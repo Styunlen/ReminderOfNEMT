@@ -113,7 +113,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>BuildCount.bat&amp;do.bat</Command>
+      <Command>do.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,7 +130,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>BuildCount.bat&amp;do.bat</Command>
+      <Command>do.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -143,6 +143,7 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md" />
     <None Include="res\interactive.tis" />
     <None Include="res\main.html" />
     <None Include="res\scripts.tis" />
@@ -155,6 +156,7 @@
     <Image Include="res\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\UpdateLog.txt" />
     <Text Include="backup.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
