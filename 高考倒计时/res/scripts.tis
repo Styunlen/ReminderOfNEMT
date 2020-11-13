@@ -236,4 +236,6 @@ movable();
 self.on("complete",
 function() {
     stdout.println("got complete");
+    stdout.printf("Test:%s\n",NA_getStyle());
+    stdout.printf("Test:%v\n",typeof(NA_getStyle));
 });

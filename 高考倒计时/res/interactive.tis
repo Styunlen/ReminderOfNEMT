@@ -69,3 +69,21 @@ function IA_uiDebugMode(isEnabled)
         uiDebugStyle.activate();
     }
 }
+
+/*
+添加调试代码区
+ */
+function NA_getStyle()
+{
+    stdout.printf("TestDebug:%v %v\n",typeof(view.NA_getStyle) == #function,typeof(::view.NA_getStyle) == #function);
+    if(typeof(::view.NA_getStyle) == #function)
+    {
+        var style = view.NA_getStyle();
+        return style; 
+    }else{
+        stdout.print("NA_getStyle() is undefined!");
+        stdout.print(" typeof(view.NA_getStyle):");
+        stdout.println(typeof(::view.NA_getStyle));
+        return "Circle";
+    }
+}

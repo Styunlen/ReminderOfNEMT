@@ -259,12 +259,11 @@
             view.close("…Ë÷√¥∞ø⁄πÿ±’");
         }
         view.on("closing", onWinSettingClosing);
-        self.on("click", "a[href^=http]", function(evt) {
-            var href = this.attributes["href"];
-            stdout.println("Links(",href,") was clicked");
-            Sciter.launch(href); // will open the url in default browser
-            return true; // consume the event
-        });
+        event click $(a[href]) {
+            stdout.printf("link (%s) clicked\n",this.attributes["href"]);
+            Sciter.launch(this.attributes["href"]);
+            return true;
+        }
     </script>
 </head>
 <body>
