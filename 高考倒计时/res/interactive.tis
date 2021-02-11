@@ -1,14 +1,14 @@
 /*
-Ç°ºó¶Ë½»»¥ÓÃ½Å±¾ÎÄ¼ş
-ËùÓĞº¯ÊıÇ°×º¾ùÎªIA£¨½»»¥µÄÒâË¼£©
-ÒòÎªÕâĞ©Î»ÓÚ½»»¥²ãµÄ´úÂë£¬ÊÇÇ°¶ËÓëºó¶ËÖ®¼äµÄÇÅÁºÓëÅ¦´ø
-ÓĞµÄÓëÇ°¶Ë½»»¥£¬Ö±½Ó²Ù×÷UI£¬ÓĞµÄÔòÓëºó¶Ë½»»¥£¬¸ºÔğÊı¾İ´«Êä
+å‰åç«¯äº¤äº’ç”¨è„šæœ¬æ–‡ä»¶
+æ‰€æœ‰å‡½æ•°å‰ç¼€å‡ä¸ºIAï¼ˆäº¤äº’çš„æ„æ€ï¼‰
+å› ä¸ºè¿™äº›ä½äºäº¤äº’å±‚çš„ä»£ç ï¼Œæ˜¯å‰ç«¯ä¸åç«¯ä¹‹é—´çš„æ¡¥æ¢ä¸çº½å¸¦
+æœ‰çš„ä¸å‰ç«¯äº¤äº’ï¼Œç›´æ¥æ“ä½œUIï¼Œæœ‰çš„åˆ™ä¸åç«¯äº¤äº’ï¼Œè´Ÿè´£æ•°æ®ä¼ è¾“
  */
 
-//ÉèÖÃ´°¿ÚÑùÊ½
+//è®¾ç½®çª—å£æ ·å¼
 function IA_setStyle(style)
 {
-    var currentThemeUrl = "./themes/style_circle.css"; //The Default Theme is Circle Ä¬ÈÏÔ²ĞÎ´°¿ÚÖ÷Ìâ
+    var currentThemeUrl = "./themes/style_circle.css"; //The Default Theme is Circle é»˜è®¤åœ†å½¢çª—å£ä¸»é¢˜
     var elStyle = $(style#current-theme);
     switch (style) {
         case "Circle":
@@ -18,14 +18,14 @@ function IA_setStyle(style)
             stdout.println("Use The Circle Theme");
             break;
         case "REdge":
-            currentThemeUrl = "./themes/style_redge.css"; //The Rounded-Edge Theme Ô²½Ç¾ØĞÎ´°¿ÚÖ÷Ìâ
+            currentThemeUrl = "./themes/style_redge.css"; //The Rounded-Edge Theme åœ†è§’çŸ©å½¢çª—å£ä¸»é¢˜
             elStyle.deactivate(); // remove all rules
             elStyle.attributes["src"] = currentThemeUrl; // set src
             elStyle.activate(); // add rules
             stdout.println("Use The Rounded-Edge Theme");
             break;
         case "Rect":
-            currentThemeUrl = "./themes/style_rect.css"; //The Rect Theme Ö±½Ç¾ØĞÎÖ÷Ìâ
+            currentThemeUrl = "./themes/style_rect.css"; //The Rect Theme ç›´è§’çŸ©å½¢ä¸»é¢˜
             elStyle.deactivate(); // remove all rules
             elStyle.attributes["src"] = currentThemeUrl; // set src
             elStyle.activate(); // add rules
@@ -51,10 +51,10 @@ function IA_debugLogs(logs)
 {
     stdout.println(logs);
 }
-//ÓÃÓÚ¿ªÆô´°ÌåUIµ÷ÊÔ
+//ç”¨äºå¼€å¯çª—ä½“UIè°ƒè¯•
 function IA_uiDebugMode(isEnabled)
 {
-    var debugStyleUrl = "./style_debug.css"; //The Default Theme is Circle Ä¬ÈÏÔ²ĞÎ´°¿ÚÖ÷Ìâ
+    var debugStyleUrl = "./style_debug.css"; //The Default Theme is Circle é»˜è®¤åœ†å½¢çª—å£ä¸»é¢˜
     var uiDebugStyle = $(style#ui-debug);
     if(isEnabled)
     {
@@ -71,19 +71,5 @@ function IA_uiDebugMode(isEnabled)
 }
 
 /*
-Ìí¼Óµ÷ÊÔ´úÂëÇø
+æ·»åŠ è°ƒè¯•ä»£ç åŒº
  */
-function NA_getStyle()
-{
-    stdout.printf("TestDebug:%v %v\n",typeof(view.NA_getStyle) == #function,typeof(::view.NA_getStyle) == #function);
-    if(typeof(::view.NA_getStyle) == #function)
-    {
-        var style = view.NA_getStyle();
-        return style; 
-    }else{
-        stdout.print("NA_getStyle() is undefined!");
-        stdout.print(" typeof(view.NA_getStyle):");
-        stdout.println(typeof(::view.NA_getStyle));
-        return "Circle";
-    }
-}

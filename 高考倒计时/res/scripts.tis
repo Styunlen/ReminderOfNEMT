@@ -1,11 +1,11 @@
 /*
-Ç°¶ËÓÃ½Å±¾ÎÄ¼ş
-Ö±½Ó²Ù×÷UI²ã
+å‰ç«¯ç”¨è„šæœ¬æ–‡ä»¶
+ç›´æ¥æ“ä½œUIå±‚
  */
 include "interactive.tis";
 
 /***************
- ±äÁ¿ÉùÃ÷¶¨ÒåÇø
+ å˜é‡å£°æ˜å®šä¹‰åŒº
 ****************/
 
 const body = $(body);
@@ -13,7 +13,7 @@ const body = $(body);
 
 
 /***************
-   ×Ô¶¨Òå·½·¨Çø
+   è‡ªå®šä¹‰æ–¹æ³•åŒº
 ****************/
 function debugLogs(logs) {
     stdout.println(logs);
@@ -27,11 +27,11 @@ function toInt(i) {
     return res;
 }
 
-var iPer = 0.0; //½ø¶ÈÌõ
+var iPer = 0.0; //è¿›åº¦æ¡
 var strTimeset = view.NA_getTime().toString();
 var dateTarget;
-var datePbStart = Date.local(2020, 6, 7, 00, 00, 00); //½ø¶ÈÌõ¿ªÊ¼Ê±¼ä
-function timeInit()//³õÊ¼»¯Ê±¼ä
+var datePbStart = Date.local(2020, 6, 7, 00, 00, 00); //è¿›åº¦æ¡å¼€å§‹æ—¶é—´
+function timeInit()//åˆå§‹åŒ–æ—¶é—´
 {
     var dateNow = new Date();
     //stdout.println(typeof(view.NA_getTime().toString()));
@@ -47,7 +47,7 @@ function updateTimeRemaining() {
     var dateNow = new Date();
     var millisecondsRemaining = dateTarget.valueOf() - dateNow.valueOf();
     if (millisecondsRemaining >= 0) {
-        //Fixed (2020-8-29): Ê±¼äËã·¨¸üĞÂ
+        //Fixed (2020-8-29): æ—¶é—´ç®—æ³•æ›´æ–°
         iPer = (millisecondsRemaining / (dateTarget.valueOf() - datePbStart.valueOf())) * 100;
         var daysRemaining = millisecondsRemaining / 86400000;
         var hoursR, minR, secR;
@@ -62,7 +62,7 @@ function updateTimeRemaining() {
         //stdout.println(iPer, daysRemaining, hoursR, minR, secR);
         body.timer(1000, ::updateTimeRemaining());
     } else {
-        $(#timeRemaining).html = "<p style=\"font-size:20dip;color:red\">Ê®Äêº®´°ÈÕ£¬Ö»Îª½ñÈÕÊÔ£¡<br>×£´ó¼ÒÆì¿ªµÃÊ¤£¡</p>";
+        $(#timeRemaining).html = "<p style=\"font-size:20dip;color:red\">åå¹´å¯’çª—æ—¥ï¼Œåªä¸ºä»Šæ—¥è¯•ï¼<br>ç¥å¤§å®¶æ——å¼€å¾—èƒœï¼</p>";
     }
 }
 updateTimeRemaining();
@@ -99,14 +99,14 @@ function self.ready() {
 function updateProgressBar() {
     var iDeg = 0.0;
     //stdout.println(iDeg);
-    //FIXED (2020.8.29):µ¹¼ÆÊ±¶¯»­¸ü¸ÄÎª´Ó100%µ½0%(Ó¦´ó²¿·ÖÈËµÄÒªÇó)
+    //FIXED (2020.8.29):å€’è®¡æ—¶åŠ¨ç”»æ›´æ”¹ä¸ºä»100%åˆ°0%(åº”å¤§éƒ¨åˆ†äººçš„è¦æ±‚)
     // @FixedTime 2020-8-29
     if (iPer >= 50) {
-        iDeg = (iPer - 50) / 100.0 * (360) - 180; //Ö»Ğè²Ù×÷×ó°ë±ß£¬100%Ğı×ª0deg, 50%Ğı×ª-180deg
+        iDeg = (iPer - 50) / 100.0 * (360) - 180; //åªéœ€æ“ä½œå·¦åŠè¾¹ï¼Œ100%æ—‹è½¬0deg, 50%æ—‹è½¬-180deg
         $$(.leftcircle)[0].style#transition = "transform(back-out,500ms)";
         $$(.leftcircle)[0].style#transform = "rotate(" + iDeg.toString() + "deg)";
     } else {
-        iDeg = iPer / 100.0 * (360) - 180; //×ó°ë±ßÒş²Ø£¬²Ù×÷ÓÒ°ë±ß, 50%Ğı×ª0deg, 0%Ğı×ª-180deg
+        iDeg = iPer / 100.0 * (360) - 180; //å·¦åŠè¾¹éšè—ï¼Œæ“ä½œå³åŠè¾¹, 50%æ—‹è½¬0deg, 0%æ—‹è½¬-180deg
         $$(.leftcircle)[0].style#transition = "transform(linear,400ms)";
         $$(.leftcircle)[0].style#transform = "rotate(-180deg)";
         $$(.rightcircle)[0].style#transition = "transform(back-out,500ms,400ms)";
@@ -122,14 +122,14 @@ function updateProgressBar() {
 }
 
 /***************
- ´°¿ÚÊÂ¼ş´¦ÀíÇø
+ çª—å£äº‹ä»¶å¤„ç†åŒº
 ****************/
 
 $(#close).onClick = function() {
     //view.msgbox(#info,view.box(#position));
     var (x,y) = view.box(#position,#border,#screen);
     var pos = x.toString() + "," + y.toString();
-    view.NA_setPos(pos);//Ö»ÓĞÍ¨¹ı²Ëµ¥¹Ø±Õ²Å»á±£´æÎ»ÖÃ(¼ä½ÓÍê³ÉÁË´°¿Ú³¬³öÆÁÄ»·¶Î§µÄÅĞ¶Ï)
+    view.NA_setPos(pos);//åªæœ‰é€šè¿‡èœå•å…³é—­æ‰ä¼šä¿å­˜ä½ç½®(é—´æ¥å®Œæˆäº†çª—å£è¶…å‡ºå±å¹•èŒƒå›´çš„åˆ¤æ–­)
     body.onAnimationEnd = ::view.close();
     body.attributes.removeClass("shown");
 }
@@ -142,7 +142,7 @@ $(#minimize).onClick = function() {
 }
 
 $(#setting).onClick = function() {
-    this.sendMouseEvent({type: Event.MOUSE_DOWN,x: 0,y: 0});//Òş²Øpopup
+    this.sendMouseEvent({type: Event.MOUSE_DOWN,x: 0,y: 0});//éšè—popup
     var v = view.dialog({
         url: self.url("win_setting.html"),
         alignment: -5,
@@ -236,6 +236,4 @@ movable();
 self.on("complete",
 function() {
     stdout.println("got complete");
-    stdout.printf("Test:%s\n",NA_getStyle());
-    stdout.printf("Test:%v\n",typeof(NA_getStyle));
 });
