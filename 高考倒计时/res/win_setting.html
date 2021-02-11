@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html window-frame="transparent">
 <head>
+    <meta charset="UTF-8"/>
     <style>
         html 
         { 
@@ -155,7 +156,7 @@
     </style>
 
     <script type="text/tiscript">
-    
+        include "interactive.tis";
         const body = $(body);
         function wizard(stack, prevBtn, nextBtn)
         {
@@ -201,9 +202,10 @@
         }  
         
         wizard($(widget#stack),$(button#prev),$(button#next));
-        var hostview = view.parameters.hostview;
+        var hostview = view;
+        try{hostview = view.parameters.hostview;} catch(e){stdout.println("hostview not found");}
         var style = "Circle";
-        var time = Date.local(2021, 1, 6, 00, 00, 00); //Ä¬ÈÏÖ÷ÌâÎªÔ²ĞÎ£¬Ê±¼äÎªÒ»ÔÂÑ¡¿¼Ê±¼ä
+        var time = Date.local(2021, 1, 6, 00, 00, 00); //é»˜è®¤ä¸»é¢˜ä¸ºåœ†å½¢ï¼Œæ—¶é—´ä¸ºä¸€æœˆé€‰è€ƒæ—¶é—´
         function self.ready()
         {
             body.timer(1, ::this.attributes.addClass("shown"));
@@ -230,8 +232,8 @@
             else
                 dateTarget = new Date(strTimeset);
             stdout.println("Timeset formatted: ",dateTarget.toString("%F"));
-            $(#calendar).value = dateTarget.toString("%F");//ÈÕÀú±íµÄ³õÊ¼»¯¸ñÊ½ÎªYYYY-MM-DD
-            //Fixed ĞŞ¸´Èô´ò¿ªÉèÖÃ´°¿ÚºóÃ»ÓĞÊ¹ÓÃÈÕÀú±í¸ü¸ÄÊ±¼ä£¬Ôò¹Ø±Õ´°¿Ú±£´æÉèÖÃÊ±Ä¿±êÈÕÆÚÓÀÔ¶ÊÇ1ÔÂ6ºÅµÄBug
+            $(#calendar).value = dateTarget.toString("%F");//æ—¥å†è¡¨çš„åˆå§‹åŒ–æ ¼å¼ä¸ºYYYY-MM-DD
+            //Fixed ä¿®å¤è‹¥æ‰“å¼€è®¾ç½®çª—å£åæ²¡æœ‰ä½¿ç”¨æ—¥å†è¡¨æ›´æ”¹æ—¶é—´ï¼Œåˆ™å…³é—­çª—å£ä¿å­˜è®¾ç½®æ—¶ç›®æ ‡æ—¥æœŸæ°¸è¿œæ˜¯1æœˆ6å·çš„Bug
             // @Time 2020-10-03
             time = dateTarget;
             $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
@@ -245,7 +247,7 @@
 
           });
         $(#calendar).on("change",function(){
-            stdout.println("Ê±¼ä", $(#calendar).value.toString()," Ê±¼ä´Á:",$(#calendar).value.valueOf());
+            stdout.println("æ—¶é—´", $(#calendar).value.toString()," æ—¶é—´æˆ³:",$(#calendar).value.valueOf());
             time = $(#calendar).value;
             //stdout.println(typeof($(#calendar).value));
         })
@@ -256,7 +258,7 @@
             hostview.NA_setTime(time);
             hostview.NA_setStyle(style);//$(#themes).value.themeName);
             stdout.println("Succeed");
-            view.close("ÉèÖÃ´°¿Ú¹Ø±Õ");
+            view.close("è®¾ç½®çª—å£å…³é—­");
         }
         view.on("closing", onWinSettingClosing);
         event click $(a[href]) {
@@ -268,47 +270,47 @@
 </head>
 <body>
     <section #header>
-        <caption style="padding-left:2dip;font-weight: bold;font-size: 16dip;" role="window-caption">¸ß¿¼µ¹¼ÆÊ±ÉèÖÃ</caption>
+        <caption style="padding-left:2dip;font-weight: bold;font-size: 16dip;" role="window-caption">é«˜è€ƒå€’è®¡æ—¶è®¾ç½®</caption>
         <button.window role="window-minimize" #minimize></button>
         <button.window role="window-maximize" #maximize></button>
         <button.window role="window-close" #close></button>
     </section>
     <section #main>
-        <div style="margin:auto auto;margin-bottom: 0;width:72dip;"><button #prev>¡û</button> <button #next>¡ú</button></div>
+        <div style="margin:auto auto;margin-bottom: 0;width:72dip;"><button #prev>â†</button> <button #next>â†’</button></div>
         <widget #stack >
             <section #theme-selection style="background:rgba(red, green, blue, 0.8)">
-                <center><h1>Ö÷Ìâ</h1></center>
+                <center><h1>ä¸»é¢˜</h1></center>
                 <form #themes>
                     <div class="a-theme-option">
                         <img width="100dip" height="100dip" src="./theme-circle.png">
-                        <button|radio(themeName) value="Circle">Ô²ĞÎÖ÷Ìâ</button>
+                        <button|radio(themeName) value="Circle">åœ†å½¢ä¸»é¢˜</button>
                     </div>
                     <div class="a-theme-option">
                         <img width="100dip" height="100dip" src="./theme-rect.png">
-                        <button|radio(themeName) value="Rect">¾ØĞÎÖ÷Ìâ</button>
+                        <button|radio(themeName) value="Rect">çŸ©å½¢ä¸»é¢˜</button>
                     </div>
                     <div class="a-theme-option">
                         <img width="100dip" height="100dip" src="./theme-waiting.png">
-                        <button|radio(themeName) value="Circle" disabled>Î´Íê´ıĞø...</button>
+                        <button|radio(themeName) value="Circle" disabled>æœªå®Œå¾…ç»­...</button>
                     </div>             
                   </form>
             </section>
             <section style="background:rgba(red, green, blue, 0.8)">
-                <center><h1>Éè¶¨Ê±¼ä</h1></center>
+                <center><h1>è®¾å®šæ—¶é—´</h1></center>
                 <widget #calendar value="2021-01-06" type="calendar" />
             </section>
             <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
-                <center><h1>¹ØÓÚ</h1></center>
-                <p>±¾Èí¼şÒÑ×ñÑ­GPL v3Ğ­Òé¿ªÔ´</p>
+                <center><h1>å…³äº</h1></center>
+                <p>æœ¬è½¯ä»¶å·²éµå¾ªGPL v3åè®®å¼€æº</p>
                 <p></p>
-                <p>Developer: Styunlen(¾ÅØğ)</p>
+                <p>Developer: Styunlen(ä¹ä»)</p>
                 <p>Language: C++, HTML+CSS, Tiscript</p>
                 <p>UI: Sciter</br>
                     (Embeddable HTML/CSS/script engine for modern UI development)
                 </p>
                 <p>Blog: <a href="https://styunlen.cn/" target="_blank">https://styunlen.cn/</a></p>
                 <p>Github: <a href="https://github.com/Styunlen/ReminderOfNEMT" target="_blank">https://github.com/Styunlen/ReminderOfNEMT</a></p>
-                <p>QQ: 1208533483 (Çë±¸×¢À´Ô´)</p>
+                <p>QQ: 1208533483 (è¯·å¤‡æ³¨æ¥æº)</p>
                 <p>E-mail: 1208533483@qq.com</p>
                 <div style="position: relative;left:45dip;">
                     <div class="StatusTitle">Version</div><div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">1.1.0 build-74</div>
@@ -317,21 +319,21 @@
                 </div>
             </section>
             <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
-                <center><h1>Ã¿ÈÕÀøÖ¾</h1></center>
+                <center><h1>æ¯æ—¥åŠ±å¿—</h1></center>
                 <ol>
-                    <li>ÎÒÒª³É¹¦£¬ÎÒÄÜ³É¹¦£¬ÎÒ±Ø³É¹¦£¬ÎÒ±Ø³É¹¦£¡</li>
-                    <li>Òª³É¹¦£¬ÏÈ·¢·è£¬ÏÂ¶¨¾öĞÄÏòÇ°³å£»²»³É¹¦£¬²»·ÅËÉ£¬Ò§½ôÑÀ¹Ø³å³å³å</li>
-                    <li>ÇÚÑ§£¬ÇÚË¼£¬ÇÚÎÊ£¬¿à×ê</li>
-                    <li>¾öÕ½¸ß¿¼£¬¸Ä±äÃüÔË¡£ÂÅ´ìÂÅÕ½£¬Ğ¦°ÁÈºĞÛ¡£</li>
-                    <li>¸ßÈı¸ß¿¼¸ßÄ¿±ê£¬¿àÑ§ÉÆÑ§ÉÏºÃÑ§</li>
-                    <li>¹óÔÚ¼á³Ö¡¢ÄÑÔÚ¼á³Ö¡¢³ÉÔÚ¼á³Ö¡£</li>
-                    <li>Ì«ÑôÃ¿Ìì¶¼ÊÇĞÂµÄ£¬ÄãÊÇ·ñÃ¿Ìì¶¼ÔÚÅ¬Á¦¡£</li>
-                    <li>Á¢Ö¾¸ßÔ¶£¬½ÅÌ¤ÊµµØ£»¿Ì¿à×êÑĞ£¬ÇÚÑ§¿àË¼;ÎÈ¶¨ĞÄÌ¬£¬²»ÄÙ²»Æú£»È«Á¦ÒÔ¸°£¬¶áÈ¡Ê¤Àû¡£</li>
-                    <li>°ÑÎÕÏÖÔÚ¡¢¾ÍÊÇ´´ÔìÎ´À´¡£</li>
+                    <li>æˆ‘è¦æˆåŠŸï¼Œæˆ‘èƒ½æˆåŠŸï¼Œæˆ‘å¿…æˆåŠŸï¼Œæˆ‘å¿…æˆåŠŸï¼</li>
+                    <li>è¦æˆåŠŸï¼Œå…ˆå‘ç–¯ï¼Œä¸‹å®šå†³å¿ƒå‘å‰å†²ï¼›ä¸æˆåŠŸï¼Œä¸æ”¾æ¾ï¼Œå’¬ç´§ç‰™å…³å†²å†²å†²</li>
+                    <li>å‹¤å­¦ï¼Œå‹¤æ€ï¼Œå‹¤é—®ï¼Œè‹¦é’»</li>
+                    <li>å†³æˆ˜é«˜è€ƒï¼Œæ”¹å˜å‘½è¿ã€‚å±¡æŒ«å±¡æˆ˜ï¼Œç¬‘å‚²ç¾¤é›„ã€‚</li>
+                    <li>é«˜ä¸‰é«˜è€ƒé«˜ç›®æ ‡ï¼Œè‹¦å­¦å–„å­¦ä¸Šå¥½å­¦</li>
+                    <li>è´µåœ¨åšæŒã€éš¾åœ¨åšæŒã€æˆåœ¨åšæŒã€‚</li>
+                    <li>å¤ªé˜³æ¯å¤©éƒ½æ˜¯æ–°çš„ï¼Œä½ æ˜¯å¦æ¯å¤©éƒ½åœ¨åŠªåŠ›ã€‚</li>
+                    <li>ç«‹å¿—é«˜è¿œï¼Œè„šè¸å®åœ°ï¼›åˆ»è‹¦é’»ç ”ï¼Œå‹¤å­¦è‹¦æ€;ç¨³å®šå¿ƒæ€ï¼Œä¸é¦ä¸å¼ƒï¼›å…¨åŠ›ä»¥èµ´ï¼Œå¤ºå–èƒœåˆ©ã€‚</li>
+                    <li>æŠŠæ¡ç°åœ¨ã€å°±æ˜¯åˆ›é€ æœªæ¥ã€‚</li>
                 </ol>
             </section>
         </widget>
-        <p #copyright>Copyright(c) 2020 ¾ÅØğ °æÈ¨ËùÓĞ</p>
+        <p #copyright>Copyright(c) 2020 ä¹ä» ç‰ˆæƒæ‰€æœ‰</p>
     </section>
 </body>
 </html>

@@ -28,7 +28,7 @@ function toInt(i) {
 }
 
 var iPer = 0.0; //进度条
-var strTimeset = view.NA_getTime().toString();
+var strTimeset = NA_getTime().toString();
 var dateTarget;
 var datePbStart = Date.local(2020, 6, 7, 00, 00, 00); //进度条开始时间
 function timeInit()//初始化时间
@@ -39,7 +39,7 @@ function timeInit()//初始化时间
     if(strTimeset == "NULL")
         dateTarget = new Date(2021,01,06,00,00,00);
     else
-        dateTarget = new Date(view.NA_getTime().toString());
+        dateTarget = new Date(NA_getTime().toString());
     stdout.printf("timeNow: %s, timeSet: %s\n",dateNow.toString(), dateTarget.toString());
 }
 timeInit();
@@ -68,32 +68,7 @@ function updateTimeRemaining() {
 updateTimeRemaining();
 function self.ready() {
     // positioning in the middle of the screen:
-    var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
-    var (w, h) = self.$(body).box(#dimension);
-    w += w / 2; // to accomodate expanding radii
-    h += h / 2;
-    var pos = view.NA_getPos().toString().split(',');
-    if(pos.length > 1)
-    {
-        stdout.print("Restore the last Window Position ");
-        stdout.println("x:",pos[0],",y:",pos[1]);
-        view.move(pos[0].toInteger(),pos[1].toInteger(),w,h);
-    }
-    else
-    {
-        stdout.print("Default display in the center of the screen");
-        view.move(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
-    }
-    stdout.printf("sx:%d,sy:%d,sw:%d,sh:%d,w:%d,h:%d\n",sx,sy,sw,sh,w,h);
-    stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
-    //stdout.printf("TimeNow: %s ,Timeset: %s\n", new Date(), new Date(view.NA_getTime().toString()));
-    view.windowIcon = "./favicon.ico";
-    body.timer(1, ::this.attributes.addClass("shown"));
-    stdout.println(checkGfx());
-    body.timer(500, ::updateProgressBar());
-    IA_setStyle(view.NA_getStyle());
-    stdout.println("Current WorkDir: ",view.NA_getWorkDir());
-    stdout.println("Current WindowStyle: ",view.NA_getStyle());
+
 }
 
 function updateProgressBar() {
@@ -129,7 +104,7 @@ $(#close).onClick = function() {
     //view.msgbox(#info,view.box(#position));
     var (x,y) = view.box(#position,#border,#screen);
     var pos = x.toString() + "," + y.toString();
-    view.NA_setPos(pos);//只有通过菜单关闭才会保存位置(间接完成了窗口超出屏幕范围的判断)
+    NA_setPos(pos);//只有通过菜单关闭才会保存位置(间接完成了窗口超出屏幕范围的判断)
     body.onAnimationEnd = ::view.close();
     body.attributes.removeClass("shown");
 }
@@ -235,7 +210,33 @@ movable();
 
 self.on("complete",
 function() {
+    var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
+    var (w, h) = self.$(body).box(#dimension);
+    w += w / 2; // to accomodate expanding radii
+    h += h / 2;
+    var pos = NA_getPos().toString().split(',');
+    if(pos.length > 1)
+    {
+        stdout.print("Restore the last Window Position ");
+        stdout.println("x:",pos[0],",y:",pos[1]);
+        view.move(pos[0].toInteger(),pos[1].toInteger(),w,h);
+    }
+    else
+    {
+        stdout.print("Default display in the center of the screen");
+        view.move(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
+    }
+    stdout.printf("sx:%d,sy:%d,sw:%d,sh:%d,w:%d,h:%d\n",sx,sy,sw,sh,w,h);
+    stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
+    //stdout.printf("TimeNow: %s ,Timeset: %s\n", new Date(), new Date(view.NA_getTime().toString()));
+    view.windowIcon = "./favicon.ico";
+    body.timer(1, ::this.attributes.addClass("shown"));
+    stdout.println(checkGfx());
+    body.timer(500, ::updateProgressBar());
+    IA_setStyle(NA_getStyle());
+    stdout.println("Current WorkDir: ",NA_getWorkDir());
+    stdout.println("Current WindowStyle: ",NA_getStyle());
     stdout.println("got complete");
     stdout.printf("Test:%s\n",NA_getStyle());
-    stdout.printf("Test:%v\n",typeof(NA_getStyle));
+    stdout.printf("Test:%v\n",typeof(view.NA_getStyle));
 });
