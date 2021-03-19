@@ -150,14 +150,15 @@
     <None Include="res\style-circle.css" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="res.rc" />
-  </ItemGroup>
-  <ItemGroup>
+    <Image Include="..\..\..\ps\favicon.ico" />
     <Image Include="res\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\UpdateLog.txt" />
     <Text Include="backup.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="高考倒计时.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

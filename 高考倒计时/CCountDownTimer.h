@@ -14,7 +14,6 @@
 //#include "sciter-x.h"
 //#include "sciter-x-host-callback.h"
 #include "sciter-x-window.hpp"
-#include "resource.h"
 #define debugLogs(logs) pwin->call_function("IA_debugLogs",sciter::value(logs))
 
 /********************
