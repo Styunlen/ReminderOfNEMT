@@ -72,4 +72,101 @@ function IA_uiDebugMode(isEnabled)
 
 /*
 添加调试代码区
+如果在Sciter中调试运行，则返回测试数据
+否则，则与后端交互获得数据
  */
+function NA_getTime()
+{
+    var ret = null;
+    try{
+        ret = view.NA_getTime().toString();
+        return ret;
+    }
+    catch(e)
+    {
+        ret="2022-06-07T00:00:00+08:00";
+        stdout.println("Sciter Debug Mode,called NA_getTime() with retval: 2022-06-07T00:00:00+08:00");
+        return ret;
+    }
+}
+function NA_getPos()
+{
+    var ret = null;
+    try{
+        ret = view.NA_getPos().toString();
+        return ret;
+    }
+    catch(e)
+    {
+        ret="NULL";
+        stdout.println("Sciter Debug Mode,called NA_getPos() with retval: NULL");
+        return ret;
+    }
+}
+function NA_getStyle()
+{
+    var ret = null;
+    try{
+        ret = view.NA_getStyle().toString();
+        return ret;
+    }
+    catch(e)
+    {
+        ret="Rect";
+        stdout.println("Sciter Debug Mode,called NA_getStyle() with retval: Rect");
+        return ret;
+    }
+}
+
+function NA_getWorkDir()
+{
+    var ret = null;
+    try{
+        ret = view.NA_getWorkDir().toString();
+        return ret;
+    }
+    catch(e)
+    {
+        ret=System.home();
+        stdout.println("Sciter Debug Mode,called NA_getWorkDir() with retval: ",ret);
+        return ret;
+    }
+}
+
+function NA_setPos(pos)
+{
+    try{
+        view.NA_setPos(pos);
+        return true;
+    }
+    catch(e)
+    {
+        stdout.println("Sciter Debug Mode,called NA_setPos() with para: ",pos);
+        return false;
+    }
+}
+function NA_setStyle(style)
+{
+    try{
+        view.NA_setStyle(style);
+        return true;
+    }
+    catch(e)
+    {
+        stdout.println("Sciter Debug Mode,called NA_setStyle() with para: ",style);
+        return false;
+    }
+}
+
+function NA_setTime(time)
+{
+    try{
+        view.NA_setTime(time);
+        return true;
+    }
+    catch(e)
+    {
+        stdout.println("Sciter Debug Mode,called NA_setTime() with para: ",time);
+        return false;
+    }
+}

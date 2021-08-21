@@ -41,7 +41,7 @@
         }
         body.shown {
             transform: scale(1);
-            transition: transform(liner, 600ms);
+            transition: transform(back-out, 600ms);
             visibility: visible;
         }
 
@@ -50,8 +50,6 @@
             transition: transform(linear, 600ms);
             visibility: hidden;
         }
-
-        // overflow:auto; vertical-align:middle; horizontal-align:right;
 
         widget#stack {
             flow: stack;
@@ -250,16 +248,18 @@
             time = $(#calendar).value;
             //stdout.println(typeof($(#calendar).value));
         })
-        function onWinSettingClosing{
+        $(#close).onClick = function() {
+            body.attributes.removeClass("shown");
             stdout.println("Setting saving...");
             stdout.println("Current Window Style change to: ", style);
             stdout.println("Current Time set to: ", time.toString());
-            hostview.NA_setTime(time);
-            hostview.NA_setStyle(style);//$(#themes).value.themeName);
-            stdout.println("Succeed");
-            view.close("设置窗口关闭");
+            body.onAnimationEnd = function(){
+                hostview.NA_setTime(time);
+                hostview.NA_setStyle(style);//$(#themes).value.themeName);
+                stdout.println("Succeed");
+                view.close("设置窗口关闭");
+            };       
         }
-        view.on("closing", onWinSettingClosing);
         event click $(a[href]) {
             stdout.printf("link (%s) clicked\n",this.attributes["href"]);
             Sciter.launch(this.attributes["href"]);
@@ -272,7 +272,7 @@
         <caption style="padding-left:2dip;font-weight: bold;font-size: 16dip;" role="window-caption">高考倒计时设置</caption>
         <button.window role="window-minimize" #minimize></button>
         <button.window role="window-maximize" #maximize></button>
-        <button.window role="window-close" #close></button>
+        <button.window #close></button>
     </section>
     <section #main>
         <div style="margin:auto auto;margin-bottom: 0;width:72dip;"><button #prev>←</button> <button #next>→</button></div>

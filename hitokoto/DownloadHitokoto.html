@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        #proBarContainer{
+            display: none;
+            width:200px;
+            background-color: #BFCAE6;
+            box-shadow: 0px 0px 0px 2px #184785;
+            height: 20px;
+            transition: all 1s;
+        }
+        #proBarContainer:hover{
+            display: inline-block;
+            width:200px;
+            background-color: #BFCAE6;
+            box-shadow: 0px 0px 5px 2px #184785;
+            height: 20px;
+        }
+        #proBar{
+            display: inline-block;
+            width:20%;
+            height:100%;
+            background-color: #426EB4;
+            transition: all 1s;
+        }
+    </style>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script type="text/javascript">
+        var textList = new Array();
+        var count = 0;//获取成功次数
+        var getCount = 0;//实际获取次数
+        var num = 10;
+        function getText()
+        {
+            var hitText = document.getElementById("hitokoto");
+            var hitStatus = document.getElementById("status")
+            num = parseInt(document.getElementById("num").value);
+            var xhr = new XMLHttpRequest();
+            count = 0;
+            getCount = 0;
+            function getLoop(){
+                if(count < num)
+                {              
+                    var linkURL = "https://v1.hitokoto.cn/?c=" + document.getElementById("type").value + "&encode=" + document.getElementById("format").value + "&charset=utf-8";   
+                    
+                    $.ajax({
+                        type: 'get',
+                        url: linkURL,
+                        dataType: 'jsonp',
+                        jsonp:"callback",
+                        async:false,
+                        data:{
+                            
+                        },
+                        success: function(ret){
+                            getCount++;
+                            console.log(ret)
+                            var data = JSON.parse(ret.toString());
+                            var text = data.hitokoto + "——" + (data.from_who!=null?data.from_who:"") + "「" + data.from + "」";
+                            console.log(text);
+                            if(!textList.includes(text))
+                            {
+                                count++;
+                                textList.push(text);
+                                let per = count/num*100;
+                                $("#proBarContainer")[0].style.display = "inline-block";
+                                $("#proBar")[0].style.width = per + "%";
+                                hitStatus.innerHTML = "获取中" + count + " / " + num + " (" + per + "%)";
+                                hitText.innerHTML += text + "<br>";
+                                console.log("pushed");
+                            }
+                            if(getCount >= 10*num)
+                            {
+                                var temp = "已请求" + (10*num).toString() + "次，仍然没有获取足够的一言，停止请求";
+                                textList.push(temp);
+                                return false;
+                            }
+                            setTimeout(getLoop(),5000);
+                        },
+                        error:function(data) {
+                            //console.log(data)
+                            setTimeout(getLoop(),5000);
+                        },
+                    });
+                    /*$.getJSON(linkURL,function(ret){                         
+                            console.log(ret);
+                            var data = JSON.parse(ret.toString());
+                            var text = data.hitokoto + "————" + (data.from_who!=null?data.from_who:"") + "「" + data.from + "」";
+                            console.log(text);
+                            if(!textList.includes(text))
+                            {
+                                textList.push(text);
+                                console.log("pushed");
+                            }         
+                    });      */                    
+                    
+                }
+                else{
+                    hitStatus.innerHTML = "获取完毕<br>";
+                    $("#proBarContainer")[0].style.display = "none";
+                    for(var i = 0;i<textList.length;i++)
+                    {
+                        hitText.innerHTML += textList[i] + "<br>";
+                    }
+                }
+            }
+            setTimeout(getLoop(),800);
+        }
+        function isRepeat(item) {
+            var hash = {};
+            for(var i in textList) {
+                hash[textList[i]] = true;
+            }
+            return hash[item];
+        }
+	</script>
+</head>
+
+<body>
+    一言类型：
+    <table>
+        <thead>
+            <tr>
+                <th>参数</th>
+                <th>说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>a</td>
+                <td>动画</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>漫画</td>
+            </tr>
+            <tr>
+                <td>c</td>
+                <td>游戏</td>
+            </tr>
+            <tr>
+                <td>d</td>
+                <td>文学</td>
+            </tr>
+            <tr>
+                <td>e</td>
+                <td>原创</td>
+            </tr>
+            <tr>
+                <td>f</td>
+                <td>来自网络</td>
+            </tr>
+            <tr>
+                <td>g</td>
+                <td>其他</td>
+            </tr>
+            <tr>
+                <td>h</td>
+                <td>影视</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>诗词</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>网易云</td>
+            </tr>
+            <tr>
+                <td>k</td>
+                <td>哲学</td>
+            </tr>
+            <tr>
+                <td>l</td>
+                <td>抖机灵</td>
+            </tr>
+            <tr>
+                <td>其他</td>
+                <td>作为 动画 类型处理</td>
+            </tr>
+        </tbody>
+    </table>
+    <blockquote>
+        <p>可选择多个分类，例如： <code>?c=a&amp;c=c</code></p>
+    </blockquote>
+    <table>
+        <thead>
+            <tr>
+                <th>参数</th>
+                <th>说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>text</td>
+                <td>返回纯洁文本</td>
+            </tr>
+            <tr>
+                <td>json</td>
+                <td>返回格式化后的 JSON 文本</td>
+            </tr>
+            <tr>
+                <td>js</td>
+                <td>返回指定选择器的同步调用函数。默认选择器为：<code>.hitokoto</code></td>
+            </tr>
+            <tr>
+                <td>其他</td>
+                <td>返回格式化后的 JSON 文本</td>
+            </tr>
+        </tbody>
+    </table>
+    <input id="type" type="text" value="i">
+    <input id="format" type="text" value="json">
+    <input id="num" type="number" value="100">
+    <input onclick="getText()" type="button" value="获取">
+    <span id="proBarContainer"><span id="proBar"></span></span>
+    <span id="status"><br>第一个文本框填写一言类型，第二个填写返回的格式(别修改，未做脚本适配)，第三个填写一言条数<br>单击获取按钮，开始获取</span>
+    <div class="di" id="hitokoto">
+    </div>
+</body>
+
+</html>

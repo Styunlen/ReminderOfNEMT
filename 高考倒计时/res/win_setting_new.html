@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html window-frame="transparent">
+
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        html {
+            font: system;
+            background-color: transparent;
+            overflow: visible;
+        }
+
+        body {
+            overflow: visible;
+            flow: "1 2"
+                "3 3";
+        }
+
+        #header {
+            width: 400dip;
+            line-height: 1.6em;
+            background: window-accent-color;
+            flow: horizontal;
+        }
+
+        #header>caption {
+            width: *;
+        }
+
+        button.window {
+            display: block;
+            size: 24dip;
+            margin: 0;
+            padding: 0;
+            background: 50% 50% no-repeat;
+            background-size: 24dip;
+        }
+
+        button.window:hover {
+            background-color: #B7B7B7;
+        }
+
+        button.window#minimize {
+            background-image: url(icon-minimize.png);
+        }
+
+        button.window#maximize {
+            background-image: url(icon-maximize.png);
+        }
+
+        button.window#maximize.restore {
+            background-image: url(icon-restore.png);
+        }
+
+        button.window#close {
+            background-image: url(icon-close.png);
+        }
+
+        #main {
+            width: 400dip;
+            height: 500dip;
+            background: white;
+            z-index: 6;
+        }
+
+        body {
+            flow: vertical;
+            padding: 0;
+            margin: 0;
+            transform: scale(0);
+        }
+
+        body.shown {
+            transform: scale(1);
+            transition: transform(back-out, 600ms);
+            visibility: visible;
+        }
+
+        body.hidden {
+            transform: scale(0);
+            transition: transform(linear, 600ms);
+            visibility: hidden;
+        }
+    </style>
+    <script type="text/tiscript">
+        const body = $(body);
+        function self.ready() {
+            body.timer(1, ::this.attributes.addClass("shown"));
+        }
+    </script>
+
+
+</head>
+
+<body>
+    <section #header>
+        <caption style="padding-left:2dip;font-weight: bold;font-size: 16dip;" role="window-caption">高考倒计时设置</caption>
+        <button.window role="window-minimize" #minimize></button>
+        <button.window role="window-maximize" #maximize></button>
+        <button.window role="window-close" #close></button>
+    </section>
+    <section #main>
+
+        <p #copyright>Copyright(c) 2020 九仞 版权所有</p>
+    </section>
+</body>
+
+</html>

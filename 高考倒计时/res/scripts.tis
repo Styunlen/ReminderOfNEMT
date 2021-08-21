@@ -1,8 +1,7 @@
 /*
-前端用脚本文件
-直接操作UI层
+API引用区
  */
-include "interactive.tis";
+include "clockAPI.tis";
 
 /***************
  变量声明定义区
@@ -27,22 +26,7 @@ function toInt(i) {
     return res;
 }
 
-var iPer = 0.0; //进度条
-var strTimeset = view.NA_getTime().toString();
-var dateTarget;
-var datePbStart = Date.local(2020, 6, 7, 00, 00, 00); //进度条开始时间
-function timeInit()//初始化时间
-{
-    var dateNow = new Date();
-    //stdout.println(typeof(view.NA_getTime().toString()));
-    stdout.println(strTimeset);
-    if(strTimeset == "NULL")
-        dateTarget = new Date(2021,01,06,00,00,00);
-    else
-        dateTarget = new Date(view.NA_getTime().toString());
-    stdout.printf("timeNow: %s, timeSet: %s\n",dateNow.toString(), dateTarget.toString());
-}
-timeInit();
+include "clockAPI.tis";
 function updateTimeRemaining() {
     var dateNow = new Date();
     var millisecondsRemaining = dateTarget.valueOf() - dateNow.valueOf();
@@ -72,7 +56,7 @@ function self.ready() {
     var (w, h) = self.$(body).box(#dimension);
     w += w / 2; // to accomodate expanding radii
     h += h / 2;
-    var pos = view.NA_getPos().toString().split(',');
+    var pos = NA_getPos().split(',');
     if(pos.length > 1)
     {
         stdout.print("Restore the last Window Position ");
@@ -91,9 +75,9 @@ function self.ready() {
     body.timer(1, ::this.attributes.addClass("shown"));
     stdout.println(checkGfx());
     body.timer(500, ::updateProgressBar());
-    IA_setStyle(view.NA_getStyle());
-    stdout.println("Current WorkDir: ",view.NA_getWorkDir());
-    stdout.println("Current WindowStyle: ",view.NA_getStyle());
+    IA_setStyle(NA_getStyle());
+    stdout.println("Current WorkDir: ", NA_getWorkDir());
+    stdout.println("Current WindowStyle: ", NA_getStyle());
 }
 
 function updateProgressBar() {
@@ -129,7 +113,7 @@ $(#close).onClick = function() {
     //view.msgbox(#info,view.box(#position));
     var (x,y) = view.box(#position,#border,#screen);
     var pos = x.toString() + "," + y.toString();
-    view.NA_setPos(pos);//只有通过菜单关闭才会保存位置(间接完成了窗口超出屏幕范围的判断)
+    NA_setPos(pos);//只有通过菜单关闭才会保存位置(间接完成了窗口超出屏幕范围的判断)
     body.onAnimationEnd = ::view.close();
     body.attributes.removeClass("shown");
 }
@@ -170,13 +154,17 @@ function onWinClosing() {
     return false;
 }
 
-function movable() // install movable window handler
+function movable(ele) // install movable window handler
 {
     var xoff, yoff;
     var dragging = false;
-    var movableArea = $(section.main);
+    var movableArea = $(body);
+    if(ele instanceof Element)
+    {
+        movableArea = ele;
+    }
     stdout.print("MovableArea:");
-    stdout.println($(section.main));
+    stdout.println(movableArea);
     function doDrag() {
         while (dragging) {
             var (x,y) = view.box(#position,#border,#screen);
@@ -188,7 +176,7 @@ function movable() // install movable window handler
     }
 
     function onMouseDown(evt) {
-        if (evt.target !== movableArea) return false;
+        if (evt.target !== movableArea && !(EleIsChild(movableArea,evt.target))) return false;
         xoff = evt.x;
         yoff = evt.y;
         dragging = true;
@@ -231,7 +219,7 @@ function movable() // install movable window handler
     return false;
 }
 
-movable();
+movable($(section.main));
 
 self.on("complete",
 function() {
