@@ -1,0 +1,202 @@
+        body {
+          margin: *;
+          padding: 0;
+          size: 300dip;
+          horizontal-align: center;
+          flow: vertical;
+          vertical-align: middle;
+          font-size: 10pt;
+          font-family: "Segoe UI", Tahoma, sans-serif;
+          transform: scale(0);
+          overflow: visible;
+        }
+        .proBarBorder{
+          position: absolute;
+          z-index: -5;
+        }
+        .main{
+            margin: *;
+            position: absolute;
+            width:300dip;
+            height:300dip;
+            border-radius:50%;
+            background-image:url("./bg1.jpg");
+            background-position:0 0;
+            background-repeat:no-repeat;
+            background-size:cover;
+            horizontal-align: center;
+            flow: vertical;
+            vertical-align: middle;
+            font-size: 10pt;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            z-index:0;
+          }
+        #progressBar{
+            position: absolute;
+            width: 320dip;
+            height: 320dip;
+            top:-10dip;
+            left: -10dip;
+        }
+        #pr1{
+          left: 0;
+          
+        }
+        #pr2{
+          right: 0;
+        }
+        .wrapper{
+          position: absolute;
+          top:0;
+          width: 160dip;
+          height: 320dip;
+          overflow: hidden;
+          
+        }
+        .circleProgress{
+          position: absolute;
+          top:0;
+          width: 140dip;
+          height: 280dip;
+          z-index:-2;
+        }
+        
+        .rightcircle{
+          border-bottom:20dip solid #00c3ff;
+          border-top:20dip solid #00c3ff;
+          border-right:20dip solid #00c3ff;
+          border-radius: 0 160dip 160dip 0;
+          transform: rotate(0deg);
+          transform-origin:0 160dip; 
+          z-index:-1;
+          right:0;
+        }
+        .leftcircle{
+          border-top:20dip solid #00c3ff;
+          border-bottom:20dip solid #00c3ff;
+          border-left:20dip solid #00c3ff;
+          border-radius:160dip 0 0 160dip;
+          transform: rotate(0deg);
+          transform-origin:160dip 160dip;   
+          z-index:-1;     
+          left:0;
+        }
+        .rightcircle_background{
+          border-bottom:20dip solid #f3f4f5;
+          border-top:20dip solid #f3f4f5;
+          border-right:20dip solid #f3f4f5;
+          border-radius: 0 160dip 160dip 0;
+          z-index:-2;
+          right:0;
+        }
+        .leftcircle_background{
+          border-top:20dip solid #f3f4f5;
+          border-bottom:20dip solid #f3f4f5;
+          border-left:20dip solid #f3f4f5;
+          border-radius:160dip 0 0 160dip;  
+          z-index:-2;     
+          left:0;
+        }
+        .rightcircle_fix{z-index:-1;transform: rotate(-180deg);border-color: #f3f4f5;}
+        #title{display: block;position: absolute;top:15dip;margin: auto auto;z-index:5;}
+        #timeRemaining
+        {
+          text-align: center;
+          font-size: 18dip;
+          width: 80%;
+          position: relative;
+          height: 160dip;
+          vertical-align: middle;
+          border-radius: 10dip;
+          background-color: rgba(255, 255, 255, 0.5);
+        }
+        #day{
+          font-size: 48dip;
+        }
+        #label_now
+        {
+          display: block;
+          position: absolute;
+          bottom: 10dip;
+          left:10dip;
+          margin-bottom: 0dip;
+          padding-right: 2dip;
+          padding-left: 2dip;
+          border:1px solid silver;
+          border-radius:5dip;
+          font-size:16dip;
+          vertical-align: middle;
+        }
+        #label_day
+        {
+          display: block;
+          position: absolute;
+          top:10dip;
+          right:0px;
+          margin-left:5px;
+          padding-right: 5dip;
+          padding-left: 5dip;
+          background-color: yellow;
+          border-radius:15dip;
+          font-size:16dip;
+          vertical-align: middle;
+        }
+        #timeRemaining_date{
+          position: relative;
+          width:190dip;
+          margin:auto auto;
+          horizontal-align: center;
+        }
+        .menu-section {
+          display: block;
+          z-index: 5;
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          padding: 0;
+          margin: auto auto;
+          horizontal-align: center;
+      }
+      #menu-button {
+        display: block;
+        padding: 2dip;
+        margin-bottom: 10dip;
+        transform: scale(1.5);
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 5dip;
+      }
+
+      #menu-button:hover {
+          outline: blue glow 4dip;
+          transition: outline(linear, 1000ms);
+      }
+      popup.menu {
+        prototype: MenuPopup url(../menu-popup.tis);
+        background-color: transparent; // must be exactly transparent to create transparent window 
+        width: 200dip;
+        height: 150dip;
+        cursor: pointer;
+        padding: 18dip; // room for the shadow 
+        cursor: default;
+        margin: 2dip; // offset from anchor element
+        border: 1dip solid #ddd;
+        var(shape-color): rgba(255, 255, 255, 0.5); // shape background color
+      }
+
+      popup.menu>.content {
+        display: block;
+        margin: 0;
+        width: 200dip;
+        height: 150dip;
+        horizontal-align: center;
+        text-align: center;
+        size: *;
+      }
+
+      #copyright {
+        display: block;
+        position: absolute;
+        bottom: 18dip;
+        margin: auto auto;
+        font-weight: bold;
+      }

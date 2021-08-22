@@ -4,49 +4,34 @@
 因为这些位于交互层的代码，是前端与后端之间的桥梁与纽带
 有的与前端交互，直接操作UI，有的则与后端交互，负责数据传输
  */
+/***************
+ 变量声明定义区
+****************/
+var currentThemeObj = {
+    themeName:null,
+    themeDoc:null
+};
 
-//设置窗口样式
-function IA_setStyle(style)
+//加载主题文件
+function IA_loadTheme(themeName)
 {
-    var currentThemeUrl = "./themes/style_circle.css"; //The Default Theme is Circle 默认圆形窗口主题
-    var elStyle = $(style#current-theme);
-    switch (style) {
-        case "Circle":
-            elStyle.deactivate(); // remove all rules
-            elStyle.attributes["src"] = currentThemeUrl; // set src
-            elStyle.activate(); // add rules
-            stdout.println("Use The Circle Theme");
-            break;
-        case "REdge":
-            currentThemeUrl = "./themes/style_redge.css"; //The Rounded-Edge Theme 圆角矩形窗口主题
-            elStyle.deactivate(); // remove all rules
-            elStyle.attributes["src"] = currentThemeUrl; // set src
-            elStyle.activate(); // add rules
-            stdout.println("Use The Rounded-Edge Theme");
-            break;
-        case "Rect":
-            currentThemeUrl = "./themes/style_rect.css"; //The Rect Theme 直角矩形主题
-            elStyle.deactivate(); // remove all rules
-            elStyle.attributes["src"] = currentThemeUrl; // set src
-            elStyle.activate(); // add rules
-            stdout.println("Use The Rect Theme");
-            break;
-        case "NULL":
-            elStyle.deactivate(); // remove all rules
-            elStyle.attributes["src"] = currentThemeUrl; // set src
-            elStyle.activate(); // add rules
-            stdout.println("Null Theme Not Supported,Use The Default Theme");
-            break;
-            // code
-        default:
-            elStyle.deactivate(); // remove all rules
-            elStyle.attributes["src"] = currentThemeUrl; // set src
-            elStyle.activate(); // add rules
-            stdout.println("Unknown Style Type("+ style +"),Use The Default Theme");
-            break;
-            // code
+    var currentThemeUrl = "./themes/Circle/main.html"; //The Default Theme is Circle 默认圆形窗口主题
+    var themeView = $(frame#theme_view);
+    try{
+        stdout.println("Try To Load Theme :","/themes/"+themeName+"/main.html");
+        themeView.load(NA_getWorkDir() + "/themes/"+themeName+"/main.html");
+        currentThemeObj.themeName = themeName;
+        currentThemeObj.themeDoc = themeView[0];
+        currentThemeObj.themeDoc.ns.theme_inited();
+    }
+    catch(e)
+    {
+        stdout.println("Load Theme Failed,Using Default Theme Circle");
+        stdout.println("Try To Load Theme :",self.url("res:themes/Circle/main.html"));
+        themeView.load(self.url("res:themes/Circle/main.html"));
     }
 }
+
 function IA_debugLogs(logs)
 {
     stdout.println(logs);
@@ -103,17 +88,17 @@ function NA_getPos()
         return ret;
     }
 }
-function NA_getStyle()
+function NA_getThemeName()
 {
     var ret = null;
     try{
-        ret = view.NA_getStyle().toString();
+        ret = view.NA_getThemeName().toString();
         return ret;
     }
     catch(e)
     {
-        ret="Rect";
-        stdout.println("Sciter Debug Mode,called NA_getStyle() with retval: Rect");
+        ret="Circle";
+        stdout.println("Sciter Debug Mode,called NA_getThemeName() with retval: Circle");
         return ret;
     }
 }
@@ -145,15 +130,15 @@ function NA_setPos(pos)
         return false;
     }
 }
-function NA_setStyle(style)
+function NA_setThemeName(themeName)
 {
     try{
-        view.NA_setStyle(style);
+        view.NA_setThemeName(themeName);
         return true;
     }
     catch(e)
     {
-        stdout.println("Sciter Debug Mode,called NA_setStyle() with para: ",style);
+        stdout.println("Sciter Debug Mode,called NA_setThemeName() with para: ",style);
         return false;
     }
 }

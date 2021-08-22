@@ -1,55 +1,16 @@
 /*
 API引用区
  */
-include "clockAPI.tis";
+include "ReminderAPI.tis";
 
 /***************
  变量声明定义区
 ****************/
-
 const body = $(body);
-
-
 
 /***************
    自定义方法区
 ****************/
-function debugLogs(logs) {
-    stdout.println(logs);
-}
-function checkGfx() {
-    if (!view.backend) view.msgbox(#alert, "Failed to initialize layered window!");
-    return ["Unknown", "GDI+", "D2D/WARP", "D2D/DX"][view.backend];
-}
-function toInt(i) {
-    var res = i.toInteger();
-    return res;
-}
-
-include "clockAPI.tis";
-function updateTimeRemaining() {
-    var dateNow = new Date();
-    var millisecondsRemaining = dateTarget.valueOf() - dateNow.valueOf();
-    if (millisecondsRemaining >= 0) {
-        //Fixed (2020-8-29): 时间算法更新
-        iPer = (millisecondsRemaining / (dateTarget.valueOf() - datePbStart.valueOf())) * 100;
-        var daysRemaining = millisecondsRemaining / 86400000;
-        var hoursR, minR, secR;
-        hoursR = toInt((millisecondsRemaining - daysRemaining.toInteger() * 86400000.0) / 3600000.0);
-        minR = toInt((millisecondsRemaining - daysRemaining.toInteger() * 86400000.0) / 60000.0 - (hoursR) * 60);
-        secR = toInt((millisecondsRemaining - daysRemaining.toInteger() * 86400000.0) / 1000.0 - (hoursR) * 3600 - (minR) * 60 - 1);
-        //hoursR = hoursR - 1;
-        $(#day).text = toInt(daysRemaining).toString();
-        $(#hour).text = hoursR.toString().length > 1 ? hoursR.toString() : "0" + hoursR.toString();
-        $(#min).text = minR.toString().length > 1 ? minR.toString() : "0" + minR.toString();
-        $(#sec).text = secR.toString().length > 1 ? secR.toString() : "0" + secR.toString();
-        //stdout.println(iPer, daysRemaining, hoursR, minR, secR);
-        body.timer(1000, ::updateTimeRemaining());
-    } else {
-        $(#timeRemaining).html = "<p style=\"font-size:20dip;color:red\">十年寒窗日，只为今日试！<br>祝大家旗开得胜！</p>";
-    }
-}
-updateTimeRemaining();
 function self.ready() {
     // positioning in the middle of the screen:
     var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
@@ -74,35 +35,9 @@ function self.ready() {
     view.windowIcon = "./favicon.ico";
     body.timer(1, ::this.attributes.addClass("shown"));
     stdout.println(checkGfx());
-    body.timer(500, ::updateProgressBar());
-    IA_setStyle(NA_getStyle());
+    IA_loadTheme(NA_getThemeName());
     stdout.println("Current WorkDir: ", NA_getWorkDir());
-    stdout.println("Current WindowStyle: ", NA_getStyle());
-}
-
-function updateProgressBar() {
-    var iDeg = 0.0;
-    //stdout.println(iDeg);
-    //FIXED (2020.8.29):倒计时动画更改为从100%到0%(应大部分人的要求)
-    // @FixedTime 2020-8-29
-    if (iPer >= 50) {
-        iDeg = (iPer - 50) / 100.0 * (360) - 180; //只需操作左半边，100%旋转0deg, 50%旋转-180deg
-        $$(.leftcircle)[0].style#transition = "transform(back-out,500ms)";
-        $$(.leftcircle)[0].style#transform = "rotate(" + iDeg.toString() + "deg)";
-    } else {
-        iDeg = iPer / 100.0 * (360) - 180; //左半边隐藏，操作右半边, 50%旋转0deg, 0%旋转-180deg
-        $$(.leftcircle)[0].style#transition = "transform(linear,400ms)";
-        $$(.leftcircle)[0].style#transform = "rotate(-180deg)";
-        $$(.rightcircle)[0].style#transition = "transform(back-out,500ms,400ms)";
-        $$(.rightcircle)[0].style#transform = "rotate(" + iDeg.toString() + "deg)";
-        if (iPer <= 5) {
-            $$(.rightcircle_fix)[0].style#transition = "transform(linear,0ms,500ms)";
-            $$(.rightcircle_fix)[0].style#transform = "rotate(-210deg)";
-        }
-    }
-
-    //iPer = (iPer.toInteger() + 1) % 101;
-    //body.timer(500, :: updateProgressBar());
+    stdout.println("Current WindowTheme: ", NA_getThemeName());
 }
 
 /***************
@@ -137,7 +72,7 @@ $(#setting).onClick = function() {
 
 function onWinStateChange() {
     if (view.state == View.WINDOW_SHOWN) {
-        //stdout.println("qwq");
+        //stdout.println(body.attributes);
         body.attributes.removeClass("hidden");
         body.attributes.addClass("shown");
     }
@@ -164,7 +99,8 @@ function movable(ele) // install movable window handler
         movableArea = ele;
     }
     stdout.print("MovableArea:");
-    stdout.println(movableArea);
+    stdout.print(movableArea);
+    stdout.printf(" paras: %s\r\n",ele);
     function doDrag() {
         while (dragging) {
             var (x,y) = view.box(#position,#border,#screen);
@@ -176,7 +112,7 @@ function movable(ele) // install movable window handler
     }
 
     function onMouseDown(evt) {
-        if (evt.target !== movableArea && !(EleIsChild(movableArea,evt.target))) return false;
+        if (evt.target !== movableArea && !(EleIsChild(evt.target,movableArea))) return false;
         xoff = evt.x;
         yoff = evt.y;
         dragging = true;
@@ -219,7 +155,8 @@ function movable(ele) // install movable window handler
     return false;
 }
 
-movable($(section.main));
+//使得程序可拖动
+movable($(section#sec_main));
 
 self.on("complete",
 function() {

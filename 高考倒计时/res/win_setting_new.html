@@ -81,11 +81,32 @@
             transition: transform(linear, 600ms);
             visibility: hidden;
         }
+        #233{
+            background-image: url("./favicon.ico");
+        }
     </style>
+    <style src="./style_debug.css"/>
     <script type="text/tiscript">
         const body = $(body);
         function self.ready() {
             body.timer(1, ::this.attributes.addClass("shown"));
+        }
+        $(#close).onClick = function() {
+            body.attributes.removeClass("shown");
+            stdout.println("Setting saving...");
+            stdout.println("Current Window Style change to: ", style);
+            stdout.println("Current Time set to: ", time.toString());
+            body.onAnimationEnd = function(){
+                hostview.NA_setTime(time);
+                hostview.NA_setStyle(style);//$(#themes).value.themeName);
+                stdout.println("Succeed");
+                view.close("设置窗口关闭");
+            };       
+        }
+        event click $(a[href]) {
+            stdout.printf("link (%s) clicked\n",this.attributes["href"]);
+            Sciter.launch(this.attributes["href"]);
+            return true;
         }
     </script>
 
@@ -97,10 +118,10 @@
         <caption style="padding-left:2dip;font-weight: bold;font-size: 16dip;" role="window-caption">高考倒计时设置</caption>
         <button.window role="window-minimize" #minimize></button>
         <button.window role="window-maximize" #maximize></button>
-        <button.window role="window-close" #close></button>
+        <button.window #close></button>
     </section>
     <section #main>
-
+        <p #233>233</p>
         <p #copyright>Copyright(c) 2020 九仞 版权所有</p>
     </section>
 </body>

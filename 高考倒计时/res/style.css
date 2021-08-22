@@ -1,0 +1,89 @@
+html {
+    background: transparent;
+    overflow: visible;
+}
+button#minimize {
+    background-image: url("minimize.png");
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 4dip;
+    padding: 0;
+    margin: 0;
+    width: 40dip;
+    height: 40dip;
+    outline: blue glow 0;
+    margin-top: 30dip;
+    color: #000;
+}
+
+button#minimize:hover {
+    outline: blue glow 4dip;
+    transition: outline(linear, 300ms);
+}
+
+button#close {
+    background-image: url("close.png");
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4dip;
+    padding: 0;
+    margin: 0;
+    width: 40dip;
+    height: 40dip;
+    outline: blue glow 0;
+}
+
+button#close:hover {
+    outline: blue glow 4dip;
+    transition: outline(linear, 300ms);
+}
+
+button#setting {
+    background-image: url("setting.png");
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4dip;
+    padding: 0;
+    margin: 0;
+    width: 40dip;
+    height: 40dip;
+    outline: blue glow 0;
+}
+
+button#setting:hover {
+    outline: blue glow 4dip;
+    transition: outline(linear, 300ms);
+}
+
+img {
+    size: 16dip;
+    foreground-size: cover;
+}
+popup.menu {
+    prototype: MenuPopup url(./menu-popup.tis);
+    background-color: transparent; // must be exactly transparent to create transparent window 
+    width: 200dip;
+    height: 150dip;
+    cursor: pointer;
+    padding: 18dip; // room for the shadow 
+    cursor: default;
+    margin: 2dip; // offset from anchor element
+    border: 1dip solid #ddd;
+    var(shape-color): rgba(255, 255, 255, 0.5); // shape background color
+}
+
+popup.menu>.content {
+    display: block;
+    margin: 0;
+    width: 200dip;
+    height: 150dip;
+    horizontal-align: center;
+    text-align: center;
+    size: *;
+}
