@@ -9,15 +9,39 @@
     <style id="ui-debug" src="" />
 
     <script type="text/tiscript">
-      include "scripts.tis";
-      include "menu-popup.tis";
+        $(#close).onClick = function() {
+            //view.msgbox(#info,view.box(#position));
+            var (x,y) = view.box(#position,#border,#screen);
+            var pos = x.toString() + "," + y.toString();
+            NA_setPos(pos);//只有通过菜单关闭才会保存位置(间接完成了窗口超出屏幕范围的判断)
+            body.onAnimationEnd = ::view.close();
+            body.attributes.removeClass("shown");
+        }
+
+        $(#minimize).onClick = function() {
+            body.attributes.removeClass("shown");
+            body.attributes.addClass("hidden");
+            view.state = View.WINDOW_MINIMIZED;
+            view.Test();
+        }
+
+        $(#setting).onClick = function() {
+            this.sendMouseEvent({type: Event.MOUSE_DOWN,x: 0,y: 0});//隐藏popup
+            var v = view.dialog({
+                url: self.url("win_setting.html"),
+                alignment: -5,
+                parameters:{hostview: this.root.ns.view}
+            });
+            stdout.printf("win_setting result:%v\n",v);
+        }
+        include "scripts.tis";
+        include "menu-popup.tis";
     </script>
 </head>
 <body>
-    <section id="sec_main">
-        <frame#theme_view>
-        </frame>
-    </section>
+    
+        <frame #theme_view src="res:theme-waiting.png"></frame>
+
     <section id="sec_menu">
         <img id="menu-button" src="./menu.png">     
         <popup .menu>

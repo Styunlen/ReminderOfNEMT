@@ -2,28 +2,13 @@
 <head #MainHead>
     <title>高考倒计时</title>
     <!-- <link href="./style-circle.css" rel="stylesheet" type="text/css"> -->
-    <link rel="shortcuticon" href="./favicon.ico" />
+    <link rel="shortcuticon" href="favicon.ico" />
     <meta charset="UTF-8"/>
+    <style src="style_circle.css"></style>
     <style>
         html {
             background: transparent;
             overflow: visible;
-        }
-        body {
-          size: 300dip;
-          transform: scale(0);
-          overflow: visible;
-        }
-        body.shown {
-            transform: scale(1);
-            transition: transform(back-out, 600ms);
-            visibility: visible;
-        }
-
-        body.hidden {
-            transform: scale(0);
-            transition: transform(linear, 600ms);
-            visibility: hidden;
         }
 
         body>p {
@@ -63,8 +48,20 @@
     <style id="ui-debug" src="" />
 
     <script type="text/tiscript">
-        include "res:ReminderAPI.tis";
-        stdout.println(self.url());
+        //include "res:ReminderAPI.tis";
+        function theme_inited()
+        {
+          try
+          {
+            include "scripts.tis";
+          }
+          catch(e)
+          {
+            stdout.println("err msg:",e.message,e.stackTrace);
+          }
+          stdout.println("Theme inited!!");
+          stdout.println("Theme Url:",self.url("scripts.tis"));
+        }
     </script>
 </head>
 <body>

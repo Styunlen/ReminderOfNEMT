@@ -67,8 +67,17 @@
         include "res:ReminderAPI.tis";
         function theme_inited()
         {
-            stdout.println("Theme inited!!");
-            stdout.println("Theme Url:",self.url());
+          try
+          {
+            include "scripts.tis";
+          }
+          catch(e)
+          {
+            stdout.println("err msg:",e.message,e.stackTrace);
+          }
+          stdout.println("Theme inited!!");
+          stdout.println("Theme Url:",self.url());
+          updateTime();
         }
     </script>
 </head>

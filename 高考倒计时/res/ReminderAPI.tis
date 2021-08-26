@@ -68,10 +68,10 @@ function updateTime() {
         //Fixed (2021-8-22): 时间算法修复，修复0秒时卡住，然后直接跳到58秒的BUG
         secR = toInt((millisecondsRemaining - daysRemaining.toInteger() * 86400000.0) / 1000.0 - (hoursR) * 3600 - (minR) * 60);
         //hoursR = hoursR - 1;
-        var day = $(#day);
-        var hour = $(#hour);
-        var min = $(#min);
-        var sec = $(#sec);
+        var day = self.$(#day);
+        var hour = self.$(#hour);
+        var min = self.$(#min);
+        var sec = self.$(#sec);
         if(day != undefined)
         {
             day.text = toInt(daysRemaining).toString();
@@ -94,7 +94,6 @@ function updateTime() {
        // $(#timeRemaining).html = "<p style=\"font-size:20dip;color:red\">十年寒窗日，只为今日试！<br>祝大家旗开得胜！</p>";
     }
 }
-updateTime();
 
 //输出调试日志
 function debugLogs(logs) {

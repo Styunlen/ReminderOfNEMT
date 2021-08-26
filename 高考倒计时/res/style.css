@@ -62,7 +62,7 @@ button#setting:hover {
 }
 
 img {
-    size: 16dip;
+    size: 32dip;
     foreground-size: cover;
 }
 popup.menu {

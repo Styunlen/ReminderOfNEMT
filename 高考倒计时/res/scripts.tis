@@ -33,9 +33,8 @@ function self.ready() {
     stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
     //stdout.printf("TimeNow: %s ,Timeset: %s\n", new Date(), new Date(view.NA_getTime().toString()));
     view.windowIcon = "./favicon.ico";
-    body.timer(1, ::this.attributes.addClass("shown"));
     stdout.println(checkGfx());
-    IA_loadTheme(NA_getThemeName());
+    body.timer(1s, ::IA_loadTheme(NA_getThemeName()));
     stdout.println("Current WorkDir: ", NA_getWorkDir());
     stdout.println("Current WindowTheme: ", NA_getThemeName());
 }
@@ -43,33 +42,6 @@ function self.ready() {
 /***************
  窗口事件处理区
 ****************/
-
-$(#close).onClick = function() {
-    //view.msgbox(#info,view.box(#position));
-    var (x,y) = view.box(#position,#border,#screen);
-    var pos = x.toString() + "," + y.toString();
-    NA_setPos(pos);//只有通过菜单关闭才会保存位置(间接完成了窗口超出屏幕范围的判断)
-    body.onAnimationEnd = ::view.close();
-    body.attributes.removeClass("shown");
-}
-
-$(#minimize).onClick = function() {
-    body.attributes.removeClass("shown");
-    body.attributes.addClass("hidden");
-    view.state = View.WINDOW_MINIMIZED;
-    view.Test();
-}
-
-$(#setting).onClick = function() {
-    this.sendMouseEvent({type: Event.MOUSE_DOWN,x: 0,y: 0});//隐藏popup
-    var v = view.dialog({
-        url: self.url("win_setting.html"),
-        alignment: -5,
-        parameters:{hostview: this.root.ns.view}
-    });
-    stdout.printf("win_setting result:%v\n",v);
-}
-
 function onWinStateChange() {
     if (view.state == View.WINDOW_SHOWN) {
         //stdout.println(body.attributes);
@@ -159,6 +131,6 @@ function movable(ele) // install movable window handler
 movable($(section#sec_main));
 
 self.on("complete",
-function() {
+function() {  
     stdout.println("got complete");
 });

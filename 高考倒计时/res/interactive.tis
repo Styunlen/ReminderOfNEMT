@@ -11,25 +11,32 @@ var currentThemeObj = {
     themeName:null,
     themeDoc:null
 };
+var themeView = $(frame#theme_view);
 
 //加载主题文件
 function IA_loadTheme(themeName)
 {
     var currentThemeUrl = "./themes/Circle/main.html"; //The Default Theme is Circle 默认圆形窗口主题
-    var themeView = $(frame#theme_view);
     try{
         stdout.println("Try To Load Theme :","/themes/"+themeName+"/main.html");
-        themeView.load(NA_getWorkDir() + "/themes/"+themeName+"/main.html");
+        currentThemeUrl= "file://" +  NA_getWorkDir() + "/themes/"+themeName+"/main.html";
+        themeView.load(currentThemeUrl);
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
         currentThemeObj.themeDoc.ns.theme_inited();
+        stdout.println(currentThemeObj.themeDoc.ns.$$(#day));
     }
     catch(e)
     {
         stdout.println("Load Theme Failed,Using Default Theme Circle");
+        stdout.println("err msg:",e.message,e.stackTrace);
         stdout.println("Try To Load Theme :",self.url("res:themes/Circle/main.html"));
         themeView.load(self.url("res:themes/Circle/main.html"));
+        currentThemeObj.themeName = themeName;
+        currentThemeObj.themeDoc = themeView[0];
+        currentThemeObj.themeDoc.ns.theme_inited();
     }
+    body.timer(1s, ::this.attributes.addClass("shown"));
 }
 
 function IA_debugLogs(logs)

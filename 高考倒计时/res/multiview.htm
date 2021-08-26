@@ -25,7 +25,7 @@
         if( currentLabel )
           currentLabel.state.checked = false; // deselect previous
           
-        frameContent.load(viewId + ".htm");
+        frameContent.load(System.home() + "/themes/"+ viewId +"/main.html");
         currentLabel = $(#tabs > label#{viewId});
         currentLabel.state.checked = true;
         currentViewId = viewId;
@@ -50,7 +50,7 @@
 <body>
 
   <div#tabs>
-    <label#view-1>First view</label>
+    <label#Circle>First view</label>
     <label#view-2>Second view</label>
   </div>
 
