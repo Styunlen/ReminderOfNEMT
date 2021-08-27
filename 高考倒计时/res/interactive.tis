@@ -1,9 +1,11 @@
+
 /*
 前后端交互用脚本文件
 所有函数前缀均为IA（交互的意思）
 因为这些位于交互层的代码，是前端与后端之间的桥梁与纽带
 有的与前端交互，直接操作UI，有的则与后端交互，负责数据传输
  */
+ 
 /***************
  变量声明定义区
 ****************/
@@ -13,6 +15,10 @@ var currentThemeObj = {
 };
 var themeView = $(frame#theme_view);
 
+
+/***************
+     方法区
+****************/
 //加载主题文件
 function IA_loadTheme(themeName)
 {
@@ -24,7 +30,8 @@ function IA_loadTheme(themeName)
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
         currentThemeObj.themeDoc.ns.theme_inited();
-        stdout.println(currentThemeObj.themeDoc.ns.$$(#day));
+        view_Update();
+        stdout.println("Theme loaded successfully!!");
     }
     catch(e)
     {
@@ -35,7 +42,34 @@ function IA_loadTheme(themeName)
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
         currentThemeObj.themeDoc.ns.theme_inited();
+        view_Update();
+        stdout.println("Theme loaded successfully!!");
     }
+}
+
+//加载完主题后，需要及时调整窗体大小
+function view_Update()
+{
+    var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
+    var (w, h) = currentThemeObj.themeDoc.$(body).box(#dimension);
+    w += w / 2; // to accomodate expanding radii
+    h += h / 2;
+    var pos = NA_getPos().split(',');
+    if(pos.length > 1)
+    {
+        stdout.print("Restore the last Window Position ");
+        stdout.println("x:",pos[0],",y:",pos[1]);
+        view.move(pos[0].toInteger(),pos[1].toInteger(),w,h);
+    }
+    else
+    {
+        stdout.print("Default display in the center of the screen");
+        view.move(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
+    }
+    stdout.printf("sx:%d,sy:%d,sw:%d,sh:%d,w:%d,h:%d\n",sx,sy,sw,sh,w,h);
+    stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
+    view.windowIcon = "./favicon.ico";
+    //stdout.println(checkGfx());
     body.timer(1s, ::this.attributes.addClass("shown"));
 }
 

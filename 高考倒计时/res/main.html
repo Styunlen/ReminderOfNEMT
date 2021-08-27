@@ -9,6 +9,9 @@
     <style id="ui-debug" src="" />
 
     <script type="text/tiscript">
+        $(img#menu-button).onClick = function() {
+            this.popup( $(popup.menu), (2 /*popup middle-top*/ << 16) | 8 /*at anchor's middle-bottom*/);
+        }
         $(#close).onClick = function() {
             //view.msgbox(#info,view.box(#position));
             var (x,y) = view.box(#position,#border,#screen);
@@ -39,11 +42,12 @@
     </script>
 </head>
 <body>
-    
+    <section id="sec_main"></section>
         <frame #theme_view src="res:theme-waiting.png"></frame>
+    </section>
 
     <section id="sec_menu">
-        <img id="menu-button" src="./menu.png">     
+        <img id="menu-button" src="./menu.png">  
         <popup .menu>
             <div.content>
                 <button #close></button>

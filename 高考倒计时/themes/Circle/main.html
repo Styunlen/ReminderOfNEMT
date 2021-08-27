@@ -42,25 +42,22 @@
 
 
     </style>
-    <!-- 用于自定义主题 -->
-    <style id="current-theme" src="" />
-    <!-- 用于开启UI调试 -->
-    <style id="ui-debug" src="" />
 
     <script type="text/tiscript">
-        //include "res:ReminderAPI.tis";
         function theme_inited()
         {
-          try
-          {
-            include "scripts.tis";
-          }
-          catch(e)
-          {
-            stdout.println("err msg:",e.message,e.stackTrace);
-          }
-          stdout.println("Theme inited!!");
-          stdout.println("Theme Url:",self.url("scripts.tis"));
+            try
+            {
+              include self.url("scripts.tis");
+            }
+            catch(e)
+            {
+              stdout.println("err msg:",e.message,e.stackTrace);
+            }
+            stdout.println("Theme inited!!");
+            stdout.println("Theme Url:",self.url());
+            updateTime();
+            body.timer(500, ::updateProgressBar());
         }
     </script>
 </head>

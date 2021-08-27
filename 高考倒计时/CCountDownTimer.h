@@ -10,6 +10,7 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <string>
 
 //#include "sciter-x.h"
 //#include "sciter-x-host-callback.h"
@@ -75,7 +76,7 @@ END_FUNCTION_MAP
 	sciter::value NA_saveThemeOption(sciter::value themeName, sciter::value optionName, sciter::value optionValue);
 	sciter::value NA_getThemeOption(sciter::value themeName,sciter::value optionName);
 	void onReady();
-	MainWindow() : window(SW_MAIN | SW_ENABLE_DEBUG) {}
+	MainWindow() : window( SW_ALPHA | SW_MAIN | SW_ENABLE_DEBUG) {}
 };
 
 #endif

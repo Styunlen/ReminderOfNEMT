@@ -13,30 +13,9 @@ const body = $(body);
 ****************/
 function self.ready() {
     // positioning in the middle of the screen:
-    var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
-    var (w, h) = self.$(body).box(#dimension);
-    w += w / 2; // to accomodate expanding radii
-    h += h / 2;
-    var pos = NA_getPos().split(',');
-    if(pos.length > 1)
-    {
-        stdout.print("Restore the last Window Position ");
-        stdout.println("x:",pos[0],",y:",pos[1]);
-        view.move(pos[0].toInteger(),pos[1].toInteger(),w,h);
-    }
-    else
-    {
-        stdout.print("Default display in the center of the screen");
-        view.move(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
-    }
-    stdout.printf("sx:%d,sy:%d,sw:%d,sh:%d,w:%d,h:%d\n",sx,sy,sw,sh,w,h);
-    stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
-    //stdout.printf("TimeNow: %s ,Timeset: %s\n", new Date(), new Date(view.NA_getTime().toString()));
-    view.windowIcon = "./favicon.ico";
-    stdout.println(checkGfx());
-    body.timer(1s, ::IA_loadTheme(NA_getThemeName()));
     stdout.println("Current WorkDir: ", NA_getWorkDir());
     stdout.println("Current WindowTheme: ", NA_getThemeName());
+    body.timer(1s, ::IA_loadTheme(NA_getThemeName()));
 }
 
 /***************
@@ -84,7 +63,8 @@ function movable(ele) // install movable window handler
     }
 
     function onMouseDown(evt) {
-        if (evt.target !== movableArea && !(EleIsChild(evt.target,movableArea))) return false;
+        stdout.println(evt.target,EleIsChild(evt.target,$(section#sec_menu)));
+        if (evt.target !== movableArea && !(EleIsChild(evt.target,movableArea)) || EleIsChild(evt.target,$(section#sec_menu))) return false;
         xoff = evt.x;
         yoff = evt.y;
         dragging = true;
