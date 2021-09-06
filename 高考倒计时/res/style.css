@@ -15,7 +15,7 @@ body.shown {
 
 body.hidden {
     transform: scale(0);
-    transition: transform(linear, 600ms);
+    transition: transform(back-in, 600ms);
     visibility: hidden;
 }
 section#sec_main{

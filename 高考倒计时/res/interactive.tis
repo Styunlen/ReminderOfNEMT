@@ -70,8 +70,10 @@ function view_Update()
     stdout.printf("sx:%d,sy:%d,sw:%d,sh:%d,w:%d,h:%d\n",sx,sy,sw,sh,w,h);
     stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
     view.windowIcon = "./favicon.ico";
-    //stdout.println(checkGfx());
-    body.timer(1s, ::$(body).attributes.addClass("shown"));
+    stdout.println(checkGfx());
+    $(body).attributes.addClass("shown");
+    view.on("statechange", onWinStateChange);
+    view.on("closing", onWinClosing);
 }
 
 function IA_debugLogs(logs)

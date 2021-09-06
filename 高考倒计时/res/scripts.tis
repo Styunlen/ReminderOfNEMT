@@ -23,7 +23,7 @@ function self.ready() {
 ****************/
 function onWinStateChange() {
     if (view.state == View.WINDOW_SHOWN) {
-        //stdout.println(body.attributes);
+        stdout.println("233");
         body.attributes.removeClass("hidden");
         body.attributes.addClass("shown");
     }
@@ -102,8 +102,6 @@ function movable(ele) // install movable window handler
     view.root.subscribe(onMouseUp, Event.MOUSE, Event.MOUSE_UP);
     view.root.subscribe(onMouseMove, Event.MOUSE, Event.MOUSE_MOVE);
     view.root.subscribe(onKeyDown, Event.KEY, Event.KEY_DOWN);
-    view.on("statechange", onWinStateChange);
-    view.on("closing", onWinClosing);
     return false;
 }
 
