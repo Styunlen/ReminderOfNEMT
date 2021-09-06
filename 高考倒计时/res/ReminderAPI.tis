@@ -12,6 +12,8 @@ var datePbStart = Date.local(2021, 6, 7, 00, 00, 00); //进度条开始时间
 /***************
    API方法区
 ****************/
+stdout.println("ReminderApi loaded successfully!!");
+
 function NA_saveThemeOption(optName,optVal)
 {
     try{
@@ -52,6 +54,7 @@ function timeInit()
     //stdout.println(typeof(view.NA_getTime().toString()));
     stdout.println(strTimeset);
     dateTarget = new Date(NA_getTime());
+    stdout.println("Time inited successfully!");
     stdout.printf("timeNow: %s, timeSet: %s\n",dateNow.toString(), dateTarget.toString());
 }
 timeInit();
@@ -89,10 +92,11 @@ function updateTime() {
         {
              sec.text = secR.toString().length > 1 ? secR.toString() : "0" + secR.toString();
         }    
-        stdout.println(iPer, daysRemaining, hoursR, minR, secR);
+        //stdout.println(iPer, daysRemaining, hoursR, minR, secR);
         body.timer(1000, ::updateTime());
     } else {
        // $(#timeRemaining).html = "<p style=\"font-size:20dip;color:red\">十年寒窗日，只为今日试！<br>祝大家旗开得胜！</p>";
+       stdout.printf("Timeset(%s) has passed!\r\n",dateTarget.toString());
     }
 }
 
@@ -108,6 +112,11 @@ function EleIsChild(child,parent)
     if(typeof(parent) != #Element || typeof(child)!=#Element)
     {
         return false;
+    }
+    //自己也是自己的子代
+    if(child==parent)
+    {
+        return true;
     }
     var count = 0;
     while(child.parent != parent)

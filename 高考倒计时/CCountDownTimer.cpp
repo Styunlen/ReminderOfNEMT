@@ -228,6 +228,6 @@ void MainWindow::onReady()
 	if (getDebugMode())
 	{
 		static sciter::debug_output_console console; //- uncomment it if you will need console window
-		//pwin->call_function("IA_uiDebugMode", sciter::value(true));
+		pwin->call_function("IA_uiDebugMode", sciter::value(true));
 	}
 }

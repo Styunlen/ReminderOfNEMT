@@ -29,9 +29,9 @@ function IA_loadTheme(themeName)
         themeView.load(currentThemeUrl);
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
-        currentThemeObj.themeDoc.ns.theme_inited();
-        view_Update();
+        currentThemeObj.themeDoc.ns.theme_inited();       
         stdout.println("Theme loaded successfully!!");
+        view_Update();
     }
     catch(e)
     {
@@ -41,9 +41,9 @@ function IA_loadTheme(themeName)
         themeView.load(self.url("res:themes/Circle/main.html"));
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
-        currentThemeObj.themeDoc.ns.theme_inited();
-        view_Update();
+        currentThemeObj.themeDoc.ns.theme_inited();       
         stdout.println("Theme loaded successfully!!");
+        view_Update();
     }
 }
 
@@ -54,6 +54,7 @@ function view_Update()
     var (w, h) = currentThemeObj.themeDoc.$(body).box(#dimension);
     w += w / 2; // to accomodate expanding radii
     h += h / 2;
+    h += 36;//增高窗口来容纳设置按钮
     var pos = NA_getPos().split(',');
     if(pos.length > 1)
     {
@@ -70,7 +71,7 @@ function view_Update()
     stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
     view.windowIcon = "./favicon.ico";
     //stdout.println(checkGfx());
-    body.timer(1s, ::this.attributes.addClass("shown"));
+    body.timer(1s, ::$(body).attributes.addClass("shown"));
 }
 
 function IA_debugLogs(logs)
