@@ -29,7 +29,7 @@ function IA_loadTheme(themeName)
         themeView.load(currentThemeUrl);
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
-        currentThemeObj.themeDoc.ns.theme_inited();       
+        currentThemeObj.themeDoc.ns.theme_inited();
         stdout.println("Theme loaded successfully!!");
         view_Update();
     }
@@ -50,11 +50,31 @@ function IA_loadTheme(themeName)
 //加载完主题后，需要及时调整窗体大小
 function view_Update()
 {
+    var title = currentThemeObj.themeDoc.$(head>title);
+    if( title )
+    {
+        view.windowCaption = "高考倒计时——" + title.text;
+        stdout.println("Add theme title to windowCaption:",title.text);
+    }
     var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
-    var (w, h) = currentThemeObj.themeDoc.$(body).box(#dimension);
-    w += w / 2; // to accomodate expanding radii
-    h += h / 2;
-    h += 36;//增高窗口来容纳设置按钮
+    var (tw, th) = currentThemeObj.themeDoc.$(body).box(#dimension); //theme window size
+    tw += tw / 2; // to accomodate expanding radii
+    th += th / 2;
+    var (w,h)=$(body).box(#dimension); //app window size without theme window
+    h += 108;//增高窗口来容纳设置按钮
+    w += w / 2 + tw; // 合并
+    h += h / 2 + th;
+    //默认最小窗口大小
+    if(w<100)
+    {
+        stdout.println(w);
+        w=100;
+    }
+    if(h<100)
+    {
+        stdout.println(h);
+        h=100;
+    }
     var pos = NA_getPos().split(',');
     if(pos.length > 1)
     {
@@ -141,7 +161,7 @@ function NA_getThemeName()
     }
     catch(e)
     {
-        ret="Circle";
+        ret="demo-scriptInsideHTML";
         stdout.println("Sciter Debug Mode,called NA_getThemeName() with retval: Circle");
         return ret;
     }

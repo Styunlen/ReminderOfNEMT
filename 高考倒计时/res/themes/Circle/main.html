@@ -10,22 +10,6 @@
             background: transparent;
             overflow: visible;
         }
-        body {
-          size: 300dip;
-          transform: scale(0);
-          overflow: visible;
-        }
-        body.shown {
-            transform: scale(1);
-            transition: transform(back-out, 600ms);
-            visibility: visible;
-        }
-
-        body.hidden {
-            transform: scale(0);
-            transition: transform(linear, 600ms);
-            visibility: hidden;
-        }
 
         body>p {
             text-align: center;
@@ -58,26 +42,22 @@
 
 
     </style>
-    <!-- 用于自定义主题 -->
-    <style id="current-theme" src="" />
-    <!-- 用于开启UI调试 -->
-    <style id="ui-debug" src="" />
 
     <script type="text/tiscript">
-        include "res:ReminderAPI.tis";
         function theme_inited()
         {
-          try
-          {
-            include "scripts.tis";
-          }
-          catch(e)
-          {
-            stdout.println("err msg:",e.message,e.stackTrace);
-          }
-          stdout.println("Theme inited!!");
-          stdout.println("Theme Url:",self.url());
-          updateTime();
+            try
+            {
+              include self.url("scripts.tis");
+            }
+            catch(e)
+            {
+              stdout.println("err msg:",e.message,e.stackTrace);
+            }
+            stdout.println("Theme inited!!");
+            stdout.println("Theme Url:",self.url());
+            updateTime();
+            body.timer(500, ::updateProgressBar());
         }
     </script>
 </head>

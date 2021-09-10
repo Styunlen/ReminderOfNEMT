@@ -22,8 +22,3 @@ function updateProgressBar() {
     //iPer = (iPer.toInteger() + 1) % 101;
     //body.timer(500, :: updateProgressBar());
 }
-
-function theme_inited()
-{
-    body.timer(500, ::updateProgressBar());
-}

@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>DemoTheme</title>
+        <meta charset="UTF-8">
+        <style>
+            html {
+                /*background: transparent; transparent是透明窗口，背景会穿透*/
+                overflow: visible;
+            }
+        </style>
+        <script type="text/tiscript">
+            //Essential function for initialization of theme
+            function theme_inited()
+            {
+                //Function from ReminderAPI for time display
+                updateTime();
+            }
+        </script>
+    </head>
+    <body>
+        <strong><h1>HTMLWithScriptsInside</h1></strong>
+        <h2>高考倒计时</h2>
+        <!-- 外标签不一定需要是span，但id需要填写day -->
+        <!-- Element Node can be replaced with any other element,but id should be 'day'. -->
+        <div>剩余 <strong><span id="day"></span></strong> 天</div>
+        <span id="hour"></span> 小时
+        <span id="min"></span> 分钟
+        <!-- id可以简写 -->
+        <!-- id can be abbreviated -->
+        <span #sec></span> 秒
+    </body>
+</html>

@@ -1,11 +1,11 @@
 html {
     background: transparent;
-    overflow: visible;
+    overflow: visible!important;
 }
 body {
     transform: scale(0);
     transition: transform(back-out, 600ms);
-    overflow: visible;
+    overflow: visible!important;
 }
 body.shown {
     transform: scale(1);
@@ -21,7 +21,11 @@ body.hidden {
 section#sec_main{
     padding: 20dip;
     margin: auto auto;
+    margin-bottom: 0;
     horizontal-align: center;
+    overflow: visible;
+}
+#theme_view{
     overflow: visible;
 }
 section#sec_menu{
@@ -29,6 +33,7 @@ section#sec_menu{
     height: 36dip;
     z-index: 5;
     margin: auto auto;
+    margin-top: 0;
     horizontal-align: center;
 }
 button#minimize {
