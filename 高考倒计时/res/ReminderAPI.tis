@@ -14,30 +14,33 @@ var datePbStart = Date.local(2021, 6, 7, 00, 00, 00); //进度条开始时间
 ****************/
 stdout.println("ReminderApi loaded successfully!!");
 
-function NA_saveThemeOption(optName,optVal)
-{
-    try{
-        view.NA_saveThemeOption(NA_getThemeName(),optName,optVal);
-        return true;
-    }
-    catch(e)
-    {
-        stdout.println("Sciter Debug Mode,called NA_setTime() with para: ",optName,optVal);
-        return false;
-    }
-}
-
-function NA_getThemeOption()
+function NA_getThemeOption(themeName, optionName)
 {
     var ret = null;
     try{
-        ret = view.NA_getThemeOption(time);
+        ret = view.NA_getThemeOption(themeName, optionName).toString();
         return ret;
     }
     catch(e)
     {
-        stdout.println("Sciter Debug Mode,called NA_setTime() with ret: NULL");
-        return "NULL";
+        ret="NULL";
+        stdout.println("Sciter Debug Mode,called NA_getThemeOption() with retval: ",ret);
+        return ret;
+    }
+}
+
+function NA_saveThemeOption(themeName, optionName, optionValue)
+{
+    var ret = null;
+    try{
+        ret = view.NA_saveThemeOption(themeName, optionName, optionValue).toString();
+        return ret;
+    }
+    catch(e)
+    {
+        ret="NULL";
+        stdout.println("Sciter Debug Mode,called NA_saveThemeOption() with retval: ",ret);
+        return ret;
     }
 }
 

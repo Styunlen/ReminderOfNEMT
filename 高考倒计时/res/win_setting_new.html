@@ -17,7 +17,7 @@
         }
 
         #header {
-            width: 400dip;
+            width: 600dip;
             line-height: 1.6em;
             background: window-accent-color;
             flow: horizontal;
@@ -57,10 +57,9 @@
         }
 
         #main {
-            width: 400dip;
-            height: 500dip;
+            width: 600dip;
+            height: 400dip;
             background: white;
-            z-index: 6;
         }
 
         body {
@@ -81,8 +80,35 @@
             transition: transform(linear, 600ms);
             visibility: hidden;
         }
-        #233{
-            background-image: url("./favicon.ico");
+        p#copyright{
+            position: absolute;
+            bottom:10px;
+            text-align: center;
+            width: 100%;
+        }
+        #sidebar{
+            width: 20%;
+            height: 500dip;
+            box-shadow: 0px 0px 1px 1px #000;
+            z-index: 6;
+        }
+        #sidebar>p{
+            padding: 20px;
+        }
+        #sidebar>p:hover{
+            background-color: #B7B7B7;
+        }
+        #sidebar>p:active{
+            background-color: #979797;
+        }
+        #sidebar>p:focus{
+            background-color: #B7B7B7;
+        }
+        #optionsContent{
+            width: 80%;
+            height: 500dip;
+            box-shadow: 0px 0px 1px 1px #000;
+            z-index: 6;
         }
     </style>
     <style src="./style_debug.css"/>
@@ -115,13 +141,18 @@
 
 <body>
     <section #header>
-        <caption style="padding-left:2dip;font-weight: bold;font-size: 16dip;" role="window-caption">高考倒计时设置</caption>
+        <caption style="padding-left:2dip;font-weight: bold;font-size: 16dip;" role="window-caption"><img style="width: 16px;height: 16px;" src="https://styunlen.cn/favicon.ico">  高考倒计时设置</caption>
         <button.window role="window-minimize" #minimize></button>
         <button.window role="window-maximize" #maximize></button>
         <button.window #close></button>
     </section>
     <section #main>
-        <p #233>233</p>
+        <section #sidebar>
+            <p>主题选择</p>
+            <p>时间设置</p>
+            <p>一言</p>      
+        </section>
+        <section #optionsContent></section>
         <p #copyright>Copyright(c) 2020 九仞 版权所有</p>
     </section>
 </body>

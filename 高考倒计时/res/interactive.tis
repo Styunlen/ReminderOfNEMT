@@ -129,6 +129,10 @@ function NA_getTime()
     var ret = null;
     try{
         ret = view.NA_getTime().toString();
+        if(ret == "NULL")
+        {
+            ret="2022-06-07T00:00:00+08:00";
+        }
         return ret;
     }
     catch(e)
@@ -138,6 +142,20 @@ function NA_getTime()
         return ret;
     }
 }
+
+function NA_setTime(time)
+{
+    try{
+        view.NA_setTime(time);
+        return true;
+    }
+    catch(e)
+    {
+        stdout.println("Sciter Debug Mode,called NA_setTime() with para: ",time);
+        return false;
+    }
+}
+
 function NA_getPos()
 {
     var ret = null;
@@ -149,35 +167,6 @@ function NA_getPos()
     {
         ret="NULL";
         stdout.println("Sciter Debug Mode,called NA_getPos() with retval: NULL");
-        return ret;
-    }
-}
-function NA_getThemeName()
-{
-    var ret = null;
-    try{
-        ret = view.NA_getThemeName().toString();
-        return ret;
-    }
-    catch(e)
-    {
-        ret="demo-scriptInsideHTML";
-        stdout.println("Sciter Debug Mode,called NA_getThemeName() with retval: Circle");
-        return ret;
-    }
-}
-
-function NA_getWorkDir()
-{
-    var ret = null;
-    try{
-        ret = view.NA_getWorkDir().toString();
-        return ret;
-    }
-    catch(e)
-    {
-        ret=System.home();
-        stdout.println("Sciter Debug Mode,called NA_getWorkDir() with retval: ",ret);
         return ret;
     }
 }
@@ -194,6 +183,22 @@ function NA_setPos(pos)
         return false;
     }
 }
+
+function NA_getThemeName()
+{
+    var ret = null;
+    try{
+        ret = view.NA_getThemeName().toString();
+        return ret;
+    }
+    catch(e)
+    {
+        ret="demo-scriptInsideHTML";
+        stdout.println("Sciter Debug Mode,called NA_getThemeName() with retval: Circle");
+        return ret;
+    }
+}
+
 function NA_setThemeName(themeName)
 {
     try{
@@ -207,15 +212,17 @@ function NA_setThemeName(themeName)
     }
 }
 
-function NA_setTime(time)
+function NA_getWorkDir()
 {
+    var ret = null;
     try{
-        view.NA_setTime(time);
-        return true;
+        ret = view.NA_getWorkDir().toString();
+        return ret;
     }
     catch(e)
     {
-        stdout.println("Sciter Debug Mode,called NA_setTime() with para: ",time);
-        return false;
+        ret=System.home();
+        stdout.println("Sciter Debug Mode,called NA_getWorkDir() with retval: ",ret);
+        return ret;
     }
 }

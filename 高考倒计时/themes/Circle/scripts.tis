@@ -7,15 +7,21 @@ function updateProgressBar() {
         iDeg = (iPer - 50) / 100.0 * (360) - 180; //只需操作左半边，100%旋转0deg, 50%旋转-180deg
         $$(.leftcircle)[0].style#transition = "transform(back-out,500ms)";
         $$(.leftcircle)[0].style#transform = "rotate(" + iDeg.toString() + "deg)";
+        //进度条接近50%时,右圆越界的bug而添加的附加圆环(进度条大于5时不可见)
+        if (iPer <= 55) {
+            $$(.leftcircle_fix)[0].style#transition = "transform(linear,100ms,100ms)";
+            $$(.leftcircle_fix)[0].style#transform = "rotate(90deg)";
+        }
     } else {
         iDeg = iPer / 100.0 * (360) - 180; //左半边隐藏，操作右半边, 50%旋转0deg, 0%旋转-180deg
         $$(.leftcircle)[0].style#transition = "transform(linear,400ms)";
         $$(.leftcircle)[0].style#transform = "rotate(-180deg)";
         $$(.rightcircle)[0].style#transition = "transform(back-out,500ms,400ms)";
         $$(.rightcircle)[0].style#transform = "rotate(" + iDeg.toString() + "deg)";
+        //进度条接近0%时,左右两圆被割裂开的bug而添加的附加圆环(进度条大于5时不可见)
         if (iPer <= 5) {
             $$(.rightcircle_fix)[0].style#transition = "transform(linear,0ms,500ms)";
-            $$(.rightcircle_fix)[0].style#transform = "rotate(-210deg)";
+            $$(.rightcircle_fix)[0].style#transform = "rotate(150deg)";
         }
     }
 
