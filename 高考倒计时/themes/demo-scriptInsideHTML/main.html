@@ -7,14 +7,14 @@
             *{margin:0;padding:0;}
             html {
                 /*background: transparent; transparent是透明窗口，背景会穿透*/
-                background: #fff;
+                background: transparent;
                 text-align: center;
                 font-family: unset;
             }
             .container{
                 margin: auto auto;
                 border-radius: 8px;
-                box-shadow: 0px 6px 6px 6px gainsboro;
+                box-shadow: 0px 0px 6px 2px #41B1E1;
                 background: #fff;
                 width: 260px;
                 height: auto;
@@ -52,7 +52,7 @@
             {
                 //Function from ReminderAPI for time display
                 $(#dateNow).text = Date.now().toString("%F %a.");
-                updateTime();
+                //updateTime();
             }
         </script>
         <script type="text/javascript">
@@ -63,10 +63,10 @@
     <body>
         <strong><h1>HTMLWithScriptsInside</h1></strong>
         <div class="container">
-            <h2 id="title">高考倒计时</h2>
+            <h2 id="title">高考倒计时程序纪念日</h2>
             <!-- 外标签不一定需要是span，但id需要填写day -->
             <!-- Element Node can be replaced with any other element,but id should be 'day'. -->
-            <span id="day">5</span>
+            <span id="day">0</span>
             <span id="hour"></span>
             <span id="min"></span>
             <!-- id可以简写 -->

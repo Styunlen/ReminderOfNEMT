@@ -30,7 +30,7 @@ The file for the countdown window needs to be named ```main.html``` because the 
 
 and the file for the setting window needs to be named ```options.html``` if existed.
 
-## main.html
+### main.html
 
 To show the countdown date,you can add elements with id called "day,hour,min,sec".
 
@@ -47,7 +47,7 @@ And after adding them to ```main.html```,you should add this script to html code
 </script>
 ```
 
-
+To view full file,please open the demos.
 
 ## API
 

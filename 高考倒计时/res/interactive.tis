@@ -29,7 +29,13 @@ function IA_loadTheme(themeName)
         themeView.load(currentThemeUrl);
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
-        currentThemeObj.themeDoc.ns.theme_inited();
+        try{
+            currentThemeObj.themeDoc.ns.theme_inited();
+        }catch(e)
+        {
+            stdout.println("Theme inited with exception");
+            stdout.println("err msg:",e.message,e.stackTrace);
+        }    
         stdout.println("Theme loaded successfully!!");
         view_Update();
     }
@@ -41,7 +47,7 @@ function IA_loadTheme(themeName)
         themeView.load(self.url("res:themes/Circle/main.html"));
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
-        currentThemeObj.themeDoc.ns.theme_inited();       
+        currentThemeObj.themeDoc.ns.theme_inited();
         stdout.println("Theme loaded successfully!!");
         view_Update();
     }

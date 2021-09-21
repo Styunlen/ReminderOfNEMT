@@ -1,0 +1,338 @@
+﻿<!DOCTYPE html>
+<html window-frame="transparent">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        html 
+        { 
+            font:system;
+            background-color:transparent;
+            overflow:visible;
+        }
+        body {
+            overflow:visible;
+            flow: "1 2" 
+                  "3 3";
+        }
+        #header{
+            width:400dip;
+            line-height:1.6em;
+            background:gold; 
+            flow:horizontal;
+        }
+        #header > caption { width:*; }
+        button.window { display:block; size:24dip; margin:0; padding:0; background:50% 50% no-repeat; background-size:24dip;  }
+        button.window:hover { background-color:orange; } 
+        button.window#minimize  { background-image:url(icon-minimize.png); } 
+        button.window#maximize  { background-image:url(icon-maximize.png); } 
+        button.window#maximize.restore  { background-image:url(icon-restore.png); }
+        button.window#close     { background-image:url(icon-close.png); }
+        #main{
+            width:400dip;
+            height:500dip;
+            background: white;
+            z-index:6;
+        }
+        body {
+            flow: vertical;
+            padding: 0;
+            margin: 0;
+            transform:scale(0);
+        }
+        body.shown {
+            transform: scale(1);
+            transition: transform(back-out, 600ms);
+            visibility: visible;
+        }
+
+        body.hidden {
+            transform: scale(0);
+            transition: transform(linear, 600ms);
+            visibility: hidden;
+        }
+
+        widget#stack {
+            flow: stack;
+            overflow: hidden;
+            /* h-smile specific */
+            border: none;
+            padding: 14px;
+            padding-top:0;
+            height: *;
+        }
+
+        widget#stack>section {
+            border: 2px solid brown;
+            border-radius: 10px;
+            margin: 10px;
+            size: *;
+            visibility: hidden;
+        }
+        widget#stack>section>h1 {
+            margin: 0;
+        }
+
+        widget#stack>section:current {
+            z-index: 1;
+            visibility: visible;
+            horizontal-align: center;
+            background: rgba(red, green, blue, 0.5);
+        }
+
+        widget#stack>section[sliding=left]
+
+        /* from left to right */
+            {
+            opacity: 0;
+            transform: translate(-100%, 0);
+        }
+
+        widget#stack>section[sliding=right]
+
+        /* from right to left*/
+            {
+            opacity: 0;
+            transform: translate(100%, 0);
+        }
+
+        widget#stack>section[sliding=run] {
+            opacity: 1.0;
+            transform: translate(0%, 0);
+            transition: transform(cubic-out, 600ms, none) opacity(linear, 600ms, none);
+        }
+
+        widget#stack>section:animating {
+            z-index: 2; // it is always on top of current
+            visibility: visible;
+        }
+        #themes{padding:0;margin:0;margin:auto auto;width:342dip;horizontal-align: center;}
+        .a-theme-option{
+            width: 150dip;
+            flow:vertical;
+            horizontal-align: center;
+            float: left;
+            padding: 0;
+            margin-right: 10dip;
+            margin-left:10dip;
+        }
+        #prev,#next{
+            display: inline-block;
+            margin-top: 10dip;
+            background: rgba(red, green, blue,0);
+            padding:0;
+            width: 30dip;
+            height: 30dip;
+            font-size:20dip;
+            font-weight: bolder;
+        }
+        #copyright {
+        display: block;
+        position: absolute;
+        bottom: 30dip;
+        margin: auto auto;
+        font-weight: bold;
+      }
+      .StatusTitle{
+          display:block;
+          float: left;
+          padding:3px;
+          font-size: 12px;
+          font-weight: bold;
+          color:#E8E8E8;
+          text-align:center;
+          background-color:#555555;
+      }
+      .StatusContent{
+          display:block;
+          float: left;
+          margin-right:5px;
+          padding:3px;
+          font-size: 12px;
+          font-weight: bold;
+      }
+      .StatusTitle:hover,.StatusContent:hover{transform: scale(0.8);transition: transform(cubic-out, 600ms, none);}
+    </style>
+
+    <script type="text/tiscript">
+    
+        const body = $(body);
+        function wizard(stack, prevBtn, nextBtn)
+        {
+            function animationDone(evt)
+            {
+            if(evt.reason == 0 && evt.data == #style)
+            {
+                var idx = this.index;
+                this.attributes["sliding"] = undefined;
+                this.state.current = true;
+                prevBtn.state.disabled = idx == 0; 
+                nextBtn.state.disabled = idx == stack.length-1; 
+                this.unsubscribe(animationDone);
+                return true;
+            }
+            }
+            function animationStart(el,direction)
+            {
+            self.state.focus = true;
+            prevBtn.state.disabled = true; 
+            nextBtn.state.disabled = true; 
+            el.attributes["sliding"] = direction; // reset to initial animation state.
+            el.post(:: this.attributes["sliding"] = "run" );    // set to final animation state - triggers animation.
+            el.subscribe(animationDone,Event.BEHAVIOR_EVENT,Event.ANIMATION);
+            }
+            
+            prevBtn << event click()
+            {
+            var current = stack.$(:root>:current);
+            var new_current = stack[current.index-1];
+            animationStart(new_current,"left");
+            }
+            nextBtn << event click()
+            {
+            var current = stack.$(:root>:current);
+            var new_current = stack[current.index+1];
+            animationStart(new_current,"right");
+            }
+            if(stack.length)
+            stack[0].state.current = true;
+            prevBtn.state.disabled = true; 
+            nextBtn.state.disabled = stack.length == 0; 
+        }  
+        
+        wizard($(widget#stack),$(button#prev),$(button#next));
+        var hostview = view.parameters.hostview;
+        var style = "Circle";
+        var time = Date.local(2021, 1, 6, 00, 00, 00); //默认主题为圆形，时间为一月选考时间
+        function self.ready()
+        {
+            body.timer(1, ::this.attributes.addClass("shown"));
+            var currentStyle = hostview.NA_getStyle();//"Rect";
+            stdout.println("Current style via NA_getStyle(): ",hostview.NA_getStyle());
+            $(#themes).value.themeName = "Rect";
+            switch(currentStyle)
+            {
+                case "Circle":
+                    $(button[value=Circle]).value = true;
+                    break;
+                case "Rect":
+                    style = "Rect";
+                    $(button[value=Rect]).value = true;
+                    break;  
+                default:
+                    $(button[value=Circle]).value = true;
+                    break;
+            }
+            var strTimeset,dateTarget;
+            strTimeset = hostview.NA_getTime().toString();
+            if(strTimeset == "NULL")
+                dateTarget = new Date(2021,01,06,00,00,00);
+            else
+                dateTarget = new Date(strTimeset);
+            stdout.println("Timeset formatted: ",dateTarget.toString("%F"));
+            $(#calendar).value = dateTarget.toString("%F");//日历表的初始化格式为YYYY-MM-DD
+            //Fixed 修复若打开设置窗口后没有使用日历表更改时间，则关闭窗口保存设置时目标日期永远是1月6号的Bug
+            // @Time 2020-10-03
+            time = dateTarget;
+            $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
+            (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
+            (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
+        }   
+        $(form).on("change", function() {
+            //stdout.println(typeof($(#themes).value.themeName));
+            style = $(#themes).value.themeName;
+            stdout.printf("Current: %v\n",this.value.themeName);
+
+          });
+        $(#calendar).on("change",function(){
+            stdout.println("时间", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
+            time = $(#calendar).value;
+            //stdout.println(typeof($(#calendar).value));
+        })
+        $(#close).onClick = function() {
+            body.attributes.removeClass("shown");
+            stdout.println("Setting saving...");
+            stdout.println("Current Window Style change to: ", style);
+            stdout.println("Current Time set to: ", time.toString());
+            body.onAnimationEnd = function(){
+                hostview.NA_setTime(time);
+                hostview.NA_setStyle(style);//$(#themes).value.themeName);
+                stdout.println("Succeed");
+                view.close("设置窗口关闭");
+            };       
+        }
+        event click $(a[href]) {
+            stdout.printf("link (%s) clicked\n",this.attributes["href"]);
+            Sciter.launch(this.attributes["href"]);
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <section #header>
+        <caption style="padding-left:2dip;font-weight: bold;font-size: 16dip;" role="window-caption">高考倒计时设置</caption>
+        <button.window role="window-minimize" #minimize></button>
+        <button.window role="window-maximize" #maximize></button>
+        <button.window #close></button>
+    </section>
+    <section #main>
+        <div style="margin:auto auto;margin-bottom: 0;width:72dip;"><button #prev>←</button> <button #next>→</button></div>
+        <widget #stack >
+            <section #theme-selection style="background:rgba(red, green, blue, 0.8)">
+                <center><h1>主题</h1></center>
+                <form #themes>
+                    <div class="a-theme-option">
+                        <img width="100dip" height="100dip" src="./theme-circle.png">
+                        <button|radio(themeName) value="Circle">圆形主题</button>
+                    </div>
+                    <div class="a-theme-option">
+                        <img width="100dip" height="100dip" src="./theme-rect.png">
+                        <button|radio(themeName) value="Rect">矩形主题</button>
+                    </div>
+                    <div class="a-theme-option">
+                        <img width="100dip" height="100dip" src="./theme-waiting.png">
+                        <button|radio(themeName) value="Circle" disabled>未完待续...</button>
+                    </div>             
+                  </form>
+            </section>
+            <section style="background:rgba(red, green, blue, 0.8)">
+                <center><h1>设定时间</h1></center>
+                <widget #calendar value="2021-01-06" type="calendar" />
+            </section>
+            <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
+                <center><h1>关于</h1></center>
+                <p>本软件已遵循GPL v3协议开源</p>
+                <p></p>
+                <p>Developer: Styunlen(九仞)</p>
+                <p>Language: C++, HTML+CSS, Tiscript</p>
+                <p>UI: Sciter</br>
+                    (Embeddable HTML/CSS/script engine for modern UI development)
+                </p>
+                <p>Blog: <a href="https://styunlen.cn/" target="_blank">https://styunlen.cn/</a></p>
+                <p>Github: <a href="https://github.com/Styunlen/ReminderOfNEMT" target="_blank">https://github.com/Styunlen/ReminderOfNEMT</a></p>
+                <p>QQ: 1208533483 (请备注来源)</p>
+                <p>E-mail: 1208533483@qq.com</p>
+                <div style="position: relative;left:45dip;">
+                    <div class="StatusTitle">Version</div><div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">v2.0.0 build-285-debug-α</div>
+                    <div class="StatusTitle">Sciter</div><div class="StatusContent" #EngineVer style="color: #FAFDF2;background-color: #B2D742;"></div>
+                    <div class="StatusTitle" style="margin-top:5px;clear:left">License</div><div class="StatusContent" style="margin-top:5px;color: #FFE9DE;background-color: #FE7D37;">GPL v3</div>
+                </div>
+            </section>
+            <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
+                <center><h1>每日励志</h1></center>
+                <ol>
+                    <li>我要成功，我能成功，我必成功，我必成功！</li>
+                    <li>要成功，先发疯，下定决心向前冲；不成功，不放松，咬紧牙关冲冲冲</li>
+                    <li>勤学，勤思，勤问，苦钻</li>
+                    <li>决战高考，改变命运。屡挫屡战，笑傲群雄。</li>
+                    <li>高三高考高目标，苦学善学上好学</li>
+                    <li>贵在坚持、难在坚持、成在坚持。</li>
+                    <li>太阳每天都是新的，你是否每天都在努力。</li>
+                    <li>立志高远，脚踏实地；刻苦钻研，勤学苦思;稳定心态，不馁不弃；全力以赴，夺取胜利。</li>
+                    <li>把握现在、就是创造未来。</li>
+                </ol>
+            </section>
+        </widget>
+        <p #copyright>Copyright(c) 2020 九仞 版权所有</p>
+    </section>
+</body>
+</html>
