@@ -29,8 +29,6 @@
 #include "aux-asset.h"
 #include "aux-slice.h"
 #include <algorithm>
-//#include "../function.h"
-//view_dom_event_handler func_handler;
 
 // main UI application routine
 int uimain( std::function<int()> run );

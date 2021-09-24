@@ -104,11 +104,6 @@ namespace sciter {
      //  case WM_SIZE: on_size(); break; 
      //  case WM_MOVE: on_move(); break; 
      //}
-	if (msg == WM_KEYDOWN && wParam == VK_F12)
-	{
-		
-		return 0;
-	}
      return 0;
   }
 
@@ -135,7 +130,6 @@ namespace sciter {
     if( _hwnd ) {
       setup_callback();
       sciter::attach_dom_event_handler(get_hwnd(),this);
-	  //sciter::attach_dom_event_handler(get_hwnd(), &func_handler);
     }
   }
 

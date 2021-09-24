@@ -12,8 +12,6 @@ var datePbStart = Date.local(2021, 6, 7, 00, 00, 00); //进度条开始时间
 /***************
    API方法区
 ****************/
-stdout.println("ReminderApi loaded successfully!!");
-
 function NA_getThemeOption(themeName, optionName)
 {
     var ret = null;
@@ -139,3 +137,5 @@ function checkGfx() {
     if (!view.backend) view.msgbox(#alert, "Failed to initialize layered window!");
     return ["Unknown", "GDI+", "D2D/WARP", "D2D/DX"][view.backend];
 }
+
+stdout.println("ReminderApi loaded successfully!!");

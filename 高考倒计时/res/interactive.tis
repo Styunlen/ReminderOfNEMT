@@ -1,4 +1,4 @@
-
+﻿
 /*
 前后端交互用脚本文件
 所有函数前缀均为IA（交互的意思）
@@ -66,10 +66,11 @@ function view_Update()
     var (tw, th) = currentThemeObj.themeDoc.$(body).box(#dimension); //theme window size
     tw += tw / 2; // to accomodate expanding radii
     th += th / 2;
-    var (w,h)=$(body).box(#dimension); //app window size without theme window
-    h += 108;//增高窗口来容纳设置按钮
+    stdout.println(tw,th);
+    var (w,h)= $(body).box(#dimension); //app window size without theme window
     w += w / 2 + tw; // 合并
     h += h / 2 + th;
+    h += 108;//增高窗口来容纳设置按钮
     //默认最小窗口大小
     if(w<100)
     {
@@ -232,3 +233,5 @@ function NA_getWorkDir()
         return ret;
     }
 }
+
+stdout.println("Interactive scripts loaded successfully!!");

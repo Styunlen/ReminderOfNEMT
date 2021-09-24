@@ -255,6 +255,7 @@
             var new_current = stack[this.index];
             stdout.println(current,new_current,current.index,new_current.index);
             if(current.index == new_current.index) return;
+            current.state.current = false;//隐藏上一个选项设置界面，开启当前选项进入动画
             if(current.index > new_current.index)
             {
                 animationStart(new_current,"bottom");
@@ -265,14 +266,63 @@
             }
         }
 
+        var style = "Circle";
+        var time = Date.local(2022, 1, 6, 00, 00, 00); //默认主题为圆形，时间为一月选考时间
+
+        function self.ready()
+        {
+            body.timer(1, ::this.attributes.addClass("shown"));
+            var currentStyle = NA_getThemeName();//"Rect";
+            stdout.println("Current style via NA_getThemeName(): ",NA_getThemeName());
+            $(#themes).value.themeName = "Rect";
+            switch(currentStyle)
+            {
+                case "Circle":
+                    $(button[value=Circle]).value = true;
+                    break;
+                case "Rect":
+                    style = "Rect";
+                    $(button[value=Rect]).value = true;
+                    break;  
+                default:
+                    $(button[value=Circle]).value = true;
+                    break;
+            }
+            var strTimeset,dateTarget;
+            strTimeset = NA_getTime();
+            if(strTimeset == "NULL")
+                dateTarget = new Date(2021,01,06,00,00,00);
+            else
+                dateTarget = new Date(strTimeset);
+            stdout.println("Timeset formatted: ",dateTarget.toString("%F"));
+            $(#calendar).value = dateTarget.toString("%F");//日历表的初始化格式为YYYY-MM-DD
+            //Fixed 修复若打开设置窗口后没有使用日历表更改时间，则关闭窗口保存设置时目标日期永远是1月6号的Bug
+            // @Time 2020-10-03
+            time = dateTarget;
+            $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
+            (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
+            (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
+        }
+        $(form).on("change", function() {
+            //stdout.println(typeof($(#themes).value.themeName));
+            style = $(#themes).value.themeName;
+            stdout.printf("Current: %v\n",this.value.themeName);
+
+          });
+        $(#calendar).on("change",function(){
+            stdout.println("时间", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
+            time = $(#calendar).value;
+            //stdout.println(typeof($(#calendar).value));
+        })
+
         $(#close).onClick = function() {
             body.attributes.removeClass("shown");
             stdout.println("Setting saving...");
             stdout.println("Current Window Style change to: ", style);
             stdout.println("Current Time set to: ", time.toString());
             body.onAnimationEnd = function(){
-                hostview.NA_setTime(time);
-                hostview.NA_setStyle(style);//$(#themes).value.themeName);
+                NA_setTime(time);
+                NA_setThemeName(style);//$(#themes).value.themeName);
                 stdout.println("Succeed");
                 view.close("设置窗口关闭");
             };       

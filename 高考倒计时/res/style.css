@@ -1,4 +1,5 @@
 html {
+    size: *;
     background: transparent;
     overflow: visible!important;
 }
