@@ -1,22 +1,141 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <style>
-            div{
-                box-shadow: 0px 0px 0px 1px #000;
-            }
-            .parent{
-                height: 500px;
-            }
-            .child{
-                height: 50%;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="parent">
-            <div class="child"></div>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="./test.css">
+    <script type="text/javascript">
+        window.onload = function () {
+            setTimeout(() => { window.location.reload(); }, 20000)
+        }
+    </script>
+    <style>
+        div.parent,
+        div.child {
+            box-shadow: 0px 0px 0px 1px #000;
+        }
+
+        .parent {
+            height: 500px;
+            padding: 10px;
+        }
+
+        .child {
+            height: 100px;
+            width: 90%;
+            margin: auto auto;
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .a-theme-option {
+            border: unset;
+            position: relative;
+        }
+
+        .theme_caption {
+            padding-top: 34px;
+            padding-bottom: 34px;
+            margin: 0;
+        }
+
+        .center-v {
+            position: absolute;
+            margin: auto auto;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            overflow: visible;
+        }
+
+        .inline-box {
+            display: inline-block;
+        }
+    </style>
+    <script type="text/tiscript">
+        include "test.tis"
+    </script>
+</head>
+
+<body>
+    <div class="theme-browser">
+        <div class="themes">
+            <div class="theme add-new-theme">            
+                <div class="theme-screenshot"><span></span></div>
+                <h2 class="theme-name">添加新主题</h2>
+            </div>
+            <div class="theme">
+                <div class="theme-screenshot">
+                    <img src="./theme-circle.png" alt="">
+                </div>
+                <div class="theme-id-container">
+                    <h2 class="theme-name">圆形进度条</h2>
+                    <div class="theme-actions">
+                        <a class="button">启用</a>
+                        <a class="button button-primary">实时预览</a>
+                    </div>
+                </div>
+            </div>
+            <div class="theme">
+                <div class="theme-screenshot">
+                    <img src="./theme-rect.png" alt="">
+                </div>
+                <div class="theme-id-container">
+                    <h2 class="theme-name">矩形</h2>
+                    <div class="theme-actions">
+                        <a class="button">启用</a>
+                        <a class="button button-primary">实时预览</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theme">
+                <div class="theme-screenshot">
+                    <img src="./theme-simple.png" alt="">
+                </div>
+                <div class="theme-id-container">
+                    <h2 class="theme-name">简约</h2>
+                    <div class="theme-actions">
+                        <a class="button disabled activated">启用</a>
+                        <a class="button button-primary">实时预览</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theme">
+                <div class="theme-screenshot">
+                    <img src="./theme-waiting.png" alt="">
+                </div>
+                <div class="theme-id-container">
+                    <h2 class="theme-name">未完待续</h2>
+                    <div class="theme-actions">
+                        <a class="button disabled">启用</a>
+                        <a class="button button-primary">实时预览</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </body>
+    </div>
+    <div class="parent" style="display: none;">
+        <div class="child">
+            <div class="a-theme-option">
+                <img class="inline-box" width="100px" height="100px" src="./theme-circle.png">
+                <div class="inline-box">
+                    <div class="center-v">
+                        <h2 class="theme_caption">圆形主题</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="child">
+            <div class="a-theme-option">
+                <img width="100px" height="100px" src="./theme-circle.png">
+                <h2 class="theme_caption">矩形主题</h2>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>

@@ -16,6 +16,39 @@ string g_themeOptionPath = getCurrentWorkDir() + "\\theme.ini";
 	普通方法定义区
 ********************/
 
+//方法来源MSDN: https://docs.microsoft.com/zh-cn/windows/win32/fileio/listing-the-files-in-a-directory?redirectedfrom=MSDN
+//输出json字符串数组
+wstring ListDirs(){
+	WIN32_FIND_DATA ffd;
+	LARGE_INTEGER filesize;
+	string themesDir = getCurrentWorkDir() + "\\themes\\*";
+	static wstring ret = L"[";
+	HANDLE hFind = FindFirstFile(CharToWchar(themesDir.c_str()).c_str(), &ffd);
+	if (INVALID_HANDLE_VALUE == hFind)
+	{
+		ret = L"List dirs with exception: ";
+		ret+= CharToWchar(WsGetErrorInfo());
+		debugLogs(ret);
+		return L"NULL";
+	}
+
+	// List all the files in the directory with some info about them.
+	do
+	{
+		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		{
+			if (!StrCmpW(ffd.cFileName, L".") || !StrCmpW(ffd.cFileName, L".."))
+				continue;
+			ret += L"\"";
+			ret += ffd.cFileName;
+			ret += L"\",";
+		}
+	} while (FindNextFile(hFind, &ffd) != 0);
+	FindClose(hFind);
+	ret += L"]";
+	return ret;
+}
+
 char * WsGetErrorInfo()
 {
 	static CHAR pBuf[1024] = { 0 };
@@ -223,11 +256,18 @@ sciter::value MainWindow::NA_getThemeOption(sciter::value themeName, sciter::val
 	return sciter::value(getProfileOptions(themeName.to_string().c_str(), optionName.to_string().c_str(), g_themeOptionPath));
 }
 
+sciter::value MainWindow::NA_getThemeList()
+{
+	return sciter::value(ListDirs());
+}
+
 void MainWindow::onReady()
 {
 	if (getDebugMode())
 	{
 		static sciter::debug_output_console console; //- uncomment it if you will need console window
 		pwin->call_function("IA_uiDebugMode", sciter::value(true));
+		debugLogs(L"Theme installed:");
+		debugLogs(ListDirs());
 	}
 }

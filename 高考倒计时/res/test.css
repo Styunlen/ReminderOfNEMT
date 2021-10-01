@@ -1,0 +1,134 @@
+.themes{
+    padding-top: 16px;
+}
+.theme.add-new-theme span{
+    background: url("./addTheme.png");
+    background-size: 100px 100px;
+    border-radius: 50%;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    font: normal 74px/115px dashicons;
+    width: 100px;
+    height: 100px;
+    vertical-align: middle;
+    text-align: center;
+    color: #8c8f94;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    margin-left: -50px;
+    text-indent: -4px;
+    padding: 0;
+    text-shadow: none;
+    z-index: 4;
+}
+.theme-browser .theme {
+    cursor: pointer;
+    margin: auto auto;
+    margin-bottom: 30px;
+    position: relative;
+    width: 80%;
+    border: 1px solid #dcdcde;
+    box-shadow: 0 1px 1px -1px rgb(0 0 0 / 10%);
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: transform(linear,0.5s);
+}
+.theme-browser .theme:hover {
+    transform: scale(1.1);
+}
+.theme>.theme-screenshot>img{
+    height: 100%;
+    width: 100%;
+    background-image: none!important;
+}
+.theme-browser .theme .theme-screenshot {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    height:200px;
+    background-image: url("noPreview.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.add-new-theme .theme-screenshot{
+    background-image: none!important;
+}
+.theme-id-container {
+    position: relative;
+}
+.theme-browser .theme.active .theme-name {
+    background: #1d2327;
+    color: #fff;
+    padding-right: 110px;
+    font-weight: 300;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 50%);
+}
+.theme-browser .theme .theme-name {
+    font-size: 15px;
+    height: 18px;
+    margin: 0;
+    padding: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.theme-browser .theme .theme-actions, .theme-browser .theme.active .theme-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 9px 15px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.theme-browser .theme.active .theme-actions {
+    background: rgba(44,51,56,.7);
+    border-left: none;
+    opacity: 1;
+}
+.button,  .button-secondary {
+    color: #2271b1;
+    border-color: #2271b1;
+    background: #f6f7f7;
+    vertical-align: top;
+}
+.button-primary {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: none;
+}
+.disabled{
+    color: #c7c7c7!important;
+    background: #f6f7f7!important;
+    border-color: #dcdcde!important;
+    box-shadow: none!important;
+    text-shadow: none!important;
+    cursor: default;
+}
+.activated{
+    content: "已启用";
+}
+.button, .button-primary, .button-secondary {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 2.2;
+    min-height: 20px;
+    margin: 0;
+    margin-top: 2px;
+    padding: 0 10px;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 3px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+.button:hover{
+    transform: scale(0.95);
+}
+.button:active{
+    transform: scale(0.9);
+}

@@ -1,0 +1,58 @@
+var i = 1;
+stdout.println($(.theme.add-new-theme span).style#content);
+include "interactive.tis";
+
+function loadThemeList()
+{
+    /*
+            <div class="theme">
+                <div class="theme-screenshot">
+                    <img src="/themeName/screenshot.jpg" alt="">
+                </div>
+                <div class="theme-id-container">
+                    <h2 class="theme-name">Demo</h2>
+                    <div class="theme-actions">
+                        <a class="button">启用</a>
+                        <a class="button button-primary">实时预览</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theme">
+                <div class="theme-screenshot">
+                    <img src="/themeName/screenshot.jpg" alt="">
+                </div>
+                <div class="theme-id-container">
+                    <h2 class="theme-name">Demo Activated</h2>
+                    <div class="theme-actions">
+                        <a class="button disabled activated">启用</a>
+                        <a class="button button-primary">实时预览</a>
+                    </div>
+                </div>
+            </div>
+     */
+
+    //将已安装主题列表的json文本转换成json对象 
+    // 列表json文本样例["Circle","Rect","Simple",]
+    var themeList = JSON.parse(NA_getThemeList());
+    var currentThemeName = NA_getThemeName();//获取当前主题的名字
+    //遍历主题列表，并输出到主题浏览器中
+    for (var themeName in themeList ) {
+        stdout.printf("{%s,%s,%v}\n",themeName,currentThemeName,themeName==currentThemeName);
+        var el = Element.create([div: {class:"theme"}]);
+        $(.themes).append(el);
+        var themeShotPath = NA_getThemesDir() + themeName + "\\screenshot.jpg";
+        el.$append(<div class="theme-screenshot"><img src="{themeShotPath}"></div>);
+        var el_themeIdContainer = el.$append(<div class="theme-id-container"></div>);    
+        el_themeIdContainer.$append(<h2 class="theme-name">{themeName}</h2>);
+        var el_themeActions = el_themeIdContainer.$append(<div class="theme-actions"></div>);
+        if(themeName == currentThemeName)
+        {
+            el_themeActions.$append(<a class="button disabled activated">启用</a> <a class="button button-primary">实时预览</a>);
+        }
+        else{
+            el_themeActions.$append(<a class="button">启用</a> <a class="button button-primary">实时预览</a>);
+        }
+    }
+}
+loadThemeList();

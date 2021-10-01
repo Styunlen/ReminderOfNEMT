@@ -200,8 +200,8 @@ function NA_getThemeName()
     }
     catch(e)
     {
-        ret="demo-scriptInsideHTML";
-        stdout.println("Sciter Debug Mode,called NA_getThemeName() with retval: Circle");
+        ret="Circle";
+        stdout.println("Sciter Debug Mode,called NA_getThemeName() with retval:", ret);
         return ret;
     }
 }
@@ -214,7 +214,7 @@ function NA_setThemeName(themeName)
     }
     catch(e)
     {
-        stdout.println("Sciter Debug Mode,called NA_setThemeName() with para: ",style);
+        stdout.println("Sciter Debug Mode,called NA_setThemeName() with para: ",themeName);
         return false;
     }
 }
@@ -229,6 +229,61 @@ function NA_getWorkDir()
     catch(e)
     {
         ret=System.home();
+        stdout.println("Sciter Debug Mode,called NA_getWorkDir() with retval: ",ret);
+        return ret;
+    }
+}
+
+//返回主题安装目录（绝对路径）
+function NA_getThemesDir()
+{
+    var ret = null;
+    try{
+        ret = view.NA_getWorkDir().toString();
+        ret += "\\themes\\";
+        return ret;
+    }
+    catch(e)
+    {
+        ret=System.home();
+        ret += "\\themes\\"
+        stdout.println("Sciter Debug Mode,called NA_getThemesDir() with retval: ",ret);
+        return ret;
+    }
+}
+
+//返回当前主题的目录（绝对路径）
+function NA_getCurrentThemeDir()
+{
+    var ret = null;
+    try{
+        ret = NA_getThemesDir();
+        ret += "\\themes\\";
+        ret += NA_getThemeName();
+        ret += "\\";
+        return ret;
+    }
+    catch(e)
+    {
+        ret=System.home();
+        ret += "\\themes\\Circle\\"
+        stdout.println("Sciter Debug Mode,called NA_getCurrentThemeDir() with retval: ",ret);
+        return ret;
+    }
+}
+
+function NA_getThemeList()
+{
+    var ret = null;
+    try{
+        ret = view.NA_getThemeList().toString();
+        if(ret == "NULL")
+            ret = '["Circle","Rect","Simple",]';
+        return ret;
+    }
+    catch(e)
+    {
+        ret='["Circle","Rect","Simple",]';
         stdout.println("Sciter Debug Mode,called NA_getWorkDir() with retval: ",ret);
         return ret;
     }

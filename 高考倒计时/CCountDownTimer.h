@@ -64,6 +64,7 @@ BEGIN_FUNCTION_MAP
 	FUNCTION_1("NA_setPos", NA_setPos);
 	FUNCTION_3("NA_saveThemeOption", NA_saveThemeOption);
 	FUNCTION_2("NA_getThemeOption", NA_getThemeOption);
+	FUNCTION_0("NA_getThemeList", NA_getThemeList);
 END_FUNCTION_MAP
 	sciter::value Test();
 	sciter::value NA_getWorkDir();
@@ -75,6 +76,7 @@ END_FUNCTION_MAP
 	sciter::value NA_setPos(sciter::value pos);
 	sciter::value NA_saveThemeOption(sciter::value themeName, sciter::value optionName, sciter::value optionValue);
 	sciter::value NA_getThemeOption(sciter::value themeName,sciter::value optionName);
+	sciter::value NA_getThemeList();
 	void onReady();
 	MainWindow() : window( SW_ALPHA | SW_MAIN | SW_ENABLE_DEBUG) {}
 };

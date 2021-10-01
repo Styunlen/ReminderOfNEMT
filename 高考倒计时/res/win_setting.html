@@ -133,14 +133,13 @@
             overflow: hidden;
             /* h-smile specific */
             border: none;
-            padding: 14px;
+            padding: 10px;
+            padding-bottom: 18px;
             padding-top: 0;
             height: *;
         }
 
         section#optionsContentStack>section {
-            border-radius: 10px;
-            margin: 10px;
             size: *;
             visibility: hidden;
             overflow:auto;
@@ -214,8 +213,10 @@
       }
       .StatusTitle:hover,.StatusContent:hover{transform: scale(0.8);transition: transform(cubic-out, 600ms, none);}
     </style>
+    <link rel="stylesheet" type="text/css" href="./test.css">
     <style src="./style_debug.css" />
     <script type="text/tiscript">
+        include "test.tis";
         const body = $(body);
         function self.ready() {
             body.timer(1, ::this.attributes.addClass("shown"));
@@ -274,7 +275,7 @@
             body.timer(1, ::this.attributes.addClass("shown"));
             var currentStyle = NA_getThemeName();//"Rect";
             stdout.println("Current style via NA_getThemeName(): ",NA_getThemeName());
-            $(#themes).value.themeName = "Rect";
+            /*$(#themes).value.themeName = "Rect";
             switch(currentStyle)
             {
                 case "Circle":
@@ -287,7 +288,7 @@
                 default:
                     $(button[value=Circle]).value = true;
                     break;
-            }
+            }*/
             var strTimeset,dateTarget;
             strTimeset = NA_getTime();
             if(strTimeset == "NULL")
@@ -360,20 +361,65 @@
             <h3 #cataTitle>当前目录> 主题选择</h3>
             <section #optionsContentStack>
                 <section #theme-selection style="background:rgba(red, green, blue, 0.8)">
-                    <form #themes>
-                        <div class="a-theme-option">
-                            <img width="100dip" height="100dip" src="./theme-circle.png">
-                            <button|radio(themeName) value="Circle">圆形主题</button>
+                    <div class="theme-browser">
+                        <div class="themes">
+                            <div class="theme add-new-theme">            
+                                <div class="theme-screenshot"><span></span></div>
+                                <h2 class="theme-name">添加新主题</h2>
+                            </div>
+                            <div class="theme">
+                                <div class="theme-screenshot">
+                                    <img src="./theme-circle.png" alt="">
+                                </div>
+                                <div class="theme-id-container">
+                                    <h2 class="theme-name">圆形进度条</h2>
+                                    <div class="theme-actions">
+                                        <a class="button">启用</a>
+                                        <a class="button button-primary">实时预览</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="theme">
+                                <div class="theme-screenshot">
+                                    <img src="./theme-rect.png" alt="">
+                                </div>
+                                <div class="theme-id-container">
+                                    <h2 class="theme-name">矩形</h2>
+                                    <div class="theme-actions">
+                                        <a class="button">启用</a>
+                                        <a class="button button-primary">实时预览</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="theme">
+                                <div class="theme-screenshot">
+                                    <img src="./theme-simple.png" alt="">
+                                </div>
+                                <div class="theme-id-container">
+                                    <h2 class="theme-name">简约</h2>
+                                    <div class="theme-actions">
+                                        <a class="button disabled activated">启用</a>
+                                        <a class="button button-primary">实时预览</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="theme">
+                                <div class="theme-screenshot">
+                                    <img src="./theme-waiting.png" alt="">
+                                </div>
+                                <div class="theme-id-container">
+                                    <h2 class="theme-name">未完待续</h2>
+                                    <div class="theme-actions">
+                                        <a class="button disabled">启用</a>
+                                        <a class="button button-primary">实时预览</a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="a-theme-option">
-                            <img width="100dip" height="100dip" src="./theme-rect.png">
-                            <button|radio(themeName) value="Rect">矩形主题</button>
-                        </div>
-                        <div class="a-theme-option">
-                            <img width="100dip" height="100dip" src="./theme-waiting.png">
-                            <button|radio(themeName) value="Circle" disabled>未完待续...</button>
-                        </div>
-                    </form>
+                    </div>
                 </section>
                 <section style="background:rgba(red, green, blue, 0.8)">
                     <widget #calendar value="2021-01-06" type="calendar" />
@@ -393,13 +439,15 @@
                     <p>E-mail: 1208533483@qq.com</p>
                     <div style="position: relative;left:45dip;">
                         <div class="StatusTitle">Version</div>
-                        <div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">v2.0.1
-                            build-350-debug-α</div>
+                        <div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">
+                            v2.0.2 build-447-debug-α
+                        </div>
                         <div class="StatusTitle">Sciter</div>
                         <div class="StatusContent" #EngineVer style="color: #FAFDF2;background-color: #B2D742;"></div>
                         <div class="StatusTitle" style="margin-top:5px;clear:left">License</div>
-                        <div class="StatusContent" style="margin-top:5px;color: #FFE9DE;background-color: #FE7D37;">GPL
-                            v3</div>
+                        <div class="StatusContent" style="margin-top:5px;color: #FFE9DE;background-color: #FE7D37;">
+                            GPL v3
+                        </div>
                     </div>
                 </section>
                 <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
