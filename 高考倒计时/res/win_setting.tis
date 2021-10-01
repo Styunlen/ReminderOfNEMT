@@ -68,5 +68,27 @@ function loadThemeList()
             el_themeActions.$append(<a class="button theme_enable">启用</a> <a class="button button-primary">实时预览</a>);
         }
     }
+    //判断当前启用主题是否为内置主题
+    var el_theme_enable = null;
+    switch (currentThemeName) {
+        case "简约(内置)":
+            el_theme_enable = $$(.theme_enable)[2];
+            el_theme_enable.attributes.removeClass("theme_enable");
+            el_theme_enable.attributes.addClass("activated","disabled");
+            stdout.printf("Built-in theme {%s} is used\r\n",currentThemeName);
+            break;
+        case "矩形(内置)":
+            el_theme_enable = $$(.theme_enable)[1];
+            el_theme_enable.attributes.removeClass("theme_enable");
+            el_theme_enable.attributes.addClass("activated","disabled");
+            stdout.printf("Built-in theme {%s} is used\r\n",currentThemeName);
+            break;
+        case "圆形进度条(内置)":
+            el_theme_enable = $$(.theme_enable)[0];
+            el_theme_enable.attributes.removeClass("theme_enable");
+            el_theme_enable.attributes.addClass("activated","disabled");
+            stdout.printf("Built-in theme {%s} is used\r\n",currentThemeName);
+            break;
+    }
 }
 loadThemeList();

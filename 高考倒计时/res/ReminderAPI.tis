@@ -16,7 +16,7 @@ function NA_getThemeOption(themeName, optionName)
 {
     var ret = null;
     try{
-        ret = view.NA_getThemeOption(themeName, optionName).toString();
+        ret = view.G_NA_getThemeOption(themeName, optionName).toString();
         return ret;
     }
     catch(e)
@@ -31,7 +31,7 @@ function NA_saveThemeOption(themeName, optionName, optionValue)
 {
     var ret = null;
     try{
-        ret = view.NA_saveThemeOption(themeName, optionName, optionValue).toString();
+        ret = view.G_NA_saveThemeOption(themeName, optionName, optionValue).toString();
         return ret;
     }
     catch(e)
@@ -64,6 +64,10 @@ timeInit();
 function updateTime() {
     var dateNow = new Date();
     var millisecondsRemaining = dateTarget.valueOf() - dateNow.valueOf();
+    var day = currentThemeObj.themeDoc.$(#day);
+    var hour = currentThemeObj.themeDoc.$(#hour);
+    var min = currentThemeObj.themeDoc.$(#min);
+    var sec = currentThemeObj.themeDoc.$(#sec);
     if (millisecondsRemaining >= 0) {
         //Fixed (2020-8-29): 时间算法更新
         iPer = (millisecondsRemaining / (dateTarget.valueOf() - datePbStart.valueOf())) * 100;
@@ -73,10 +77,6 @@ function updateTime() {
         minR = toInt((millisecondsRemaining - daysRemaining.toInteger() * 86400000.0) / 60000.0 - (hoursR) * 60);
         //Fixed (2021-8-22): 时间算法修复，修复0秒时卡住，然后直接跳到58秒的BUG
         secR = toInt((millisecondsRemaining - daysRemaining.toInteger() * 86400000.0) / 1000.0 - (hoursR) * 3600 - (minR) * 60);
-        var day = currentThemeObj.themeDoc.$(#day);
-        var hour = currentThemeObj.themeDoc.$(#hour);
-        var min = currentThemeObj.themeDoc.$(#min);
-        var sec = currentThemeObj.themeDoc.$(#sec);
         if(day != undefined)
         {
             day.text = toInt(daysRemaining).toString();
@@ -87,17 +87,34 @@ function updateTime() {
         }
         if(min != undefined)
         {
-            min.text = minR.toString().length > 1 ? minR.toString() : "0" + minR.toString();         
+            min.text = minR.toString().length > 1 ? minR.toString() : "0" + minR.toString();
         }
         if(sec != undefined)
         {
-             sec.text = secR.toString().length > 1 ? secR.toString() : "0" + secR.toString();
+                sec.text = secR.toString().length > 1 ? secR.toString() : "0" + secR.toString();
         }    
         //stdout.println(iPer, daysRemaining, hoursR, minR, secR);
         body.timer(1000, ::updateTime());
     } else {
        // $(#timeRemaining).html = "<p style=\"font-size:20dip;color:red\">十年寒窗日，只为今日试！<br>祝大家旗开得胜！</p>";
-       stdout.printf("Timeset(%s) has passed!\r\n",dateTarget.toString());
+        stdout.printf("Timeset(%s) has passed!\r\n",dateTarget.toString());
+        if(day != undefined)
+        {
+            day.text = "0";
+        }
+        if(hour != undefined)
+        {
+            hour.text = "0";
+        }
+        if(min != undefined)
+        {
+            min.text = "0";
+        }
+        if(sec != undefined)
+        {
+            sec.text = "0";
+        }
+        return true;
     }
 }
 

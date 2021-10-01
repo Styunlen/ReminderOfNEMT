@@ -22,29 +22,53 @@ var themeView = $(frame#theme_view);
 //加载主题文件
 function IA_loadTheme(themeName)
 {
-    var currentThemeUrl = "./themes/Circle/main.html"; //The Default Theme is Circle 默认圆形窗口主题
-    try{
-        stdout.println("Try To Load Theme :","/themes/"+themeName+"/main.html");
+    var currentThemeUrl = "this://app/themes/Simple/main.html"; //The Default Theme is Simple 默认简约主题
+    try{       
         currentThemeUrl= "file://" +  NA_getWorkDir() + "/themes/"+themeName+"/main.html";
+        stdout.println("Try To Load Theme :", currentThemeUrl);
         themeView.load(currentThemeUrl);
+        if(themeView[0] == #undefined)
+        {
+            throw {message:"主题文件不存在,文件路径:",stackTrace:currentThemeUrl};
+        }
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
         try{
             currentThemeObj.themeDoc.ns.theme_inited();
+            stdout.println("Theme loaded successfully!!");
+            view_Update();
         }catch(e)
         {
             stdout.println("Theme inited with exception");
             stdout.println("err msg:",e.message,e.stackTrace);
-        }    
-        stdout.println("Theme loaded successfully!!");
-        view_Update();
+        }       
     }
     catch(e)
     {
-        stdout.println("Load Theme Failed,Using Default Theme Circle");
-        stdout.println("err msg:",e.message,e.stackTrace);
-        stdout.println("Try To Load Theme :",self.url("res:themes/Circle/main.html"));
-        themeView.load(self.url("res:themes/Circle/main.html"));
+        currentThemeUrl = "this://app/themes/";
+        switch (themeName) {
+            case "简约(内置)":
+                stdout.println("Using built-in theme:",themeName);
+                currentThemeUrl += "Simple/main.html";
+                break;
+            case "矩形(内置)":
+                stdout.println("Using built-in theme:",themeName);
+                currentThemeUrl += "Rect/main.html";
+                break;
+            case "圆形进度条(内置)":
+                stdout.println("Using built-in theme:",themeName);
+                currentThemeUrl += "Circle/main.html";
+                break;
+            default:
+                currentThemeUrl += "Simple/main.html";
+                NA_setThemeName("简约(内置)");//设置主题为内置主题
+                stdout.println("Load theme failed,using default built-in theme: 简约");
+                stdout.println("err msg:",e.message,e.stackTrace);
+                break;
+                
+        }
+        stdout.println("Try to load built-in theme :",self.url(currentThemeUrl));
+        themeView.load(self.url(currentThemeUrl));
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
         currentThemeObj.themeDoc.ns.theme_inited();
@@ -55,15 +79,15 @@ function IA_loadTheme(themeName)
 
 //加载完主题后，需要及时调整窗体大小
 function view_Update()
-{
-    var title = currentThemeObj.themeDoc.$(head>title);
-    if( title )
+{   
+    if( currentThemeObj.themeDoc )
     {
+        var title = currentThemeObj.themeDoc.$(head>title);
         view.windowCaption = "高考倒计时——" + title.text;
         stdout.println("Add theme title to windowCaption:",title.text);
     }
     var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
-    var (tw, th) = currentThemeObj.themeDoc.$(body).box(#dimension); //theme window size
+    var (tw, th) = currentThemeObj.themeDoc?currentThemeObj.themeDoc.$(body).box(#dimension):(0,0); //theme window size
     tw += tw / 2; // to accomodate expanding radii
     th += th / 2;
     stdout.println(tw,th);
@@ -131,11 +155,40 @@ function IA_uiDebugMode(isEnabled)
 如果在Sciter中调试运行，则返回测试数据
 否则，则与后端交互获得数据
  */
+
+ //这个函数用于将C++的函数定义到全局作用域，从而使得所有窗口即C++或脚本创建的窗口都可以访问公开的C++函数
+ //解决措施来源于Sciter论坛：https://sciter.com/forums/topic/how-to-cal-host-when-i-create-a-new-window/
+function NA_inited(){
+    var thisView = view;
+   // define global class method:
+   try{
+        thisView.NA_getWorkDir();
+        //如果全局函数与C++函数同名，会导致递归调用而爆栈，所以为全局函数添加前缀
+        //然后将在下面和在API中定义的所有NA_函数try语句块中的view.NA_改为view.G_NA (可参考NA_getTime中的代码变更)
+        //这样子在子窗口中调用NA_函数也可以正常运行了
+        View.G_NA_getWorkDir = function() { return thisView.NA_getWorkDir(); };
+        View.G_NA_getThemeName = function() { return thisView.NA_getThemeName(); }
+        View.G_NA_getTime = function() { return thisView.NA_getTime(); };
+        View.G_NA_setThemeName = function(themeName) { return thisView.NA_setThemeName(themeName); };
+        View.G_NA_setTime = function(time) { return thisView.NA_setTime(time); };
+        View.G_NA_getPos = function() { return thisView.NA_getPos(); };
+        View.G_NA_setPos = function(pos) { return thisView.NA_setPos(pos); };
+        View.G_NA_saveThemeOption = function(themeName, optionName, optionValue) { return thisView.NA_saveThemeOption(themeName, optionName, optionValue); };
+        View.G_NA_getThemeOption = function(themeName, optionName) { return thisView.NA_getThemeOption(themeName, optionName); };
+        View.G_NA_getThemeList = function() { return thisView.NA_getThemeList(); };
+        stdout.println("Native functions was defined in global View successfully");
+   }catch(e){
+        stdout.println("NA_inited was called in sciter");
+   }
+}
+NA_inited();
+
+//通过C++获取配置中时间
 function NA_getTime()
 {
     var ret = null;
     try{
-        ret = view.NA_getTime().toString();
+        ret = view.G_NA_getTime().toString();
         if(ret == "NULL")
         {
             ret="2022-06-07T00:00:00+08:00";
@@ -150,10 +203,11 @@ function NA_getTime()
     }
 }
 
+//通过C++设置时间
 function NA_setTime(time)
 {
     try{
-        view.NA_setTime(time);
+        view.G_NA_setTime(time);
         return true;
     }
     catch(e)
@@ -167,7 +221,7 @@ function NA_getPos()
 {
     var ret = null;
     try{
-        ret = view.NA_getPos().toString();
+        ret = view.G_NA_getPos().toString();
         return ret;
     }
     catch(e)
@@ -181,7 +235,7 @@ function NA_getPos()
 function NA_setPos(pos)
 {
     try{
-        view.NA_setPos(pos);
+        view.G_NA_setPos(pos);
         return true;
     }
     catch(e)
@@ -195,7 +249,7 @@ function NA_getThemeName()
 {
     var ret = null;
     try{
-        ret = view.NA_getThemeName().toString();
+        ret = view.G_NA_getThemeName().toString();
         return ret;
     }
     catch(e)
@@ -209,7 +263,7 @@ function NA_getThemeName()
 function NA_setThemeName(themeName)
 {
     try{
-        view.NA_setThemeName(themeName);
+        view.G_NA_setThemeName(themeName);
         return true;
     }
     catch(e)
@@ -223,7 +277,7 @@ function NA_getWorkDir()
 {
     var ret = null;
     try{
-        ret = view.NA_getWorkDir().toString();
+        ret = view.G_NA_getWorkDir().toString();
         return ret;
     }
     catch(e)
@@ -239,7 +293,7 @@ function NA_getThemesDir()
 {
     var ret = null;
     try{
-        ret = view.NA_getWorkDir().toString();
+        ret = view.G_NA_getWorkDir().toString();
         ret += "\\themes\\";
         return ret;
     }
@@ -276,15 +330,16 @@ function NA_getThemeList()
 {
     var ret = null;
     try{
-        ret = view.NA_getThemeList().toString();
+        ret = view.G_NA_getThemeList().toString();
         if(ret == "NULL")
             ret = '["Circle","Rect","Simple",]';
         return ret;
     }
     catch(e)
     {
+        stdout.println("err msg:",e.message,e.stackTrace);
         ret='["Circle","Rect","Simple",]';
-        stdout.println("Sciter Debug Mode,called NA_getWorkDir() with retval: ",ret);
+        stdout.println("Sciter Debug Mode,called NA_getThemeList() with retval: ",ret);
         return ret;
     }
 }

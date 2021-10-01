@@ -1,22 +1,35 @@
 .themes{
     padding-top: 16px;
 }
-.theme.add-new-theme span{
+.add-new-theme{
+    cursor: pointer;
+    margin: auto auto;
+    margin-bottom: 30px;
+    position: relative;
+    width: 50%;
+    border: 1px solid #dcdcde;
+    box-shadow: 0 1px 1px -1px rgb(0 0 0 / 10%);
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: transform(linear,0.5s);
+    text-align: center;
+}
+.add-new-theme:hover{transform: scale(1.1);}
+.add-new-theme:active{transform: scale(1.05);transition: transform(linear,0.1s);}
+.add-new-theme .theme-add{
     background: url("./addTheme.png");
-    background-size: 100px 100px;
+    background-size: 50px 50px;
     border-radius: 50%;
-    display: inline-block;
+    display: block;
     -webkit-font-smoothing: antialiased;
     font: normal 74px/115px dashicons;
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     vertical-align: middle;
     text-align: center;
     color: #8c8f94;
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    margin-left: -50px;
+    margin: auto auto;
+    margin-top: 20px;
     text-indent: -4px;
     padding: 0;
     text-shadow: none;
@@ -51,9 +64,6 @@
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.add-new-theme .theme-screenshot{
-    background-image: none!important;
-}
 .theme-id-container {
     position: relative;
 }
@@ -86,13 +96,13 @@
     border-left: none;
     opacity: 1;
 }
-.button,  .button-secondary {
+a.button,  a.button-secondary {
     color: #2271b1;
     border-color: #2271b1;
     background: #f6f7f7;
     vertical-align: top;
 }
-.button-primary {
+a.button-primary {
     background: #2271b1;
     border-color: #2271b1;
     color: #fff;
@@ -110,7 +120,7 @@
 .activated{
     content: "已启用";
 }
-.button, .button-primary, .button-secondary {
+a.button, a.button-primary, a.button-secondary {
     display: inline-block;
     text-decoration: none;
     font-size: 13px;
@@ -126,9 +136,9 @@
     white-space: nowrap;
     box-sizing: border-box;
 }
-.button:hover{
+a.button:hover{
     transform: scale(0.95);
 }
-.button:active{
+a.button:active{
     transform: scale(0.9);
 }

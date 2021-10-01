@@ -20,7 +20,8 @@
 /********************
 	前向声明区
 ********************/
-using namespace std;
+using std::string;
+using std::wstring;
 class MainWindow;
 
 /********************
@@ -54,7 +55,7 @@ std::wstring CharToWchar(const char* c, size_t m_encode = CP_ACP);
 class MainWindow : public sciter::window {
 public:
 BEGIN_FUNCTION_MAP
-	FUNCTION_0("Test", Test);
+	FUNCTION_0("Test", Test); 
 	FUNCTION_0("NA_getWorkDir", NA_getWorkDir); //NA means native
 	FUNCTION_0("NA_getThemeName", NA_getThemeName);
 	FUNCTION_0("NA_getTime", NA_getTime);

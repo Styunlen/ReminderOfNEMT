@@ -116,6 +116,10 @@
             background-color: #B7B7B7;
         }
 
+        #sidebar>p:current {
+            background-color: #B7B7B7;
+        }
+
         #optionsContent {
             width: 80%;
             height: 400dip;
@@ -183,16 +187,6 @@
             visibility: visible;
         }
 
-        #themes{padding:0;margin:0;margin:auto auto;width:342dip;horizontal-align: center;}
-        .a-theme-option{
-            width: 150dip;
-            flow:vertical;
-            horizontal-align: center;
-            float: left;
-            padding: 0;
-            margin-right: 10dip;
-            margin-left:10dip;
-        }
         .StatusTitle{
           display:block;
           float: left;
@@ -216,7 +210,8 @@
     <link rel="stylesheet" type="text/css" href="./test.css">
     <style src="./style_debug.css" />
     <script type="text/tiscript">
-        include "test.tis";
+        include "win_setting.tis";
+        include "hitokoto.tis";
         const body = $(body);
         function self.ready() {
             body.timer(1, ::this.attributes.addClass("shown"));
@@ -225,6 +220,7 @@
 
         function wizard(stack)
         {
+            $(.title).state.current = true;
             if(stack.length)
                 stack[0].state.current = true;
         }  
@@ -250,13 +246,21 @@
             el.subscribe(animationDone,Event.BEHAVIOR_EVENT,Event.ANIMATION);
         }
         event click $(p.title){
+            
             stdout.println(this.text,this.index);
-            $(#cataTitle).text = "当前目录> " +  this.text;
             var current = stack.$(:root>:current);
+            //current属性只有在当前选中项结束进入动画时才会设置
+            //因此，如果current为空，则说明仍处于切换动画状态，此时不做任何操作
+            //补充：结束动画时必有一个current元素
+            if(current==#undefined) return;
+            //改变目录标题
+            $(#cataTitle).text = "当前目录> " +  this.text;
             var new_current = stack[this.index];
             stdout.println(current,new_current,current.index,new_current.index);
             if(current.index == new_current.index) return;
-            current.state.current = false;//隐藏上一个选项设置界面，开启当前选项进入动画
+            current.state.current = false;//在展示当前选项的切换动画时自动隐藏上一个选项的设置界面，防止覆盖显示
+            this.state.current = true;//将当前选项标题高亮显示
+            //选择动画方向(从上往下，从下往上)
             if(current.index > new_current.index)
             {
                 animationStart(new_current,"bottom");
@@ -264,6 +268,10 @@
             else
             {
                 animationStart(new_current,"top");
+            }
+            if(this.text == "一言")
+            {
+                
             }
         }
 
@@ -292,7 +300,7 @@
             var strTimeset,dateTarget;
             strTimeset = NA_getTime();
             if(strTimeset == "NULL")
-                dateTarget = new Date(2021,01,06,00,00,00);
+                dateTarget = new Date(2022,01,06,00,00,00);
             else
                 dateTarget = new Date(strTimeset);
             stdout.println("Timeset formatted: ",dateTarget.toString("%F"));
@@ -300,21 +308,19 @@
             //Fixed 修复若打开设置窗口后没有使用日历表更改时间，则关闭窗口保存设置时目标日期永远是1月6号的Bug
             // @Time 2020-10-03
             time = dateTarget;
+            //Fixed 修复新版窗口若打开后没有更改主题，则关闭窗口保存设置时主题永远是Circle的Bug
+            // @Time 2020-10-03
+            style = currentStyle;
             $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
             (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
             (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
+            self.timer(100ms, getHitokoto);
         }
-        $(form).on("change", function() {
-            //stdout.println(typeof($(#themes).value.themeName));
-            style = $(#themes).value.themeName;
-            stdout.printf("Current: %v\n",this.value.themeName);
-
-          });
         $(#calendar).on("change",function(){
             stdout.println("时间", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
             time = $(#calendar).value;
             //stdout.println(typeof($(#calendar).value));
-        })
+        });
 
         $(#close).onClick = function() {
             body.attributes.removeClass("shown");
@@ -346,8 +352,8 @@
         <caption style="padding-left:2dip;font-weight: bold;font-size: 16dip;" role="window-caption"><img
                 style="width: 16px;height: 16px;" src="favicon.ico"> 高考倒计时设置</caption>
         <button.window role="window-minimize" #minimize></button>
-            <button.window role="window-maximize" #maximize></button>
-                <button.window #close></button>
+        <button.window role="window-maximize" #maximize></button>
+        <button.window #close></button>
     </section>
     <section #main>
         <section #sidebar>
@@ -363,30 +369,32 @@
                 <section #theme-selection style="background:rgba(red, green, blue, 0.8)">
                     <div class="theme-browser">
                         <div class="themes">
-                            <div class="theme add-new-theme">            
-                                <div class="theme-screenshot"><span></span></div>
-                                <h2 class="theme-name">添加新主题</h2>
+                            <div class="add-new-theme">            
+                                <div class="theme-add"></div>
+                                <h2>添加新主题</h2>
                             </div>
+
                             <div class="theme">
                                 <div class="theme-screenshot">
                                     <img src="./theme-circle.png" alt="">
                                 </div>
                                 <div class="theme-id-container">
-                                    <h2 class="theme-name">圆形进度条</h2>
+                                    <h2 class="theme-name">圆形进度条(内置)</h2>
                                     <div class="theme-actions">
-                                        <a class="button">启用</a>
+                                        <a class="button theme_enable">启用</a>
                                         <a class="button button-primary">实时预览</a>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="theme">
                                 <div class="theme-screenshot">
                                     <img src="./theme-rect.png" alt="">
                                 </div>
                                 <div class="theme-id-container">
-                                    <h2 class="theme-name">矩形</h2>
+                                    <h2 class="theme-name">矩形(内置)</h2>
                                     <div class="theme-actions">
-                                        <a class="button">启用</a>
+                                        <a class="button theme_enable">启用</a>
                                         <a class="button button-primary">实时预览</a>
                                     </div>
                                 </div>
@@ -397,9 +405,9 @@
                                     <img src="./theme-simple.png" alt="">
                                 </div>
                                 <div class="theme-id-container">
-                                    <h2 class="theme-name">简约</h2>
+                                    <h2 class="theme-name">简约(内置)</h2>
                                     <div class="theme-actions">
-                                        <a class="button disabled activated">启用</a>
+                                        <a class="button theme_enable">启用</a>
                                         <a class="button button-primary">实时预览</a>
                                     </div>
                                 </div>
@@ -417,7 +425,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </section>
@@ -440,7 +447,7 @@
                     <div style="position: relative;left:45dip;">
                         <div class="StatusTitle">Version</div>
                         <div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">
-                            v2.0.2 build-447-debug-α
+                            v2.2.3 build-526-debug-α
                         </div>
                         <div class="StatusTitle">Sciter</div>
                         <div class="StatusContent" #EngineVer style="color: #FAFDF2;background-color: #B2D742;"></div>
@@ -450,17 +457,11 @@
                         </div>
                     </div>
                 </section>
-                <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
-                    <ol>
-                        <li>我要成功，我能成功，我必成功，我必成功！</li>
-                        <li>要成功，先发疯，下定决心向前冲；不成功，不放松，咬紧牙关冲冲冲</li>
-                        <li>勤学，勤思，勤问，苦钻</li>
-                        <li>决战高考，改变命运。屡挫屡战，笑傲群雄。</li>
-                        <li>高三高考高目标，苦学善学上好学</li>
-                        <li>贵在坚持、难在坚持、成在坚持。</li>
-                        <li>太阳每天都是新的，你是否每天都在努力。</li>
-                        <li>立志高远，脚踏实地；刻苦钻研，勤学苦思;稳定心态，不馁不弃；全力以赴，夺取胜利。</li>
-                        <li>把握现在、就是创造未来。</li>
+                <section style="overflow-y: scroll;">
+                    <p style="text-align: center;">感谢一言提供的API: <a href="https://developer.hitokoto.cn/sentence/">https://developer.hitokoto.cn/sentence/</a></p>
+                    <a class="button button-primary hitokoto_getMore" style="margin: auto auto;">获取更多</a>
+                    <ol id="hitokoto">
+                        <p id="hitokoto_getting">获取中...</p>
                     </ol>
                 </section>
             </section>

@@ -1,0 +1,55 @@
+var iHitokotoGetCount = 0;//尝试获取一言的计数，超过一定数量就停止获取
+var iHitokotoMax = 20;//获取数量，单击获取更多按钮时增加
+function getHitokotoType(type)
+{
+    var hitokotoTypes = ["动画","漫画","游戏","文学","原创","网络","其他","影视","诗词","网易云","哲学","抖机灵"];
+    if(type.length > 1) return null;
+    var index = type.charCodeAt(0) - 97;
+    return hitokotoTypes[index];
+}
+
+function hitokotoReceived(data,status) {
+    iHitokotoGetCount++;
+    var list = $(#hitokoto);
+    try{
+        var hitokoto = JSON.parse(data);
+        var textType = getHitokotoType(hitokoto.type);
+        var text = hitokoto.hitokoto + "——" + (hitokoto.from_who!=null?hitokoto.from_who:"") + "「" + hitokoto.from + "」";
+        list.$append(<li>[<strong>{textType}</strong>] {text}</li>);
+    }catch(ex){
+        if(list==#undefined) return;
+        list.$append(<li><strong>加载失败</strong></li>);
+    }
+}
+function hitokotoReceivedError(err,status) {
+    iHitokotoGetCount++;
+    stdout.printf("Get hitokoto failed.Error,Status:%v\r\n",status);
+    //$(#error).$content(Error accessing the site, HTTP status: <var>{status}</var>);
+    //whenDone.call(this,"error");
+}
+
+function getHitokoto() {
+    //stdout.println("getCount:",iHitokotoGetCount);
+    var list = $(#hitokoto);
+    if(list==#undefined) return;
+    if( iHitokotoGetCount < 100 &&  list.length<=iHitokotoMax) {
+        view.request({
+            type: #get,
+            url:  "https://v1.hitokoto.cn/?encode=json",
+            success: hitokotoReceived,
+            error:   hitokotoReceivedError,
+            output:  #string,
+            noCache: true,
+        });
+        return true; // keep
+    }
+    $(#hitokoto_getting).style#display="none";
+    return false; // stop
+}
+
+event click $(.hitokoto_getMore){
+    $(#hitokoto_getting).style#display="block";
+    iHitokotoMax+=30;
+    iHitokotoGetCount=0;
+    this.timer(100ms, getHitokoto);
+}

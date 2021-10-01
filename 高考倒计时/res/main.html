@@ -31,12 +31,15 @@
 
         $(#setting).onClick = function() {
             this.sendMouseEvent({type: Event.MOUSE_DOWN,x: 0,y: 0});//隐藏popup
+            this.sendMouseEvent({type: Event.MOUSE_UP,x: 0,y: 0});//隐藏popup
             var v = view.dialog({
                 url: self.url("win_setting.html"),
                 alignment: -5,
                 parameters:{hostview: this.root.ns.view}
             });
             stdout.printf("win_setting result:%v\n",v);
+            NA_setPos("NULL");//由于切换主题会改变窗口大小，因此选择清空窗口坐标，恢复居中显示
+            view.msgbox(#information,"请重启以激活新主题","提示");
         }
         include "scripts.tis";
         include "menu-popup.tis";
