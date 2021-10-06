@@ -28,6 +28,8 @@ section#sec_main{
 }
 #theme_view{
     overflow: visible;
+    width:200px;
+    height:100px;
 }
 section#sec_menu{
     width: 100%;

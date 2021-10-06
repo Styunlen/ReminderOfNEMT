@@ -11,19 +11,7 @@
         }
         body {
           size: 300dip;
-          transform: scale(0);
           overflow: visible;
-        }
-        body.shown {
-            transform: scale(1);
-            transition: transform(back-out, 600ms);
-            visibility: visible;
-        }
-
-        body.hidden {
-            transform: scale(0);
-            transition: transform(linear, 600ms);
-            visibility: hidden;
         }
 
         body>p {
@@ -55,73 +43,9 @@
             font-rendering-mode: snap-pixel;
         }
 
-        button#minimize {
-            background-image: url("minimize.png");
-            background-repeat: no-repeat;
-            background-size:cover;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 1);
-            border-radius: 4dip;
-            padding: 0;
-            margin: 0;
-            width: 40dip;
-            height: 40dip;
-            outline: blue glow 0;
-            margin-top: 30dip;
-            color: #000;
-        }
-
-        button#minimize:hover {
-            outline: blue glow 4dip;
-            transition: outline(linear, 300ms);
-        }
-
-        button#close {
-            background-image: url("close.png");
-            background-repeat: no-repeat;
-            background-size:cover;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 4dip;
-            padding: 0;
-            margin: 0;
-            width: 40dip;
-            height: 40dip;
-            outline: blue glow 0;
-        }
-
-        button#close:hover {
-            outline: blue glow 4dip;
-            transition: outline(linear, 300ms);
-        }
-
-        button#setting {
-            background-image: url("setting.png");
-            background-repeat: no-repeat;
-            background-size:cover;
-            background-position: center;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 4dip;
-            padding: 0;
-            margin: 0;
-            width: 40dip;
-            height: 40dip;
-            outline: blue glow 0;
-        }
-
-        button#setting:hover {
-            outline: blue glow 4dip;
-            transition: outline(linear, 300ms);
-        }
-
-        img {
-            size: 16dip;
-            foreground-size: cover;
-        }
-
     </style>
     <!-- 用于自定义主题 -->
-    <style id="current-theme" src="" />
+    <style id="current-theme" src="style_rect.css" />
     <!-- 用于开启UI调试 -->
     <style id="ui-debug" src="" />
 
@@ -157,17 +81,6 @@
         </div>
       </div>
       
-    </section>
-    <section class="menu-section">
-        <img id="menu-button" src="./menu.png">     
-        <popup .menu>
-            <div.content>
-                <button #close></button>
-                <button #minimize style="background-color: rgba(255, 255, 255, 0.5);"></button>
-                <button #setting style="background-color: rgba(255, 255, 255, 0.5);"></button>
-                <p id="copyright">By 九仞</p>
-            </div>
-        </popup>
     </section>
 </body>
 </html>

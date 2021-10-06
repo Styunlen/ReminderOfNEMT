@@ -23,7 +23,7 @@ function hitokotoReceived(data,status) {
 }
 function hitokotoReceivedError(err,status) {
     iHitokotoGetCount++;
-    stdout.printf("Get hitokoto failed.Error,Status:%v\r\n",status);
+    stdout.printf("[%s]Get hitokoto failed.Error,Status:%v\r\n",new Date().toString("%T"),status);
     //$(#error).$content(Error accessing the site, HTTP status: <var>{status}</var>);
     //whenDone.call(this,"error");
 }

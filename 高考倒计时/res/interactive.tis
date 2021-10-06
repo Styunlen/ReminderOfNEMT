@@ -87,14 +87,22 @@ function view_Update()
         stdout.println("Add theme title to windowCaption:",title.text);
     }
     var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
-    var (tw, th) = currentThemeObj.themeDoc?currentThemeObj.themeDoc.$(body).box(#dimension):(0,0); //theme window size
+    /*var (tw, th) = currentThemeObj.themeDoc?currentThemeObj.themeDoc.$(body).box(#dimension):(0,0); //theme window size
+    stdout.println(tw,th);
     tw += tw / 2; // to accomodate expanding radii
     th += th / 2;
-    stdout.println(tw,th);
-    var (w,h)= $(body).box(#dimension); //app window size without theme window
-    w += w / 2 + tw; // 合并
-    h += h / 2 + th;
+    stdout.println(tw,th);*/
+    var (w,h)= currentThemeObj.themeDoc?currentThemeObj.themeDoc.$(body).box(#dimension):(200,200); //app window size without theme window
+    if(currentThemeObj.themeDoc.$(body))
+    {
+        $(#theme_view).style#width = String.printf("%d",w);
+        $(#theme_view).style#height = String.printf("%d",h);
+    }
+    stdout.println(w,h);
+    w += w / 2;
+    h += h / 2;
     h += 108;//增高窗口来容纳设置按钮
+    //stdout.println(w,h);
     //默认最小窗口大小
     if(w<100)
     {

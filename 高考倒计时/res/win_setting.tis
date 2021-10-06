@@ -1,7 +1,7 @@
 include "interactive.tis";
 event click $(a.theme_enable) {
     stdout.printf("Current theme changes to: {%s}\n",this.parent.parent[0].text);
-    style = this.parent.parent[0].text;
+    options.theme = this.parent.parent[0].text;
     var button_activated = $(.activated);
     button_activated.attributes.removeClass("activated","disabled");
     button_activated.attributes.addClass("theme_enable");
@@ -12,7 +12,6 @@ event click $(a.theme_enable) {
 event click $(.theme-actions a.button-primary) {
     stdout.printf("Theme {%s}'s preview button clicked\n",this.parent.parent[0].text);
     view.msgbox(#information,"该功能正在加急制作中...","致歉");
-    style = this.parent.parent[0].text;
     return true;
 }
 

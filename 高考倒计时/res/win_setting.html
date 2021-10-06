@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+    <link rel="shortcuticon" href="./favicon.ico" />
     <style>
         html {
             font: system;
@@ -274,15 +275,13 @@
                 
             }
         }
-
-        var style = "Circle";
-        var time = Date.local(2022, 1, 6, 00, 00, 00); //默认主题为圆形，时间为一月选考时间
+        var options = {theme:"简约(内置)",time:Date.local(2022, 1, 6, 00, 00, 00)}; //默认主题为简约，时间为一月选考时间
 
         function self.ready()
         {
             body.timer(1, ::this.attributes.addClass("shown"));
-            var currentStyle = NA_getThemeName();//"Rect";
-            stdout.println("Current style via NA_getThemeName(): ",NA_getThemeName());
+            var currentTheme = NA_getThemeName();//"Rect";
+            stdout.println("Current theme via NA_getThemeName(): ",NA_getThemeName());
             /*$(#themes).value.themeName = "Rect";
             switch(currentStyle)
             {
@@ -307,30 +306,38 @@
             $(#calendar).value = dateTarget.toString("%F");//日历表的初始化格式为YYYY-MM-DD
             //Fixed 修复若打开设置窗口后没有使用日历表更改时间，则关闭窗口保存设置时目标日期永远是1月6号的Bug
             // @Time 2020-10-03
-            time = dateTarget;
+            options.time = dateTarget;
             //Fixed 修复新版窗口若打开后没有更改主题，则关闭窗口保存设置时主题永远是Circle的Bug
             // @Time 2020-10-03
-            style = currentStyle;
+            options.theme = currentTheme;
             $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
             (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
             (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
             self.timer(100ms, getHitokoto);
         }
         $(#calendar).on("change",function(){
-            stdout.println("时间", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
-            time = $(#calendar).value;
+            stdout.println("时间更改为", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
+            options.time = $(#calendar).value;
             //stdout.println(typeof($(#calendar).value));
         });
 
         $(#close).onClick = function() {
             body.attributes.removeClass("shown");
             stdout.println("Setting saving...");
-            stdout.println("Current Window Style change to: ", style);
-            stdout.println("Current Time set to: ", time.toString());
+            stdout.println("Current Window Theme change to: ", options.theme);
+            stdout.println("Current Time set to: ", options.time.toString());
             body.onAnimationEnd = function(){
-                NA_setTime(time);
-                NA_setThemeName(style);//$(#themes).value.themeName);
-                stdout.println("Succeed");
+                NA_setTime(options.time);
+                if(options.theme != NA_getThemeName())
+                {
+                    NA_setThemeName(options.theme);//$(#themes).value.themeName);
+                    var ret = view.msgbox(#question,"是否现在就激活新主题","提示",[ {id:#yes, text:"好的"}, {id:#no, text:"返回"} ] );
+                    if(ret == #yes)
+                    {
+                        view.parameters.hostview.root.ns.IA_loadTheme(NA_getThemeName());
+                    }
+                }            
+                stdout.println("Succeed");           
                 view.close("设置窗口关闭");
             };       
         }
@@ -447,7 +454,7 @@
                     <div style="position: relative;left:45dip;">
                         <div class="StatusTitle">Version</div>
                         <div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">
-                            v2.2.3 build-526-debug-α
+                            v2.2.5 build-526-debug-α
                         </div>
                         <div class="StatusTitle">Sciter</div>
                         <div class="StatusContent" #EngineVer style="color: #FAFDF2;background-color: #B2D742;"></div>

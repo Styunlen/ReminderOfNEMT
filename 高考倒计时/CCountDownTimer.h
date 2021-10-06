@@ -79,7 +79,7 @@ END_FUNCTION_MAP
 	sciter::value NA_getThemeOption(sciter::value themeName,sciter::value optionName);
 	sciter::value NA_getThemeList();
 	void onReady();
-	MainWindow() : window( SW_ALPHA | SW_MAIN | SW_ENABLE_DEBUG) {}
+	MainWindow() : window( SW_MAIN | SW_ENABLE_DEBUG) {}
 };
 
 #endif
