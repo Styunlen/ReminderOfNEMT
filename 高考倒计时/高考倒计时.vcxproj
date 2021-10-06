@@ -81,7 +81,7 @@
       </AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>BuildCount.bat&amp;do.bat</Command>
+      <Command>BuildCount.bat&amp;CopyThemes.bat&amp;do.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

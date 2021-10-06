@@ -46,29 +46,12 @@
     </style>
     <!-- 用于自定义主题 -->
     <style id="current-theme" src="style_rect.css" />
-    <!-- 用于开启UI调试 -->
-    <style id="ui-debug" src="" />
 
     <script type="text/tiscript">
       include "scripts.tis";
-      include "menu-popup.tis";
     </script>
 </head>
 <body>
-    <section class="proBarBorder">
-      <div id="progressBar">
-        <div class="wrapper" id="pr1">
-          <div class="circleProgress leftcircle"></div>
-          <div class="circleProgress leftcircle_background"></div>
-        </div>
-        <div class="wrapper" id="pr2">
-          <div class="circleProgress rightcircle"></div>
-          <!-- 修复进度条接近0%时,左右两圆被割裂开的bug而添加的附加圆环(进度条大于5时不可见) -->
-          <div class="circleProgress rightcircle rightcircle_fix"></div>
-          <div class="circleProgress rightcircle_background"></div>
-        </div>
-      </div>
-    </section>
     <section class="main">
       <h1 #title>距离高考</h1>
       <div id="timeRemaining">

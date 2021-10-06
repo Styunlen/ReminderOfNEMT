@@ -1,3 +1,220 @@
+html {
+    font: system;
+    background-color: transparent;
+    overflow: visible;
+}
+
+body {
+    overflow: visible;
+}
+
+#header {
+    width: 600dip;
+    line-height: 1.6em;
+    background: window-accent-color;
+    flow: horizontal;
+}
+
+#header>caption {
+    width: *;
+}
+
+button.window {
+    display: block;
+    size: 24dip;
+    margin: 0;
+    padding: 0;
+    background: 50% 50% no-repeat;
+    background-size: 24dip;
+}
+
+button.window:hover {
+    background-color: #B7B7B7;
+}
+
+button.window#minimize {
+    background-image: url(icon-minimize.png);
+}
+
+button.window#maximize {
+    background-image: url(icon-maximize.png);
+}
+
+button.window#maximize.restore {
+    background-image: url(icon-restore.png);
+}
+
+button.window#close {
+    background-image: url(icon-close.png);
+}
+
+#main {
+    width: 600dip;
+    height: 400dip;
+    background: white;
+}
+
+body {
+    flow: vertical;
+    padding: 0;
+    margin: 0;
+    transform: scale(0);
+}
+
+body.shown {
+    transform: scale(1);
+    transition: transform(back-out, 600ms);
+    visibility: visible;
+}
+
+body.hidden {
+    transform: scale(0);
+    transition: transform(linear, 600ms);
+    visibility: hidden;
+}
+
+p#copyright {
+    position: absolute;
+    bottom: 2px;
+    text-align: center;
+    width: 100%;
+    margin:0px;
+}
+
+#sidebar {
+    width: 20%;
+    height: 400dip;
+    box-shadow: 0px 0px 1px 1px #000;
+    z-index: 6;
+    float: left;
+}
+
+#sidebar.fix {
+    width: 100%;
+    height: 400dip;
+}
+
+#sidebar>p {
+    padding: 20px;
+}
+
+#sidebar>p:hover {
+    background-color: #B7B7B7;
+}
+
+#sidebar>p:active {
+    background-color: #979797;
+}
+
+#sidebar>p:focus {
+    background-color: #B7B7B7;
+}
+
+#sidebar>p:current {
+    background-color: #B7B7B7;
+}
+
+#optionsContent {
+    width: 80%;
+    height: 400dip;
+    box-shadow: 0px 0px 1px 1px #000;
+    z-index: 6;
+    float: left;
+}
+
+#cataTitle {
+    padding-left: 20px;
+}
+
+section#optionsContentStack {
+    flow: stack;
+    overflow: hidden;
+    /* h-smile specific */
+    border: none;
+    padding: 10px;
+    padding-bottom: 18px;
+    padding-top: 0;
+    height: *;
+}
+
+@set v-scroll-indicator {
+
+        .slider 
+        {
+            background:gray;
+            margin:0;
+        }
+
+        .base {
+            width:5dip; 
+        }
+    
+    }
+section#optionsContentStack>section {
+    size: *;
+    visibility: hidden;
+    horizontal-align: center;
+    overflow-y: scroll-indicator;
+    vertical-scrollbar:v-scroll-indicator;
+}
+
+section#optionsContentStack>section>h1 {
+    margin: 0;
+}
+
+section#optionsContentStack>section:current {
+    z-index: 1;
+    visibility: visible;
+    horizontal-align: center;
+    background: rgba(red, green, blue, 0.5);
+}
+
+section#optionsContentStack>section[sliding=top]
+
+/* from top to bottom */
+{
+    opacity: 0;
+    transform: translate(0, -100%);
+}
+
+section#optionsContentStack>section[sliding=bottom]
+
+/* from bottom to top*/
+{
+    opacity: 0;
+    transform: translate(0, 100%);
+}
+
+section#optionsContentStack>section[sliding=run] {
+    opacity: 1.0;
+    transform: translate(0%, 0);
+    transition: transform(cubic-out, 600ms, none) opacity(linear, 600ms, none);
+}
+
+section#optionsContentStack>section:animating {
+    z-index: 2; // it is always on top of current
+    visibility: visible;
+}
+
+.StatusTitle{
+  display:block;
+  float: left;
+  padding:3px;
+  font-size: 12px;
+  font-weight: bold;
+  color:#E8E8E8;
+  text-align:center;
+  background-color:#555555;
+}
+.StatusContent{
+  display:block;
+  float: left;
+  margin-right:5px;
+  padding:3px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.StatusTitle:hover,.StatusContent:hover{transform: scale(0.8);transition: transform(cubic-out, 600ms, none);}
 .themes{
     padding-top: 16px;
 }
@@ -141,4 +358,31 @@ a.button:hover{
 }
 a.button:active{
     transform: scale(0.9);
+}
+#announcement_content{
+    padding: 10px;
+}
+.proBarContainer{
+    display: inline-block;
+    width:200px;
+    height: 20px;
+    margin: auto auto;
+    background-color: #dcdcde;
+    box-shadow: 0px 0px 0px 2px #184785;
+    transition: box-shadow linear 1s;
+    text-align: left;
+}
+.proBarContainer:hover{
+    display: inline-block;
+    width:200px;
+    height: 20px;
+    background-color: #dcdcde;
+    box-shadow: 0px 0px 5px 2px #184785; 
+}
+.proBar{
+    display: inline-block;
+    width:0%;
+    height:100%;
+    background-color: #2271b1;
+    transition: width linear 1s;
 }

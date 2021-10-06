@@ -1,0 +1,6 @@
+function theme_inited()
+{
+    stdout.println("Theme inited!!");
+    stdout.println("Theme Url:",self.url());
+    updateTime();
+}

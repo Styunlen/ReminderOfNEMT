@@ -10,17 +10,14 @@
                 background: transparent;
                 text-align: center;
                 font-family: unset;
-                width: 260px;
-                height: auto;
-                margin:0;
-                padding: 0;
             }
             .container{
-                display:  block;
                 margin: auto auto;
                 border-radius: 8px;
                 box-shadow: 0px 0px 6px 2px #41B1E1;
                 background: #fff;
+                width: 260px;
+                height: auto;
                 color: #000;
                 text-align: center;
             }
@@ -66,9 +63,13 @@
     <body>
         <div class="container">
             <h2 id="title">高考倒计时</h2>
+            <!-- 外标签不一定需要是span，但id需要填写day -->
+            <!-- Element Node can be replaced with any other element,but id should be 'day'. -->
             <span id="day">0</span>
             <span id="hour">0</span>
             <span id="min">0</span>
+            <!-- id可以简写 -->
+            <!-- id can be abbreviated -->
             <span #sec>0</span>
             <div id="dateNow"></div>
         </div>

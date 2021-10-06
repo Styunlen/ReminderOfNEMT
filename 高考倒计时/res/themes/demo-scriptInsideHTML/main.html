@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>DemoTheme</title>
+        <meta charset="UTF-8">
+        <style>
+            *{margin:0;padding:0;}
+            html {
+                /*background: transparent; transparent是透明窗口，背景会穿透*/
+                background: transparent;
+                text-align: center;
+                font-family: unset;
+            }
+            .container{
+                margin: auto auto;
+                border-radius: 8px;
+                box-shadow: 0px 0px 6px 2px #41B1E1;
+                background: #fff;
+                width: 260px;
+                height: auto;
+                color: #000;
+                text-align: center;
+            }
+            #title{
+                margin:0;
+                color: #fff;
+                padding: 10px;
+                background-color: #009ad6;
+                border-radius: inherit;
+                border-bottom-right-radius: 0px;
+                border-bottom-left-radius: 0px;
+            }
+            #day{
+                display: block;
+                font-size: 76px;
+                font-weight: bold;
+                margin: 5px;
+            }
+            #dateNow{
+                color:#78797a;
+                padding: 8px;
+                background-color: #F0F0F0;
+                border-radius: inherit;
+                border-top-right-radius: 0px;
+                border-top-left-radius: 0px;
+            }
+            #hour,#min,#sec{display: none;}
+        </style>
+        <script type="text/tiscript">          
+            //Essential function for initialization of theme
+            function theme_inited()
+            {
+                //Function from ReminderAPI for time display
+                $(#dateNow).text = Date.now().toString("%F %a.");
+                updateTime();
+            }
+        </script>
+        <script type="text/javascript">
+            //Essential function for initialization of theme
+            window.onload = function(){document.querySelector("#dateNow").textContent = new Date().toLocaleDateString();}
+        </script>
+    </head>
+    <body>
+        <strong><h1>HTMLWithScriptsInside</h1></strong>
+        <div class="container">
+            <h2 id="title">高考倒计时</h2>
+            <!-- 外标签不一定需要是span，但id需要填写day -->
+            <!-- Element Node can be replaced with any other element,but id should be 'day'. -->
+            <span id="day">0</span>
+            <span id="hour">0</span>
+            <span id="min">0</span>
+            <!-- id可以简写 -->
+            <!-- id can be abbreviated -->
+            <span #sec>0</span>
+            <div id="dateNow"></div>
+        </div>
+    </body>
+</html>

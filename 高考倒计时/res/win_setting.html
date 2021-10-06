@@ -4,220 +4,12 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="shortcuticon" href="./favicon.ico" />
-    <style>
-        html {
-            font: system;
-            background-color: transparent;
-            overflow: visible;
-        }
-
-        body {
-            overflow: visible;
-        }
-
-        #header {
-            width: 600dip;
-            line-height: 1.6em;
-            background: window-accent-color;
-            flow: horizontal;
-        }
-
-        #header>caption {
-            width: *;
-        }
-
-        button.window {
-            display: block;
-            size: 24dip;
-            margin: 0;
-            padding: 0;
-            background: 50% 50% no-repeat;
-            background-size: 24dip;
-        }
-
-        button.window:hover {
-            background-color: #B7B7B7;
-        }
-
-        button.window#minimize {
-            background-image: url(icon-minimize.png);
-        }
-
-        button.window#maximize {
-            background-image: url(icon-maximize.png);
-        }
-
-        button.window#maximize.restore {
-            background-image: url(icon-restore.png);
-        }
-
-        button.window#close {
-            background-image: url(icon-close.png);
-        }
-
-        #main {
-            width: 600dip;
-            height: 400dip;
-            background: white;
-        }
-
-        body {
-            flow: vertical;
-            padding: 0;
-            margin: 0;
-            transform: scale(0);
-        }
-
-        body.shown {
-            transform: scale(1);
-            transition: transform(back-out, 600ms);
-            visibility: visible;
-        }
-
-        body.hidden {
-            transform: scale(0);
-            transition: transform(linear, 600ms);
-            visibility: hidden;
-        }
-
-        p#copyright {
-            position: absolute;
-            bottom: 2px;
-            text-align: center;
-            width: 100%;
-            margin:0px;
-        }
-
-        #sidebar {
-            width: 20%;
-            height: 400dip;
-            box-shadow: 0px 0px 1px 1px #000;
-            z-index: 6;
-            float: left;
-        }
-
-        #sidebar.fix {
-            width: 100%;
-            height: 400dip;
-        }
-
-        #sidebar>p {
-            padding: 20px;
-        }
-
-        #sidebar>p:hover {
-            background-color: #B7B7B7;
-        }
-
-        #sidebar>p:active {
-            background-color: #979797;
-        }
-
-        #sidebar>p:focus {
-            background-color: #B7B7B7;
-        }
-
-        #sidebar>p:current {
-            background-color: #B7B7B7;
-        }
-
-        #optionsContent {
-            width: 80%;
-            height: 400dip;
-            box-shadow: 0px 0px 1px 1px #000;
-            z-index: 6;
-            float: left;
-        }
-
-        #cataTitle {
-            padding-left: 20px;
-        }
-
-        section#optionsContentStack {
-            flow: stack;
-            overflow: hidden;
-            /* h-smile specific */
-            border: none;
-            padding: 10px;
-            padding-bottom: 18px;
-            padding-top: 0;
-            height: *;
-        }
-
-        section#optionsContentStack>section {
-            size: *;
-            visibility: hidden;
-            overflow:auto;
-        }
-
-        section#optionsContentStack>section>h1 {
-            margin: 0;
-        }
-
-        section#optionsContentStack>section:current {
-            z-index: 1;
-            visibility: visible;
-            horizontal-align: center;
-            background: rgba(red, green, blue, 0.5);
-        }
-
-        section#optionsContentStack>section[sliding=top]
-
-        /* from top to bottom */
-        {
-            opacity: 0;
-            transform: translate(0, -100%);
-        }
-
-        section#optionsContentStack>section[sliding=bottom]
-
-        /* from bottom to top*/
-        {
-            opacity: 0;
-            transform: translate(0, 100%);
-        }
-
-        section#optionsContentStack>section[sliding=run] {
-            opacity: 1.0;
-            transform: translate(0%, 0);
-            transition: transform(cubic-out, 600ms, none) opacity(linear, 600ms, none);
-        }
-
-        section#optionsContentStack>section:animating {
-            z-index: 2; // it is always on top of current
-            visibility: visible;
-        }
-
-        .StatusTitle{
-          display:block;
-          float: left;
-          padding:3px;
-          font-size: 12px;
-          font-weight: bold;
-          color:#E8E8E8;
-          text-align:center;
-          background-color:#555555;
-      }
-      .StatusContent{
-          display:block;
-          float: left;
-          margin-right:5px;
-          padding:3px;
-          font-size: 12px;
-          font-weight: bold;
-      }
-      .StatusTitle:hover,.StatusContent:hover{transform: scale(0.8);transition: transform(cubic-out, 600ms, none);}
-    </style>
-    <link rel="stylesheet" type="text/css" href="./test.css">
-    <style src="./style_debug.css" />
+    <link rel="stylesheet" type="text/css" href="./win_setting.css">
     <script type="text/tiscript">
         include "win_setting.tis";
         include "hitokoto.tis";
+        include "announcement.tis";
         const body = $(body);
-        function self.ready() {
-            body.timer(1, ::this.attributes.addClass("shown"));
-        }
-
 
         function wizard(stack)
         {
@@ -314,6 +106,7 @@
             (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
             (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
             self.timer(100ms, getHitokoto);
+            getAnnouncement();
         }
         $(#calendar).on("change",function(){
             stdout.println("时间更改为", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
@@ -368,6 +161,7 @@
             <p .title>时间</p>
             <p .title>关于</p>
             <p .title>一言</p>
+            <p .title>公告</p>
             <div .fix></div>
         </section>
         <section #optionsContent>
@@ -454,7 +248,7 @@
                     <div style="position: relative;left:45dip;">
                         <div class="StatusTitle">Version</div>
                         <div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">
-                            v2.2.5 build-526-debug-α
+                            v2.5.5 build-594-debug-α
                         </div>
                         <div class="StatusTitle">Sciter</div>
                         <div class="StatusContent" #EngineVer style="color: #FAFDF2;background-color: #B2D742;"></div>
@@ -464,12 +258,24 @@
                         </div>
                     </div>
                 </section>
-                <section style="overflow-y: scroll;">
-                    <p style="text-align: center;">感谢一言提供的API: <a href="https://developer.hitokoto.cn/sentence/">https://developer.hitokoto.cn/sentence/</a></p>
+                <section>
                     <a class="button button-primary hitokoto_getMore" style="margin: auto auto;">获取更多</a>
+                    <p style="text-align: center;">感谢一言提供的API: <a href="https://developer.hitokoto.cn/sentence/">https://developer.hitokoto.cn/sentence/</a></p>
+                    <p style="text-align: center;" id="hitokoto_getting">
+                        <span class="proBarContainer"><span class="proBar"></span></span>
+                    </p>
+                    
                     <ol id="hitokoto">
-                        <p id="hitokoto_getting">获取中...</p>
                     </ol>
+                </section>
+
+                <section>
+                    <a class="button button-primary announcement_retry" style="margin: auto auto;">刷新</a>
+                    <p id="announcement_getting">获取中...</p>
+                    <center><p id="announcement_uptime"></p></center>
+                    <div id="announcement_content">
+                        
+                    </div>
                 </section>
             </section>
         </section>

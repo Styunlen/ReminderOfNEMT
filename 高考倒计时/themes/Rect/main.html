@@ -1,0 +1,69 @@
+﻿<html>
+<head #MainHead>
+    <title>高考倒计时</title>
+    <!-- <link href="./style-circle.css" rel="stylesheet" type="text/css"> -->
+    <link rel="shortcuticon" href="./favicon.ico" />
+    <meta charset="UTF-8"/>
+    <style>
+        html {
+            background: transparent;
+            overflow: visible;
+        }
+        body {
+          size: 300dip;
+          overflow: visible;
+        }
+
+        body>p {
+            text-align: center;
+            color: black;
+        }
+
+        body>p:hover {
+            text-align: center;
+            color: white;
+            transition: color(linear, 3s);
+        }
+
+        body>button {
+            display: block;
+            margin: 8dip *;
+            font-rendering-mode: sub-pixel;
+            /*for better font scaling*/
+        }
+
+        body>select {
+            display: block;
+            margin: 8dip *;
+            font-rendering-mode: sub-pixel;
+            /*for better font scaling*/
+        }
+
+        body>select>popup {
+            font-rendering-mode: snap-pixel;
+        }
+
+    </style>
+    <!-- 用于自定义主题 -->
+    <style id="current-theme" src="style_rect.css" />
+
+    <script type="text/tiscript">
+      include "scripts.tis";
+    </script>
+</head>
+<body>
+    <section class="main">
+      <h1 #title>距离高考</h1>
+      <div id="timeRemaining">
+        
+        <div id="timeRemaining_date">
+          <span id="label_now">现在</span><span id="day"></span><span id="label_day">DAYS</span>
+        </div>
+        <div id="timeRemaining_time">
+          <span id="hour"></span> 小时 <span id="min"></span> 分 <span id="sec"></span> 秒
+        </div>
+      </div>
+      
+    </section>
+</body>
+</html>

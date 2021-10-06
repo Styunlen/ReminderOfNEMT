@@ -1,0 +1,53 @@
+/***************
+   自定义方法区
+****************/
+function announcementReceived(data,status) {
+    var el = $(#announcement_content); //显示公告内容的元素
+    var elTime = $(#announcement_uptime);
+    if(el==#undefined) return;
+    $(#announcement_getting).style#display="none";
+    try{
+        var announcement = JSON.parse(data);
+        el.html = announcement.body.toString();
+        var updateTime = new Date(announcement.updated_at);
+        view.G_NA_saveThemeOption("App","LastAnnouncementUpdate",announcement.updated_at);
+        elTime.text = "更新时间: " + updateTime.toLocaleString();       
+    }catch(ex){
+        if(el==#undefined) return;
+        el.text = "加载失败" + ex.message + ex.stackTrace;
+    }
+}
+function announcementReceivedError(err,status) {
+    var el = $(#announcement_content);
+    if(el==#undefined) return;
+    $(#announcement_getting).style#display="none";
+    var errTime = new Date().toString("%T");
+    stdout.printf("[%s]Get announcement failed.Error:%s,Status:%v\r\n",errTime,err.message,status);
+    var errMsg = String.printf("[%s]获取公告失败。错误代码:<a href=\"https://docs.microsoft.com/zh-CN/windows/win32/wininet/wininet-errors\">%s (单击以查阅错误代码的详细解释)</a>,HTTP状态码:%v",errTime,err.message,status);
+    errMsg += String.printf("<br\>[%s]Get announcement failed.Error:<a href=\"https://docs.microsoft.com/zh-CN/windows/win32/wininet/wininet-errors\">%s (Click for a detailed explanation of the error code)</a>,Status:%v",errTime,err.message,status);
+    el.html = errMsg;
+}
+
+function getAnnouncement() {
+    //stdout.println("getCount:",iannouncementGetCount);
+    var el = $(#announcement_content);
+    if(el==#undefined) return;
+    $(#announcement_getting).style#display="block";
+    view.request({
+        type: #get,
+        url:  "https://api.github.com/repos/Styunlen/ReminderOfNEMT/issues/3",
+        success: announcementReceived,
+        error:   announcementReceivedError,
+        output:  #string,
+        noCache: true,
+    });
+}
+
+/***************
+ 窗口事件处理区
+****************/
+event click $(.announcement_retry){
+    getAnnouncement();
+}
+
+stdout.println("Announcement scripts loaded!");
