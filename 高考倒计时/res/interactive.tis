@@ -77,15 +77,22 @@ function IA_loadTheme(themeName)
     }
 }
 
-//加载完主题后，需要及时调整窗体大小
+//加载完主题后，需要及时调整窗口
 function view_Update()
-{   
+{
+    /*
+        将主题标题添加进高考倒计时的标题中
+    */
     if( currentThemeObj.themeDoc )
     {
         var title = currentThemeObj.themeDoc.$(head>title);
         view.windowCaption = "高考倒计时——" + title.text;
         stdout.println("Add theme title to windowCaption:",title.text);
     }
+
+    /*
+        调整窗口大小，恢复窗口位置
+    */
     var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
     /*var (tw, th) = currentThemeObj.themeDoc?currentThemeObj.themeDoc.$(body).box(#dimension):(0,0); //theme window size
     stdout.println(tw,th);
@@ -98,7 +105,7 @@ function view_Update()
         $(#theme_view).style#width = String.printf("%d",w);
         $(#theme_view).style#height = String.printf("%d",h);
     }
-    stdout.println(w,h);
+    stdout.println("w,h: ",w,h);
     w += w / 2;
     h += h / 2;
     h += 108;//增高窗口来容纳设置按钮
@@ -128,8 +135,16 @@ function view_Update()
     }
     stdout.printf("sx:%d,sy:%d,sw:%d,sh:%d,w:%d,h:%d\n",sx,sy,sw,sh,w,h);
     stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
+    
+    /*
+        监听窗口事件
+        显示窗口图标
+        重置部分样式
+        最后激活窗口启动动画
+    */
     view.windowIcon = "./favicon.ico";
     stdout.println(checkGfx());
+    $(body).style#overflow = "visible";
     $(body).attributes.addClass("shown");
     view.on("statechange", onWinStateChange);
     view.on("closing", onWinClosing);

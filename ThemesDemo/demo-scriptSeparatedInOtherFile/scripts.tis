@@ -1,0 +1,6 @@
+function theme_inited()
+{
+    //Function from ReminderAPI for time display
+    $(#dateNow).text = Date.now().toString("%F %a.");
+    updateTime();
+}

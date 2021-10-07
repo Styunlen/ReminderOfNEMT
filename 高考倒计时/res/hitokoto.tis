@@ -34,6 +34,7 @@ function hitokotoReceived(data,status) {
 }
 function hitokotoReceivedError(err,status) {
     iHitokotoGetCount++;
+    if(status == 514) return; //只输出除了514以外的错误(514是Hitokoto Api的访问次数限制导致的，高访问频率就会触发此错误)
     stdout.printf("[%s]Get hitokoto failed.Error,Status:%v\r\n",new Date().toString("%T"),status);
     //$(#error).$content(Error accessing the site, HTTP status: <var>{status}</var>);
     //whenDone.call(this,"error");

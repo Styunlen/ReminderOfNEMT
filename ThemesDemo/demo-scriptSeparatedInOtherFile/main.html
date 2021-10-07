@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>DemoTheme</title>
+        <meta charset="UTF-8">
+        <style>
+            *{margin:0;padding:0;}
+            html {
+                /*background: transparent; transparent是透明窗口，背景会穿透*/
+                background: transparent;
+                overflow: visible;
+                text-align: center;
+                font-family: unset;
+            }
+        </style>
+        <script type="text/tiscript">          
+            //Essential function for initialization of theme was defined in scripts.tis
+            include self.url("scripts.tis");
+            
+        </script>
+        <script type="text/javascript">
+            //Essential function for initialization of theme
+            window.onload = function(){document.querySelector("#dateNow").textContent = new Date().toLocaleDateString();}
+        </script>
+    </head>
+    <body>
+        <strong><h1>HTMLWithScriptsInside</h1></strong>
+        <div class="container">
+            <h2 id="title">高考倒计时</h2>
+            <!-- 外标签不一定需要是span，但id需要填写day -->
+            <!-- Element Node can be replaced with any other element,but id should be 'day'. -->
+            <span id="day">5</span>
+            <span id="hour"></span>
+            <span id="min"></span>
+            <!-- id可以简写 -->
+            <!-- id can be abbreviated -->
+            <span #sec></span>
+            <div id="dateNow"></div>
+        </div>
+    </body>
+</html>

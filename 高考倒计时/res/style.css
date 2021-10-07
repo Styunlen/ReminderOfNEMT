@@ -1,12 +1,15 @@
 html {
     size: *;
     background: transparent;
-    overflow: visible!important;
+    overflow: visible;
+    /* 保证窗口大小不够时，设置按钮也能正常显示 */
 }
 body {
     transform: scale(0);
     transition: transform(back-out, 600ms);
-    overflow: visible!important;
+    overflow: scroll;
+    /* 保证窗口大小不够时，设置按钮也能正常显示 */
+    /* 当主题加载成功后，会重置该属性，隐藏额外的进度条 */
 }
 body.shown {
     transform: scale(1);

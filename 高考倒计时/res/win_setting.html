@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+    <title>高考倒计时设置</title>
     <link rel="shortcuticon" href="./favicon.ico" />
     <link rel="stylesheet" type="text/css" href="./win_setting.css">
     <script type="text/tiscript">
@@ -71,6 +72,7 @@
 
         function self.ready()
         {
+            view.windowIcon = "./favicon.ico";
             body.timer(1, ::this.attributes.addClass("shown"));
             var currentTheme = NA_getThemeName();//"Rect";
             stdout.println("Current theme via NA_getThemeName(): ",NA_getThemeName());
@@ -105,8 +107,15 @@
             $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
             (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
             (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
-            self.timer(100ms, getHitokoto);
+            self.timer(1000ms, getHitokoto);
             getAnnouncement();
+            var startIndex = view.parameters.startIndex;
+            if(startIndex != #undefined)
+            {
+                if(startIndex < stack.length) stack[startIndex].state.current = true;
+                var title = $$(.title);
+                if(startIndex < title.length) title[startIndex].state.current = true;          
+            }
         }
         $(#calendar).on("change",function(){
             stdout.println("时间更改为", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
@@ -124,10 +133,13 @@
                 if(options.theme != NA_getThemeName())
                 {
                     NA_setThemeName(options.theme);//$(#themes).value.themeName);
+                    NA_setPos("Center");
                     var ret = view.msgbox(#question,"是否现在就激活新主题","提示",[ {id:#yes, text:"好的"}, {id:#no, text:"返回"} ] );
                     if(ret == #yes)
                     {
+                        NA_setPos("Center");
                         view.parameters.hostview.root.ns.IA_loadTheme(NA_getThemeName());
+                        view.msgbox(#information,"激活主题成功！","提示")
                     }
                 }            
                 stdout.println("Succeed");           
@@ -248,7 +260,7 @@
                     <div style="position: relative;left:45dip;">
                         <div class="StatusTitle">Version</div>
                         <div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">
-                            v2.5.5 build-594-debug-α
+                            v2.7.5 build-654-debug-α
                         </div>
                         <div class="StatusTitle">Sciter</div>
                         <div class="StatusContent" #EngineVer style="color: #FAFDF2;background-color: #B2D742;"></div>

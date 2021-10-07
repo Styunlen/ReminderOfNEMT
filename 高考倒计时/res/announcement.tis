@@ -33,11 +33,22 @@ function getAnnouncement() {
     var el = $(#announcement_content);
     if(el==#undefined) return;
     $(#announcement_getting).style#display="block";
+    //启动时，检查新公告的函数已经获取了一遍新公告，
+    //如果有新公告，会弹出弹窗询问是否打开设置界面来查看新公告
+    //而如果单击了打开，主页面会将公告内容传给设置页面
+    //因此直接显示公告即可，无需再次获取一遍公告
+    if(view.parameters.startIndex==4) 
+    {
+        announcementReceived(view.parameters.announcement, 200);
+        return;
+    }
+    //添加token，提高每小时可访问api的次数(无token的访问会被限制)
     view.request({
         type: #get,
         url:  "https://api.github.com/repos/Styunlen/ReminderOfNEMT/issues/3",
         success: announcementReceived,
         error:   announcementReceivedError,
+        headers:{Authorization: "token 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"},
         output:  #string,
         noCache: true,
     });

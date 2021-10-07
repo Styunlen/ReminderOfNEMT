@@ -8,7 +8,7 @@
 
 int uimain(std::function<int()> run) {
 	SciterSetOption(NULL, SCITER_SET_DEBUG_MODE, TRUE);
-
+	
 	sciter::archive::instance().open(aux::elements_of(resources)); // bind resources[] (defined in "resources.cpp") with the archive
 	MainWindow *pwin = new MainWindow();
 	SciterSetOption(pwin->get_hwnd(), SCITER_ALPHA_WINDOW, TRUE);

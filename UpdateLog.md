@@ -23,34 +23,54 @@
 > Bug的序号是依次递增的，1号Bug则被标记为“#1 Bug描述”
 
 <div style="margin-bottom:20px;">
-    <p style="border:1px solid #aad9ff;padding:10px;background:#ddf5ff;margin:0;border-top-right-radius:5px;border-top-left-radius:5px;">
-        [<strong>置顶</strong>] 公告功能上线啦！<span style="padding-left:20px;color:#57606a;">• 2021/10/6</span>
+    <p
+        style="border:1px solid #aad9ff;padding:10px;background:#ddf5ff;margin:0;border-top-right-radius:5px;border-top-left-radius:5px;">
+        [<strong>置顶</strong>] 公告功能上线啦！<span style="margin-left:20px;color:#57606a;"> • 2021/10/6</span>
     </p>
-    <p style="border:1px solid #aad9ff;border-top:0px;padding:10px;margin:0;border-bottom-right-radius:5px;border-bottom-left-radius:5px;">
-一直心心念念要添加的功能，终于实现啦！23333
+    <p
+        style="border:1px solid #aad9ff;border-top:0px;padding:10px;margin:0;border-bottom-right-radius:5px;border-bottom-left-radius:5px;">
+        一直心心念念要添加的功能，终于实现啦！23333
     </p>
 </div>
 <div style="margin-bottom:20px;">
-    <p style="border:1px solid #aad9ff;padding:10px;background:#ddf5ff;margin:0;border-top-right-radius:5px;border-top-left-radius:5px;">
-        下一个正式版本正在做和已经完成的内容<span style="padding-left:20px;color:#57606a;">• 2021/10/6</span>
+    <p
+        style="border:1px solid #aad9ff;padding:10px;background:#ddf5ff;margin:0;border-top-right-radius:5px;border-top-left-radius:5px;">
+        下一个正式版本正在做和已经完成的内容<span style="margin-left:20px;color:#57606a;"> • 2021/10/6</span>
     </p>
-    <p style="border:1px solid #aad9ff;border-top:0px;padding:10px;margin:0;border-bottom-right-radius:5px;border-bottom-left-radius:5px;">
-        <input type="checkbox" disabled="disabled"/>[添加]自动更新<br/>
-        <input type="checkbox" disabled="disabled"/>[添加]设置页中可以更改主题自定义选项<br/>
-        <input type="checkbox" disabled="disabled"/>[添加]设置页中可以选择要获取的一言类型<br/>
-        <input type="checkbox" disabled="disabled"/>[添加]有新公告时，弹窗提醒<br/>
-        <input type="checkbox" disabled="disabled"/>[优化]修改时间机制，在设置页中添加自动获取时间选项<br/>
-        <input type="checkbox" checked="checked" disabled="disabled"/>[添加]主题API，方便自定义或自己制作主题，同时方便模块化设计主题<br/>
-        <input type="checkbox" checked="checked" disabled="disabled"/>[添加]设置页面自动加载已安装的主题<br/>
-        <input type="checkbox" checked="checked" disabled="disabled"/>[优化]设置页面UI重构<br/>
-        <input type="checkbox" checked="checked" disabled="disabled"/>[添加]设置页面启动动画<br/>
-        <input type="checkbox" checked="checked" disabled="disabled"/>[添加]联网公告，方便获取软件更新动态<br/>
-        <input type="checkbox" checked="checked" disabled="disabled"/>[添加]一言<br/>
-        <input type="checkbox" checked="checked" disabled="disabled"/>[修复]修复倒计时在0秒时卡住，然后直接跳到58秒的BUG<br/>
-        <input type="checkbox" checked="checked" disabled="disabled"/>[修复]修复设置界面中时间选项内的日历在切换动画中不居中BUG<br/>
-        <input type="checkbox" checked="checked" disabled="disabled"/>[修复]修复设置界面选项切换动画的闪烁问题<br/>
+    <p
+        style="border:1px solid #aad9ff;border-top:0px;padding:10px;margin:0;border-bottom-right-radius:5px;border-bottom-left-radius:5px;">
+        <input type="checkbox" disabled="disabled" />[添加]自动更新<br />
+        <input type="checkbox" disabled="disabled" />[添加]设置页中可以更改主题自定义选项<br />
+        <input type="checkbox" disabled="disabled" />[优化]修改时间机制，在设置页中添加自动获取时间选项<br />
+        <input type="checkbox" disabled="disabled" />[添加]设置页中可以选择要获取的一言类型<br />
+        <input type="checkbox" disabled="disabled" />[添加]一言支持在线获取和离线获取<br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[优化]提高了设置页面的启动流畅度 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/7</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[添加]有新公告时，弹窗提醒 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/7</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[修复]设置界面中的选项在切换动画结束时的闪烁问题 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/6</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[修复]设置界面中的时间选项内的日历在切换动画时不居中的BUG <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/6</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[添加]联网公告，方便获取软件更新动态 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/6</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[添加]关闭设置页面后可动态激活新主题 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/6</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[添加]一言 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/1</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[添加]主题浏览器，打开设置页面时自动加载已安装的主题 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/9/30</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[优化]设置页面UI重构 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/9/30</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[添加]设置页面启动动画 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/9/21</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[添加]主题API，方便自定义或自己制作主题，同时方便模块化设计主题 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/9/6</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[修复]倒计时在0秒时卡住，然后直接跳到58秒的BUG <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/8/22</span><br />
     </p>
 </div>
+
 
 
 v1.2.2 build-95
