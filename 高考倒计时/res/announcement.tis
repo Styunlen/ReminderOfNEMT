@@ -1,4 +1,9 @@
 /***************
+ 变量声明定义区
+****************/
+var announcement_url = "https://api.github.com/repos/Styunlen/ReminderOfNEMT/issues/3";
+
+/***************
    自定义方法区
 ****************/
 function announcementReceived(data,status) {
@@ -10,7 +15,7 @@ function announcementReceived(data,status) {
         var announcement = JSON.parse(data);
         el.html = announcement.body.toString();
         var updateTime = new Date(announcement.updated_at);
-        view.G_NA_saveThemeOption("App","LastAnnouncementUpdate",announcement.updated_at);
+        view.G_NA_setAppOption("LastAnnouncementUpdate",announcement.updated_at);
         elTime.text = "更新时间: " + updateTime.toLocaleString();       
     }catch(ex){
         if(el==#undefined) return;
@@ -45,10 +50,9 @@ function getAnnouncement() {
     //添加token，提高每小时可访问api的次数(无token的访问会被限制)
     view.request({
         type: #get,
-        url:  "https://api.github.com/repos/Styunlen/ReminderOfNEMT/issues/3",
+        url:  announcement_url,
         success: announcementReceived,
         error:   announcementReceivedError,
-        headers:{Authorization: "token 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"},
         output:  #string,
         noCache: true,
     });

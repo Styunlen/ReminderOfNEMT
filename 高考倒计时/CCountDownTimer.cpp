@@ -9,6 +9,7 @@
 	全局变量定义区
 ********************/
 MainWindow *pwin = nullptr;
+sciter::debug_output_console *pconsole = nullptr;
 string g_iniPath = getCurrentWorkDir() + "\\options.ini";
 string g_themeOptionPath = getCurrentWorkDir() + "\\theme.ini";
 
@@ -28,6 +29,36 @@ wstring ListDirs(){
 	{
 		ret = L"List dirs with exception: ";
 		ret+= CharToWchar(WsGetErrorInfo());
+		debugLogs(ret);
+		return L"NULL";
+	}
+
+	// List all the files in the directory with some info about them.
+	do
+	{
+		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		{
+			if (!StrCmpW(ffd.cFileName, L".") || !StrCmpW(ffd.cFileName, L".."))
+				continue;
+			ret += L"\"";
+			ret += ffd.cFileName;
+			ret += L"\",";
+		}
+	} while (FindNextFile(hFind, &ffd) != 0);
+	FindClose(hFind);
+	ret += L"]";
+	return ret;
+}
+wstring ListFiles() {
+	WIN32_FIND_DATA ffd;
+	LARGE_INTEGER filesize;
+	string themesDir = getCurrentWorkDir() + "\\themes\\*";
+	static wstring ret = L"[";
+	HANDLE hFind = FindFirstFile(CharToWchar(themesDir.c_str()).c_str(), &ffd);
+	if (INVALID_HANDLE_VALUE == hFind)
+	{
+		ret = L"List dirs with exception: ";
+		ret += CharToWchar(WsGetErrorInfo());
 		debugLogs(ret);
 		return L"NULL";
 	}
@@ -113,11 +144,11 @@ string	getCurrentWorkDir()
 	return ApplicationPath;
 }
 
-string getProfileOptions(const char* appName, const char* keyName, string fileLocation)
+string getProfileOptions(string appName, string keyName, string fileLocation)
 {
 	char * temp = new char[513];
 	//WritePrivateProfileString("UserInfo", "WindowStyle", "Circle", g_iniPath.c_str());
-	GetPrivateProfileStringA(appName, keyName, "NULL", temp, 512, fileLocation.c_str());
+	GetPrivateProfileStringA(appName.c_str(), keyName.c_str(), "NULL", temp, 512, fileLocation.c_str());
 	string res = temp;
 	delete[] temp;
 	if (res == "NULL")
@@ -125,11 +156,11 @@ string getProfileOptions(const char* appName, const char* keyName, string fileLo
 	return res;
 }
 
-wstring getProfileOptions(const wchar_t* appName, const wchar_t* keyName, string fileLocation)
+wstring getProfileOptions(wstring appName, wstring keyName, string fileLocation)
 {
 	wchar_t * temp = new wchar_t[513];
 	//WritePrivateProfileString("UserInfo", "WindowStyle", "Circle", g_iniPath.c_str());
-	GetPrivateProfileStringW(appName, keyName, L"NULL", temp, 512, CharToWchar(fileLocation.c_str()).c_str());
+	GetPrivateProfileStringW(appName.c_str(), keyName.c_str(), L"NULL", temp, 512, CharToWchar(fileLocation.c_str()).c_str());
 	wstring res = temp;
 	delete[] temp;
 	if (res == L"NULL")
@@ -137,30 +168,30 @@ wstring getProfileOptions(const wchar_t* appName, const wchar_t* keyName, string
 	return res;
 }
 
-string setProfileOptions(const char* appName, const char* keyName, string value,string fileLocation)
+string setProfileOptions(string appName, string keyName, string value,string fileLocation)
 {
 	//WritePrivateProfileString("UserInfo", "WindowStyle", "Circle", g_iniPath.c_str());
-	bool ret = WritePrivateProfileStringA(appName, keyName, value.c_str(), fileLocation.c_str());
+	bool ret = WritePrivateProfileStringA(appName.c_str(), keyName.c_str(), value.c_str(), fileLocation.c_str());
 	string res = "SUCCESS";
 	if (!ret)
 		res = WsGetErrorInfo();
 	return res;
 }
 
-string setProfileOptions(const wchar_t* appName, const wchar_t* keyName, wstring value, string fileLocation)
+wstring setProfileOptions(wstring appName, wstring keyName, wstring value, string fileLocation)
 {
 	//WritePrivateProfileString("UserInfo", "WindowStyle", "Circle", g_iniPath.c_str());
-	bool ret = WritePrivateProfileStringW(appName, keyName, value.c_str(), CharToWchar(fileLocation.c_str()).c_str());
-	string res = "SUCCESS";
+	bool ret = WritePrivateProfileStringW(appName.c_str(), keyName.c_str(), value.c_str(), CharToWchar(fileLocation.c_str()).c_str());
+	wstring res = L"SUCCESS";
 	if (!ret)
-		res = WsGetErrorInfo();
+		res = CharToWchar( WsGetErrorInfo() );
 	return res;
 }
 
 bool getDebugMode()
 {
 	bool ret = true;
-	if (getProfileOptions("UserInfo", "DebugIsEnabled") == "0")
+	if (getProfileOptions("AppOptions", "DebugIsEnabled") == "0")
 		ret = false;
 	return ret;
 }
@@ -199,6 +230,25 @@ std::wstring CharToWchar(const char* c, size_t m_encode)
 	return str;
 }
 
+void Color(int a) {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), a);
+}//设置输出颜色
+
+void ResetColor() {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+}
+
+string getFormattedTime(string format)
+{
+	time_t rawtime;
+	struct tm info;
+	char buffer[80];
+	time(&rawtime);
+	localtime_s(&info, &rawtime);
+	strftime(buffer, 80, format.c_str(), &info);
+	return buffer;
+}
+
 /********************
 	类方法定义区
 ********************/
@@ -210,50 +260,30 @@ sciter::value MainWindow::Test() {
 	return sciter::value("NULL");
 }
 
+sciter::value MainWindow::NA_getAppOption(sciter::value optionName)
+	{
+		return sciter::value( getProfileOptions(L"AppOptions", optionName.to_string() ));
+	}
+
+sciter::value MainWindow::NA_setAppOption(sciter::value optionName, sciter::value optionValue)
+	{
+		return sciter::value( setProfileOptions(L"AppOptions", optionName.to_string(), optionValue.to_string()) );
+	}
+
 sciter::value MainWindow::NA_getWorkDir()
 {
 	return sciter::value(getCurrentWorkDir());
 }
 
-sciter::value MainWindow::NA_getThemeName()
-{
-	return sciter::value(getThemeName());
-}
-
-sciter::value MainWindow::NA_getTime()
-{
-	return sciter::value(getTime());
-}
-
-sciter::value MainWindow::NA_setThemeName(sciter::value themeName)
-{
-	return sciter::value(setProfileOptions("UserInfo","Theme", WcharToChar(themeName.to_string().c_str())));
-}
-
-sciter::value MainWindow::NA_setTime(sciter::value time)
-{
-	return sciter::value(setProfileOptions("UserInfo", "Time", WcharToChar(time.to_string().c_str())));
-}
-
-sciter::value MainWindow::NA_getPos()
-{
-	return sciter::value(getProfileOptions("UserInfo", "WindowPos"));
-}
-
-sciter::value MainWindow::NA_setPos(sciter::value pos)
-{
-	return sciter::value(setProfileOptions("UserInfo", "WindowPos", WcharToChar(pos.to_string().c_str())));
-}
-
 sciter::value MainWindow::NA_saveThemeOption(sciter::value themeName, sciter::value optionName, sciter::value optionValue)
 {
 	wstring wstr_optVal = optionValue.to_string().c_str();
-	return sciter::value(setProfileOptions(themeName.to_string().c_str(),optionName.to_string().c_str(), wstr_optVal,g_themeOptionPath));
+	return sciter::value( setProfileOptions(themeName.to_string(),optionName.to_string(), wstr_optVal,g_themeOptionPath));
 }
 
 sciter::value MainWindow::NA_getThemeOption(sciter::value themeName, sciter::value optionName)
 {
-	return sciter::value(getProfileOptions(themeName.to_string().c_str(), optionName.to_string().c_str(), g_themeOptionPath));
+	return sciter::value(getProfileOptions(themeName.to_string(), optionName.to_string(), g_themeOptionPath));
 }
 
 sciter::value MainWindow::NA_getThemeList()
@@ -261,13 +291,55 @@ sciter::value MainWindow::NA_getThemeList()
 	return sciter::value(ListDirs());
 }
 
-void MainWindow::onReady()
+sciter::value MainWindow::NA_getThemeScreenshot()
+{
+	return sciter::value();
+}
+
+sciter::value MainWindow::NA_debugLogs(sciter::value logs, sciter::value logType)
+{
+	//MessageBox(NULL, logs.to_string().c_str(), L"233",NULL);
+	if (pconsole == nullptr) return false;
+	pconsole->printf("\n[");
+	if (logType == "DEBUG")
+	{
+		Color(13);
+		pconsole->printf("DEBUG");
+	}
+	else if (logType == "INFO")
+	{
+		Color(11);
+		pconsole->printf("INFO");
+	}
+	else if (logType == "ERROR")
+	{
+		Color(12);
+		pconsole->printf("ERROR");
+	}
+	else
+	{
+		Color(14);
+		pconsole->printf("WARNING");
+	}
+	ResetColor();
+	Color(7);
+	pconsole->print(", @");
+	pconsole->print( getFormattedTime().c_str() );
+	ResetColor();
+	pconsole->print("] ");
+	pconsole->print(logs.to_string().c_str());
+	pconsole->print("\n");
+	return sciter::value(true);
+}
+
+void MainWindow::showDebugWindow()
 {
 	if (getDebugMode())
 	{
 		static sciter::debug_output_console console; //- uncomment it if you will need console window
-		pwin->call_function("IA_uiDebugMode", sciter::value(true));
-		debugLogs(L"Theme installed:");
-		debugLogs(ListDirs());
+		pconsole = &console;
+		//pwin->call_function("IA_uiDebugMode", sciter::value(true));
+		NA_debugLogs(L"Theme installed:");
+		NA_debugLogs(ListDirs());
 	}
 }

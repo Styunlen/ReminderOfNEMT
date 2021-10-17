@@ -41,19 +41,18 @@ function checkAmUpdate(data,status)
         }
     }catch(ex){
         var errTime = new Date().toString("%T");
-        stdout.printf("[%s]尝试检查新公告失败。错误代码:%s\r\n",errTime,ex.message);   
+        console.err( String.printf("尝试检查新公告失败。错误代码:%s\r\n",ex.message) );   
     }
 }
 
 function checkAmUpdateErr(err,status)
 {
-    var errTime = new Date().toString("%T");
-    stdout.printf("[%s]获取公告失败。错误代码:%s,HTTP状态码:%v\r\n",errTime,err.message,status);
+    console.err( String.printf("获取公告失败。错误代码:%s,HTTP状态码:%v",err.message,status) );
 }
 
 function self.ready() {
     // positioning in the middle of the screen:
-    stdout.println("Current WorkDir: ", NA_getWorkDir());
+        stdout.println("Current WorkDir: ", NA_getWorkDir());
     stdout.println("Current WindowTheme: ", NA_getThemeName());
     body.timer(1s, ::IA_loadTheme(NA_getThemeName()));
     view.request({
@@ -159,5 +158,5 @@ movable($(section#sec_main));
 
 self.on("complete",
 function() {  
-    stdout.println("got complete");
+    console.info("got complete");
 });

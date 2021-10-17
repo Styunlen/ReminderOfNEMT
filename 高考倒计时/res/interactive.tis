@@ -5,7 +5,7 @@
 因为这些位于交互层的代码，是前端与后端之间的桥梁与纽带
 有的与前端交互，直接操作UI，有的则与后端交互，负责数据传输
  */
- 
+
 /***************
  变量声明定义区
 ****************/
@@ -19,13 +19,102 @@ var themeView = $(frame#theme_view);
 /***************
      方法区
 ****************/
+//调用后端输出方法，来输出彩色调试信息
+function NA_debugLogs(logs, logType="DEBUG")
+{
+    var time = new Date().toString("%T");
+    try{
+        view.G_NA_debugLogs(logs,logType)
+        return true;
+    }
+    catch(e)
+    {
+        stdout.printf("[%s, @%s] %s\r\n", logType, time, logs);
+        return false;
+    }
+}
+/*
+printf在调用时不会立即输出(换行)，比如，
+    var (x,y) = view.box(#position,#border,#screen);
+    stdout.printf("Border(x:%d,y:%d)",x,y);
+    (x,y) = view.box(#position,#client,#screen);
+    stdout.printf(",Client(x:%d,y:%d)\n",x,y);
+两句printf是在同一行显示的，所以单独设立一个printf函数
+用于同行输出
+ */
+var console={
+    strFormat:function(textFmt,args){
+        //以下注释基于样例数据: "%s233%d666%Vobj","233",666,{233:233,666:"666"}
+        //stdout.printf("typeof args: %v, args: %v, args.length: %d\n",typeof args, args, args.length);
+        var reg = /%\w/g;
+        var fmts = null;
+        if(typeof(textFmt)==#string)
+        {
+            fmts = textFmt.match(reg); //array: ["%s","%d","%V"]
+        }
+        var splitStr = textFmt.split(reg); //array: ["233" , "666" , "obj"]
+        //stdout.printf("textFmt: %s ,fmts&splitStr: ",textFmt);
+        //stdout.println(fmts,splitStr);
+        var temp = ""; //tempStr for trans var to string according to the format
+        var ret = textFmt;
+        //判断str中是否有格式化字符,如果没有,则简单拼接字符串
+        if(fmts)
+        {  
+            for(var (index,t) in args)//index -> index of t in array args, t -> member in array args
+            {
+                temp = String.printf(fmts[index],args[index]);
+                var fmtPos = ret.search(fmts[index]);
+                ret = ret.splice(fmtPos,2,temp)
+                /*
+                    ret.splice(fmtPos,2,temp) equals to the code below:
+                    ret = ret.slice(0,fmtPos) + temp + ret.slice(fmtPos+2);
+                */
+            }
+            if(args.length < fmts.length)
+            {
+                this.warn("Not enough arguments passed for ");
+                this.warn("note: placeholders and their parameters expect %d variadic arguments, but %d were provided",fmts.length, args.length);
+            }
+            if(args.length > fmts.length)
+            {
+                var len = args.length - fmts.length; //剩余的变量数量
+                for(var i = fmts.length; i < fmts.length + len; i++)
+                {
+                    ret += String.printf(" %V", args[i]);
+                }
+            }
+        }else{
+            ret = String.printf("%V",textFmt);
+            for(var i = 0; i < args.length; i++)
+            {
+                ret += String.printf(" %V", args[i]);
+            }
+        }       
+        //NA_debugLogs(ret);
+        return ret;
+    },
+    log: function(textFmt,args..){
+        NA_debugLogs(this.strFormat(textFmt,args),"DEBUG");
+    },
+    info: function(textFmt,args..){
+        NA_debugLogs(this.strFormat(textFmt,args),"INFO");
+    },
+    warn: function(textFmt,args..){
+        NA_debugLogs(this.strFormat(textFmt,args),"WARNING");
+    },
+    err: function(textFmt,args..){
+        NA_debugLogs(this.strFormat(textFmt,args),"ERROR");
+    }
+};
+//console.log("256");
+//console.log("233",666,{233:233,666:"666"});
 //加载主题文件
 function IA_loadTheme(themeName)
 {
     var currentThemeUrl = "this://app/themes/Simple/main.html"; //The Default Theme is Simple 默认简约主题
     try{       
         currentThemeUrl= "file://" +  NA_getWorkDir() + "/themes/"+themeName+"/main.html";
-        stdout.println("Try To Load Theme :", currentThemeUrl);
+        console.info("Try To Load Theme :", currentThemeUrl);
         themeView.load(currentThemeUrl);
         if(themeView[0] == #undefined)
         {
@@ -35,12 +124,12 @@ function IA_loadTheme(themeName)
         currentThemeObj.themeDoc = themeView[0];
         try{
             currentThemeObj.themeDoc.ns.theme_inited();
-            stdout.println("Theme loaded successfully!!");
+            console.info("Theme loaded successfully!!");
             view_Update();
         }catch(e)
         {
-            stdout.println("Theme inited with exception");
-            stdout.println("err msg:",e.message,e.stackTrace);
+            console.err("Theme inited with exception");
+            console.err("err msg:",e.message,e.stackTrace);
         }       
     }
     catch(e)
@@ -48,31 +137,31 @@ function IA_loadTheme(themeName)
         currentThemeUrl = "this://app/themes/";
         switch (themeName) {
             case "简约(内置)":
-                stdout.println("Using built-in theme:",themeName);
+                console.info("Using built-in theme:",themeName);
                 currentThemeUrl += "Simple/main.html";
                 break;
             case "矩形(内置)":
-                stdout.println("Using built-in theme:",themeName);
+                console.info("Using built-in theme:",themeName);
                 currentThemeUrl += "Rect/main.html";
                 break;
             case "圆形进度条(内置)":
-                stdout.println("Using built-in theme:",themeName);
+                console.info("Using built-in theme:",themeName);
                 currentThemeUrl += "Circle/main.html";
                 break;
             default:
                 currentThemeUrl += "Simple/main.html";
                 NA_setThemeName("简约(内置)");//设置主题为内置主题
-                stdout.println("Load theme failed,using default built-in theme: 简约");
-                stdout.println("err msg:",e.message,e.stackTrace);
+                console.err("Load theme failed,using default built-in theme: 简约");
+                console.err("err msg:",e.message,e.stackTrace);
                 break;
                 
         }
-        stdout.println("Try to load built-in theme :",self.url(currentThemeUrl));
+        console.info("Try to load built-in theme :",self.url(currentThemeUrl));
         themeView.load(self.url(currentThemeUrl));
         currentThemeObj.themeName = themeName;
         currentThemeObj.themeDoc = themeView[0];
         currentThemeObj.themeDoc.ns.theme_inited();
-        stdout.println("Theme loaded successfully!!");
+        console.info("Theme loaded successfully!!");
         view_Update();
     }
 }
@@ -87,7 +176,7 @@ function view_Update()
     {
         var title = currentThemeObj.themeDoc.$(head>title);
         view.windowCaption = "高考倒计时——" + title.text;
-        stdout.println("Add theme title to windowCaption:",title.text);
+        console.info("Add theme title to windowCaption:",title.text);
     }
 
     /*
@@ -105,7 +194,7 @@ function view_Update()
         $(#theme_view).style#width = String.printf("%d",w);
         $(#theme_view).style#height = String.printf("%d",h);
     }
-    stdout.println("w,h: ",w,h);
+    //console.log("w,h: ",w,h);
     w += w / 2;
     h += h / 2;
     h += 108;//增高窗口来容纳设置按钮
@@ -113,19 +202,18 @@ function view_Update()
     //默认最小窗口大小
     if(w<100)
     {
-        stdout.println(w);
+        console.log(w);
         w=100;
     }
     if(h<100)
     {
-        stdout.println(h);
+        console.log(h);
         h=100;
     }
     var pos = NA_getPos().split(',');
     if(pos.length > 1)
     {
-        stdout.print("Restore the last Window Position ");
-        stdout.println("x:",pos[0],",y:",pos[1]);
+        console.log("Restore the last Window Position x:",pos[0],",y:",pos[1]);
         view.move(pos[0].toInteger(),pos[1].toInteger(),w,h);
     }
     else
@@ -143,7 +231,7 @@ function view_Update()
         最后激活窗口启动动画
     */
     view.windowIcon = "./favicon.ico";
-    stdout.println(checkGfx());
+    console.log(checkGfx());
     $(body).style#overflow = "visible";
     $(body).attributes.addClass("shown");
     view.on("statechange", onWinStateChange);
@@ -152,7 +240,7 @@ function view_Update()
 
 function IA_debugLogs(logs)
 {
-    stdout.println(logs);
+    console.log(logs);
 }
 //用于开启窗体UI调试
 function IA_uiDebugMode(isEnabled)
@@ -189,29 +277,31 @@ function NA_inited(){
         //如果全局函数与C++函数同名，会导致递归调用而爆栈，所以为全局函数添加前缀
         //然后将在下面和在API中定义的所有NA_函数try语句块中的view.NA_改为view.G_NA (可参考NA_getTime中的代码变更)
         //这样子在子窗口中调用NA_函数也可以正常运行了
+        if(View.G_NA_getWorkDir)
+        {
+            console.info(("Native functions have already inited!"));
+            return;
+        }
         View.G_NA_getWorkDir = function() { return thisView.NA_getWorkDir(); };
-        View.G_NA_getThemeName = function() { return thisView.NA_getThemeName(); }
-        View.G_NA_getTime = function() { return thisView.NA_getTime(); };
-        View.G_NA_setThemeName = function(themeName) { return thisView.NA_setThemeName(themeName); };
-        View.G_NA_setTime = function(time) { return thisView.NA_setTime(time); };
-        View.G_NA_getPos = function() { return thisView.NA_getPos(); };
-        View.G_NA_setPos = function(pos) { return thisView.NA_setPos(pos); };
+        View.G_NA_getAppOption = function(optionName) { return thisView.NA_getAppOption(optionName); };
+        View.G_NA_setAppOption = function(optionName,optionValue) { return thisView.NA_setAppOption(optionName,optionValue); };
         View.G_NA_saveThemeOption = function(themeName, optionName, optionValue) { return thisView.NA_saveThemeOption(themeName, optionName, optionValue); };
         View.G_NA_getThemeOption = function(themeName, optionName) { return thisView.NA_getThemeOption(themeName, optionName); };
         View.G_NA_getThemeList = function() { return thisView.NA_getThemeList(); };
-        stdout.println("Native functions was defined in global View successfully");
+        View.G_NA_debugLogs = function(logs,logType) { return thisView.NA_debugLogs(logs,logType); };;
+        console.info("Native functions was defined in global View successfully");
    }catch(e){
-        stdout.println("NA_inited was called in sciter");
+        console.info("NA_inited was called in sciter");
    }
 }
 NA_inited();
-
+NA_debugLogs("----Interactive scripts loading...");
 //通过C++获取配置中时间
 function NA_getTime()
 {
     var ret = null;
     try{
-        ret = view.G_NA_getTime().toString();
+        ret = view.G_NA_getAppOption("Time").toString();
         if(ret == "NULL")
         {
             ret="2022-06-07T00:00:00+08:00";
@@ -221,7 +311,7 @@ function NA_getTime()
     catch(e)
     {
         ret="2022-06-07T00:00:00+08:00";
-        stdout.println("Sciter Debug Mode,called NA_getTime() with retval: 2022-06-07T00:00:00+08:00");
+        console.info("Sciter Debug Mode,called NA_getTime() with retval: 2022-06-07T00:00:00+08:00");
         return ret;
     }
 }
@@ -230,12 +320,12 @@ function NA_getTime()
 function NA_setTime(time)
 {
     try{
-        view.G_NA_setTime(time);
+        view.G_NA_setAppOption("Time",time);
         return true;
     }
     catch(e)
     {
-        stdout.println("Sciter Debug Mode,called NA_setTime() with para: ",time);
+        console.info("Sciter Debug Mode,called NA_setTime() with para: ",time);
         return false;
     }
 }
@@ -244,13 +334,13 @@ function NA_getPos()
 {
     var ret = null;
     try{
-        ret = view.G_NA_getPos().toString();
+        ret = view.G_NA_getAppOption("WindowPos");
         return ret;
     }
     catch(e)
     {
         ret="NULL";
-        stdout.println("Sciter Debug Mode,called NA_getPos() with retval: NULL");
+        console.info("Sciter Debug Mode,called NA_getPos() with retval: NULL");
         return ret;
     }
 }
@@ -258,12 +348,12 @@ function NA_getPos()
 function NA_setPos(pos)
 {
     try{
-        view.G_NA_setPos(pos);
+        view.G_NA_setAppOption("WindowPos",pos);
         return true;
     }
     catch(e)
     {
-        stdout.println("Sciter Debug Mode,called NA_setPos() with para: ",pos);
+        console.info("Sciter Debug Mode,called NA_setPos() with para: ",pos);
         return false;
     }
 }
@@ -272,13 +362,13 @@ function NA_getThemeName()
 {
     var ret = null;
     try{
-        ret = view.G_NA_getThemeName().toString();
+        ret = view.G_NA_getAppOption("Theme").toString();
         return ret;
     }
     catch(e)
     {
         ret="Circle";
-        stdout.println("Sciter Debug Mode,called NA_getThemeName() with retval:", ret);
+        console.info("Sciter Debug Mode,called NA_getThemeName() with retval:", ret);
         return ret;
     }
 }
@@ -286,12 +376,12 @@ function NA_getThemeName()
 function NA_setThemeName(themeName)
 {
     try{
-        view.G_NA_setThemeName(themeName);
+        view.G_NA_setAppOption("Theme",themeName);
         return true;
     }
     catch(e)
     {
-        stdout.println("Sciter Debug Mode,called NA_setThemeName() with para: ",themeName);
+        console.info("Sciter Debug Mode,called NA_setThemeName() with para: ",themeName);
         return false;
     }
 }
@@ -306,7 +396,7 @@ function NA_getWorkDir()
     catch(e)
     {
         ret=System.home();
-        stdout.println("Sciter Debug Mode,called NA_getWorkDir() with retval: ",ret);
+        console.info("Sciter Debug Mode,called NA_getWorkDir() with retval: ",ret);
         return ret;
     }
 }
@@ -324,7 +414,7 @@ function NA_getThemesDir()
     {
         ret=System.home();
         ret += "\\themes\\"
-        stdout.println("Sciter Debug Mode,called NA_getThemesDir() with retval: ",ret);
+        console.info("Sciter Debug Mode,called NA_getThemesDir() with retval: ",ret);
         return ret;
     }
 }
@@ -344,7 +434,7 @@ function NA_getCurrentThemeDir()
     {
         ret=System.home();
         ret += "\\themes\\Circle\\"
-        stdout.println("Sciter Debug Mode,called NA_getCurrentThemeDir() with retval: ",ret);
+        console.info("Sciter Debug Mode,called NA_getCurrentThemeDir() with retval: ",ret);
         return ret;
     }
 }
@@ -355,16 +445,16 @@ function NA_getThemeList()
     try{
         ret = view.G_NA_getThemeList().toString();
         if(ret == "NULL")
-            ret = '["Circle","Rect","Simple",]';
+            ret = '[]';
         return ret;
     }
     catch(e)
     {
-        stdout.println("err msg:",e.message,e.stackTrace);
+        console.err("err msg:",e.message,e.stackTrace);
         ret='["Circle","Rect","Simple",]';
-        stdout.println("Sciter Debug Mode,called NA_getThemeList() with retval: ",ret);
+        console.info("Sciter Debug Mode,called NA_getThemeList() with retval: ",ret);
         return ret;
     }
 }
 
-stdout.println("Interactive scripts loaded successfully!!");
+console.info("----Interactive scripts loaded successfully!!");

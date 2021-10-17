@@ -8,10 +8,10 @@ var strTimeset = NA_getTime();
 var dateTarget = null;
 var datePbStart = Date.local(2021, 6, 7, 00, 00, 00); //进度条开始时间
 
-
 /***************
    API方法区
 ****************/
+IA_debugLogs("----ReminderApi scripts loading...");
 function NA_getThemeOption(themeName, optionName)
 {
     var ret = null;
@@ -22,7 +22,7 @@ function NA_getThemeOption(themeName, optionName)
     catch(e)
     {
         ret="NULL";
-        stdout.println("Sciter Debug Mode,called NA_getThemeOption() with retval: ",ret);
+        NA_debugLogs( String.printf("Sciter Debug Mode,called NA_getThemeOption() with retval: %s",ret) );
         return ret;
     }
 }
@@ -53,10 +53,10 @@ function timeInit()
 {
     var dateNow = new Date();
     //stdout.println(typeof(view.NA_getTime().toString()));
-    stdout.println(strTimeset);
+    NA_debugLogs(strTimeset);
     dateTarget = new Date(NA_getTime());
-    stdout.println("Time inited successfully!");
-    stdout.printf("timeNow: %s, timeSet: %s\n",dateNow.toString(), dateTarget.toString());
+    NA_debugLogs("Time inited successfully!");
+    NA_debugLogs( String.printf("timeNow: %s, timeSet: %s\n",dateNow.toString(), dateTarget.toString()) );
 }
 timeInit();
 
@@ -97,7 +97,7 @@ function updateTime() {
         body.timer(1000, ::updateTime());
     } else {
        // $(#timeRemaining).html = "<p style=\"font-size:20dip;color:red\">十年寒窗日，只为今日试！<br>祝大家旗开得胜！</p>";
-        stdout.printf("Timeset(%s) has passed!\r\n",dateTarget.toString());
+        NA_debugLogs( String.printf("Timeset(%s) has passed!\r\n",dateTarget.toString()) );
         if(day != undefined)
         {
             day.text = "0";
@@ -119,8 +119,9 @@ function updateTime() {
 }
 
 //输出调试日志
+//IA_debugLogs的别名，作为主题API使用
 function debugLogs(logs) {
-    stdout.println(logs);
+    IA_debugLogs(logs);
 }
 
 //判断当前元素是不是父元素的子代元素
@@ -155,4 +156,4 @@ function checkGfx() {
     return ["Unknown", "GDI+", "D2D/WARP", "D2D/DX"][view.backend];
 }
 
-stdout.println("ReminderApi loaded successfully!!");
+IA_debugLogs("----ReminderApi loaded successfully!!");

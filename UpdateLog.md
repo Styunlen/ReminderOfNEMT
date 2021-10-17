@@ -34,6 +34,17 @@
 </div>
 <div style="margin-bottom:20px;">
     <p
+        style="border:1px solid #F72862;padding:10px;background:#FA7298;margin:0;border-top-right-radius:5px;border-top-left-radius:5px;">
+        [<strong>置顶</strong>] 缓更通知<span style="margin-left:20px;color:#57606a;"> • 2021/10/11</span>
+    </p>
+    <p
+        style="border:1px solid #aad9ff;border-top:0px;padding:10px;margin:0;border-bottom-right-radius:5px;border-bottom-left-radius:5px;">
+        开发者最近需要参加一个辩论赛，除此还有社团的团建、钢琴的学习、大量的课程和数不清的作业，
+        这些之后还要为参加ACM而学习大量新算法，为博客更新而开发新主题，能余下用来更新此程序的时间可能少之又少了，望谅解！
+    </p>
+</div>
+<div style="margin-bottom:20px;">
+    <p
         style="border:1px solid #aad9ff;padding:10px;background:#ddf5ff;margin:0;border-top-right-radius:5px;border-top-left-radius:5px;">
         下一个正式版本正在做和已经完成的内容<span style="margin-left:20px;color:#57606a;"> • 2021/10/6</span>
     </p>
@@ -44,6 +55,10 @@
         <input type="checkbox" disabled="disabled" />[优化]修改时间机制，在设置页中添加自动获取时间选项<br />
         <input type="checkbox" disabled="disabled" />[添加]设置页中可以选择要获取的一言类型<br />
         <input type="checkbox" disabled="disabled" />[添加]一言支持在线获取和离线获取<br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[修复]设置窗口没有图标的问题 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/7</span><br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[修复]主题加载失败后，设置按钮会因窗口大小不足而出现意外消失的问题 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/7</span><br />
         <input type="checkbox" checked="checked" disabled="disabled" />[优化]提高了设置页面的启动流畅度 <span
             style="margin-left:20px;color:#57606a;"> @ 2021/10/7</span><br />
         <input type="checkbox" checked="checked" disabled="disabled" />[添加]有新公告时，弹窗提醒 <span
@@ -70,6 +85,8 @@
             style="margin-left:20px;color:#57606a;"> @ 2021/8/22</span><br />
     </p>
 </div>
+
+
 
 
 

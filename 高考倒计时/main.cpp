@@ -20,8 +20,8 @@ int uimain(std::function<int()> run) {
 	::pwin = pwin;
 	
 	// note: this:://app URL is dedicated to the sciter::archive content associated with the application
+	pwin->showDebugWindow();
 	pwin->load(WSTR("this://app/main.html"));
 	pwin->expand(false);
-	pwin->onReady();
 	return run();
 }
