@@ -55,6 +55,8 @@
         <input type="checkbox" disabled="disabled" />[优化]修改时间机制，在设置页中添加自动获取时间选项<br />
         <input type="checkbox" disabled="disabled" />[添加]设置页中可以选择要获取的一言类型<br />
         <input type="checkbox" disabled="disabled" />[添加]一言支持在线获取和离线获取<br />
+        <input type="checkbox" checked="checked" disabled="disabled" />[优化]调试信息显示 <span
+            style="margin-left:20px;color:#57606a;"> @ 2021/10/19</span><br />
         <input type="checkbox" checked="checked" disabled="disabled" />[修复]设置窗口没有图标的问题 <span
             style="margin-left:20px;color:#57606a;"> @ 2021/10/7</span><br />
         <input type="checkbox" checked="checked" disabled="disabled" />[修复]主题加载失败后，设置按钮会因窗口大小不足而出现意外消失的问题 <span
@@ -85,6 +87,7 @@
             style="margin-left:20px;color:#57606a;"> @ 2021/8/22</span><br />
     </p>
 </div>
+
 
 
 

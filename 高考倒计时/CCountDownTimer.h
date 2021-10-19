@@ -12,6 +12,7 @@
 #include <tchar.h>
 #include <string>
 #include <ctime>
+#include <regex>
 
 //#include "sciter-x.h"
 //#include "sciter-x-host-callback.h"
@@ -23,6 +24,9 @@
 ********************/
 using std::string;
 using std::wstring;
+using std::regex;
+using namespace std::regex_constants;
+using std::sregex_token_iterator;
 class MainWindow;
 
 /********************
@@ -66,6 +70,7 @@ BEGIN_FUNCTION_MAP
 	FUNCTION_3("NA_saveThemeOption", NA_saveThemeOption);
 	FUNCTION_2("NA_getThemeOption", NA_getThemeOption);
 	FUNCTION_0("NA_getThemeList", NA_getThemeList);
+	FUNCTION_1("NA_getThemeScreenshot", NA_getThemeScreenshot);
 	FUNCTION_2("NA_debugLogs", NA_debugLogs);
 END_FUNCTION_MAP
 	sciter::value Test();
@@ -75,7 +80,7 @@ END_FUNCTION_MAP
 	sciter::value NA_saveThemeOption(sciter::value themeName, sciter::value optionName, sciter::value optionValue);
 	sciter::value NA_getThemeOption(sciter::value themeName,sciter::value optionName);
 	sciter::value NA_getThemeList();
-	sciter::value NA_getThemeScreenshot();
+	sciter::value NA_getThemeScreenshot(sciter::value themeName); //返回指定主题的预览图的地址
 	//输出彩色调试信息，方便阅读
 	sciter::value NA_debugLogs(sciter::value logs,sciter::value logType="DEBUG" );
 	void showDebugWindow();

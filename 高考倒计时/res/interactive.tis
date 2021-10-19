@@ -14,6 +14,7 @@ var currentThemeObj = {
     themeDoc:null
 };
 var themeView = $(frame#theme_view);
+View.isDebugEnabled = -1;
 
 
 /***************
@@ -22,15 +23,18 @@ var themeView = $(frame#theme_view);
 //调用后端输出方法，来输出彩色调试信息
 function NA_debugLogs(logs, logType="DEBUG")
 {
-    var time = new Date().toString("%T");
-    try{
-        view.G_NA_debugLogs(logs,logType)
-        return true;
-    }
-    catch(e)
+    if(View.isDebugEnabled || View.isDebugEnabled == -1)
     {
-        stdout.printf("[%s, @%s] %s\r\n", logType, time, logs);
-        return false;
+        var time = new Date().toString("%T");
+        try{
+            view.G_NA_debugLogs(logs,logType);
+            return true;
+        }
+        catch(e)
+        {
+            stdout.printf("[%s, @%s] %s\r\n", logType, time, logs);
+            return false;
+        }
     }
 }
 /*
@@ -48,11 +52,12 @@ var console={
         //stdout.printf("typeof args: %v, args: %v, args.length: %d\n",typeof args, args, args.length);
         var reg = /%\w/g;
         var fmts = null;
+        var splitStr = null;
         if(typeof(textFmt)==#string)
         {
             fmts = textFmt.match(reg); //array: ["%s","%d","%V"]
-        }
-        var splitStr = textFmt.split(reg); //array: ["233" , "666" , "obj"]
+            splitStr = textFmt.split(reg); //array: ["233" , "666" , "obj"]
+        }      
         //stdout.printf("textFmt: %s ,fmts&splitStr: ",textFmt);
         //stdout.println(fmts,splitStr);
         var temp = ""; //tempStr for trans var to string according to the format
@@ -84,10 +89,12 @@ var console={
                 }
             }
         }else{
-            ret = String.printf("%V",textFmt);
+            ret = (ret instanceof String)? textFmt: String.printf("%V",textFmt);
+            //stdout.println(ret instanceof #string);
             for(var i = 0; i < args.length; i++)
             {
-                ret += String.printf(" %V", args[i]);
+                //stdout.println(args[i] instanceof #string);
+                ret += (args[i] instanceof String)? args[i]: String.printf(" %V", args[i]);
             }
         }       
         //NA_debugLogs(ret);
@@ -242,23 +249,15 @@ function IA_debugLogs(logs)
 {
     console.log(logs);
 }
-//用于开启窗体UI调试
-function IA_uiDebugMode(isEnabled)
+//用于开启调试模式
+function IA_DebugMode()
 {
+    View.isDebugEnabled = 1;
     var debugStyleUrl = "./style_debug.css"; //The Default Theme is Circle 默认圆形窗口主题
     var uiDebugStyle = $(style#ui-debug);
-    if(isEnabled)
-    {
-        uiDebugStyle.deactivate();
-        uiDebugStyle.attributes["src"] = debugStyleUrl;
-        uiDebugStyle.activate();
-    }
-    else
-    {
-        uiDebugStyle.deactivate();
-        uiDebugStyle.attributes["src"] = null;
-        uiDebugStyle.activate();
-    }
+    uiDebugStyle.deactivate();
+    uiDebugStyle.attributes["src"] = debugStyleUrl;
+    uiDebugStyle.activate();
 }
 
 /*
@@ -288,14 +287,16 @@ function NA_inited(){
         View.G_NA_saveThemeOption = function(themeName, optionName, optionValue) { return thisView.NA_saveThemeOption(themeName, optionName, optionValue); };
         View.G_NA_getThemeOption = function(themeName, optionName) { return thisView.NA_getThemeOption(themeName, optionName); };
         View.G_NA_getThemeList = function() { return thisView.NA_getThemeList(); };
-        View.G_NA_debugLogs = function(logs,logType) { return thisView.NA_debugLogs(logs,logType); };;
+        View.G_NA_getThemeScreenshot = function(themeName) { return thisView.NA_getThemeScreenshot(themeName); };
+        View.G_NA_debugLogs = function(logs,logType) { return thisView.NA_debugLogs(logs,logType); };
+        if(View.isDebugEnabled == -1) View.isDebugEnabled = 0;
         console.info("Native functions was defined in global View successfully");
    }catch(e){
         console.info("NA_inited was called in sciter");
    }
 }
 NA_inited();
-NA_debugLogs("----Interactive scripts loading...");
+console.info("----Interactive scripts loading...");
 //通过C++获取配置中时间
 function NA_getTime()
 {
@@ -457,4 +458,31 @@ function NA_getThemeList()
     }
 }
 
+function NA_getThemeScreenshot(themeName)
+{
+    var ret = null;
+    try{
+        ret = view.G_NA_getThemeScreenshot(themeName).toString();
+        console.log(ret);
+        if(ret == "NULL")
+            ret = 'noPreview.png';
+        ret = JSON.parse(ret);
+        console.log(ret);
+        if(ret.length == 0)
+        {
+            ret = 'noPreview.png';
+        }
+        else{
+            ret = NA_getThemesDir() + themeName + "\\" + ret[0]; 
+        }
+        return ret;
+    }
+    catch(e)
+    {
+        console.err("err msg:",e.message,e.stackTrace);
+        ret='noPreview.png';
+        console.info("Sciter Debug Mode,called NA_getThemeScreenshot() with retval: ",ret);
+        return ret;
+    }
+}
 console.info("----Interactive scripts loaded successfully!!");

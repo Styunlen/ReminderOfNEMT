@@ -21,7 +21,7 @@ function hitokotoReceived(data,status) {
     try{
         var num = list.length;
         var per = num.toFloat()/iHitokotoMax.toFloat()*100;
-        stderr.println(num,per,per.toInteger());
+        //console.log(num,per,per.toInteger());
         $(.proBar).style#width = String.printf("%d%%",per>100?100:per.toInteger());
         var hitokoto = JSON.parse(data);
         var textType = getHitokotoType(hitokoto.type);
@@ -35,7 +35,7 @@ function hitokotoReceived(data,status) {
 function hitokotoReceivedError(err,status) {
     iHitokotoGetCount++;
     if(status == 514) return; //只输出除了514以外的错误(514是Hitokoto Api的访问次数限制导致的，高访问频率就会触发此错误)
-    stdout.printf("[%s]Get hitokoto failed.Error,Status:%v\r\n",new Date().toString("%T"),status);
+    console.err("[%s]Get hitokoto failed.Error,Status:%v\r\n",new Date().toString("%T"),status);
     //$(#error).$content(Error accessing the site, HTTP status: <var>{status}</var>);
     //whenDone.call(this,"error");
 }
@@ -55,7 +55,7 @@ function getHitokoto() {
         });
         return true; // keep
     }
-    self.timer(2s,function(){stdout.println("Get hitokoto completely!");$(#hitokoto_getting).style#display="none";$(.proBarContainer).style#display="none";});
+    self.timer(2s,function(){console.info("Get hitokoto completely!");$(#hitokoto_getting).style#display="none";$(.proBarContainer).style#display="none";});
     return false; // stop
 }
 
@@ -70,4 +70,4 @@ event click $(.hitokoto_getMore){
     iHitokotoGetCount=0;
     this.timer(100ms, getHitokoto);
 }
-stdout.println("Hitokoto scripts loaded!");
+console.info("Hitokoto scripts loaded!");

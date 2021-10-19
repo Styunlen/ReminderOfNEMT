@@ -1,6 +1,6 @@
 include "interactive.tis";
 event click $(a.theme_enable) {
-    stdout.printf("Current theme changes to: {%s}\n",this.parent.parent[0].text);
+    console.info("Current theme changes to: {%s}\n",this.parent.parent[0].text);
     options.theme = this.parent.parent[0].text;
     var button_activated = $(.activated);
     button_activated.attributes.removeClass("activated","disabled");
@@ -10,7 +10,7 @@ event click $(a.theme_enable) {
 }
 
 event click $(.theme-actions a.button-primary) {
-    stdout.printf("Theme {%s}'s preview button clicked\n",this.parent.parent[0].text);
+    console.info("Theme {%s}'s preview button clicked\n",this.parent.parent[0].text);
     view.msgbox(#information,"该功能正在加急制作中...","致歉");
     return true;
 }
@@ -51,10 +51,11 @@ function loadThemeList()
     var currentThemeName = NA_getThemeName();//获取当前主题的名字
     //遍历主题列表，并输出到主题浏览器中
     for (var themeName in themeList ) {
-        stdout.printf("{%s,%s,%v}\n",themeName,currentThemeName,themeName==currentThemeName);
+        console.log("{%s,%s,%v}\n",themeName,currentThemeName,themeName==currentThemeName);
         var el = Element.create([div: {class:"theme"}]);
         $(.themes).append(el);
-        var themeShotPath = NA_getThemesDir() + themeName + "\\screenshot.jpg";
+        var themeShotPath = NA_getThemeScreenshot(themeName);
+        console.log("%s",themeShotPath);
         el.$append(<div class="theme-screenshot"><img src="{themeShotPath}"></div>);
         var el_themeIdContainer = el.$append(<div class="theme-id-container"></div>);    
         el_themeIdContainer.$append(<h2 class="theme-name">{themeName}</h2>);
@@ -74,19 +75,19 @@ function loadThemeList()
             el_theme_enable = $$(.theme_enable)[2];
             el_theme_enable.attributes.removeClass("theme_enable");
             el_theme_enable.attributes.addClass("activated","disabled");
-            stdout.printf("Built-in theme {%s} is used\r\n",currentThemeName);
+            console.info("Built-in theme {%s} is used\r\n",currentThemeName);
             break;
         case "矩形(内置)":
             el_theme_enable = $$(.theme_enable)[1];
             el_theme_enable.attributes.removeClass("theme_enable");
             el_theme_enable.attributes.addClass("activated","disabled");
-            stdout.printf("Built-in theme {%s} is used\r\n",currentThemeName);
+            console.info("Built-in theme {%s} is used\r\n",currentThemeName);
             break;
         case "圆形进度条(内置)":
             el_theme_enable = $$(.theme_enable)[0];
             el_theme_enable.attributes.removeClass("theme_enable");
             el_theme_enable.attributes.addClass("activated","disabled");
-            stdout.printf("Built-in theme {%s} is used\r\n",currentThemeName);
+            console.info("Built-in theme {%s} is used\r\n",currentThemeName);
             break;
     }
 }

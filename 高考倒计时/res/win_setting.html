@@ -41,7 +41,7 @@
         }
         event click $(p.title){
             
-            stdout.println(this.text,this.index);
+            console.log(this.text,this.index);
             var current = stack.$(:root>:current);
             //current属性只有在当前选中项结束进入动画时才会设置
             //因此，如果current为空，则说明仍处于切换动画状态，此时不做任何操作
@@ -50,7 +50,7 @@
             //改变目录标题
             $(#cataTitle).text = "当前目录> " +  this.text;
             var new_current = stack[this.index];
-            stdout.println(current,new_current,current.index,new_current.index);
+            console.log(current.index,new_current.index);
             if(current.index == new_current.index) return;
             current.state.current = false;//在展示当前选项的切换动画时自动隐藏上一个选项的设置界面，防止覆盖显示
             this.state.current = true;//将当前选项标题高亮显示
@@ -75,7 +75,7 @@
             view.windowIcon = "./favicon.ico";
             body.timer(1, ::this.attributes.addClass("shown"));
             var currentTheme = NA_getThemeName();//"Rect";
-            stdout.println("Current theme via NA_getThemeName(): ",NA_getThemeName());
+            console.info("Current theme via NA_getThemeName(): ",NA_getThemeName());
             /*$(#themes).value.themeName = "Rect";
             switch(currentStyle)
             {
@@ -96,7 +96,7 @@
                 dateTarget = new Date(2022,01,06,00,00,00);
             else
                 dateTarget = new Date(strTimeset);
-            stdout.println("Timeset formatted: ",dateTarget.toString("%F"));
+            console.log("Timeset formatted: ",dateTarget.toString("%F"));
             $(#calendar).value = dateTarget.toString("%F");//日历表的初始化格式为YYYY-MM-DD
             //Fixed 修复若打开设置窗口后没有使用日历表更改时间，则关闭窗口保存设置时目标日期永远是1月6号的Bug
             // @Time 2020-10-03
@@ -118,16 +118,16 @@
             }
         }
         $(#calendar).on("change",function(){
-            stdout.println("时间更改为", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
+            console.log("时间更改为", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
             options.time = $(#calendar).value;
             //stdout.println(typeof($(#calendar).value));
         });
 
         $(#close).onClick = function() {
             body.attributes.removeClass("shown");
-            stdout.println("Setting saving...");
-            stdout.println("Current Window Theme change to: ", options.theme);
-            stdout.println("Current Time set to: ", options.time.toString());
+            console.info("Setting saving...");
+            console.info("Current Window Theme change to: ", options.theme);
+            console.info("Current Time set to: ", options.time.toString());
             body.onAnimationEnd = function(){
                 NA_setTime(options.time);
                 if(options.theme != NA_getThemeName())
@@ -142,7 +142,7 @@
                         view.msgbox(#information,"激活主题成功！","提示")
                     }
                 }            
-                stdout.println("Succeed");           
+                console.info("Succeed");           
                 view.close("设置窗口关闭");
             };       
         }

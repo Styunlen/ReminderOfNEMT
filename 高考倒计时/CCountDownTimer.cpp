@@ -23,7 +23,8 @@ wstring ListDirs(){
 	WIN32_FIND_DATA ffd;
 	LARGE_INTEGER filesize;
 	string themesDir = getCurrentWorkDir() + "\\themes\\*";
-	static wstring ret = L"[";
+	static wstring ret = wstring();
+	ret = L"[";
 	HANDLE hFind = FindFirstFile(CharToWchar(themesDir.c_str()).c_str(), &ffd);
 	if (INVALID_HANDLE_VALUE == hFind)
 	{
@@ -38,7 +39,7 @@ wstring ListDirs(){
 	{
 		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
-			if (!StrCmpW(ffd.cFileName, L".") || !StrCmpW(ffd.cFileName, L".."))
+			if (!( StrCmpW(ffd.cFileName, L".") && StrCmpW(ffd.cFileName, L"..") ))
 				continue;
 			ret += L"\"";
 			ret += ffd.cFileName;
@@ -49,12 +50,13 @@ wstring ListDirs(){
 	ret += L"]";
 	return ret;
 }
-wstring ListFiles() {
+wstring ListFiles(string dir) {
 	WIN32_FIND_DATA ffd;
 	LARGE_INTEGER filesize;
-	string themesDir = getCurrentWorkDir() + "\\themes\\*";
-	static wstring ret = L"[";
-	HANDLE hFind = FindFirstFile(CharToWchar(themesDir.c_str()).c_str(), &ffd);
+	dir += "\\*";
+	static wstring ret = wstring();
+	ret = L"[";
+	HANDLE hFind = FindFirstFile(CharToWchar(dir.c_str()).c_str(), &ffd);
 	if (INVALID_HANDLE_VALUE == hFind)
 	{
 		ret = L"List dirs with exception: ";
@@ -66,10 +68,8 @@ wstring ListFiles() {
 	// List all the files in the directory with some info about them.
 	do
 	{
-		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 		{
-			if (!StrCmpW(ffd.cFileName, L".") || !StrCmpW(ffd.cFileName, L".."))
-				continue;
 			ret += L"\"";
 			ret += ffd.cFileName;
 			ret += L"\",";
@@ -190,20 +190,20 @@ wstring setProfileOptions(wstring appName, wstring keyName, wstring value, strin
 
 bool getDebugMode()
 {
-	bool ret = true;
-	if (getProfileOptions("AppOptions", "DebugIsEnabled") == "0")
-		ret = false;
+	static int ret = -1;
+	if (ret != -1) return ret;
+	ret = (getProfileOptions("AppOptions", "DebugIsEnabled") == "0") ? 0 : 1;
 	return ret;
 }
 
 string getThemeName()
 {
-	return getProfileOptions("UserInfo", "Theme");
+	return getProfileOptions("AppOptions", "Theme");
 }
 
 string getTime()
 {
-	return getProfileOptions("UserInfo", "Time");
+	return getProfileOptions("AppOptions", "Time");
 }
 
 std::string WcharToChar(const wchar_t* wp, size_t m_encode)
@@ -291,15 +291,26 @@ sciter::value MainWindow::NA_getThemeList()
 	return sciter::value(ListDirs());
 }
 
-sciter::value MainWindow::NA_getThemeScreenshot()
+sciter::value MainWindow::NA_getThemeScreenshot(sciter::value themeName)
 {
-	return sciter::value();
+	regex e("\"(screenshot|preview).(jpg|png|gif)\"", std::regex_constants::icase);
+	string str = getCurrentWorkDir() + "\\themes\\" + WcharToChar( themeName.to_string().c_str() );
+	str = WcharToChar(ListFiles(str).c_str());
+	sregex_token_iterator pos(str.cbegin(), str.cend(), e, 0);// 0表示匹配结果的整个字符串，正则表达式中还有三个分组，如果参数为1表示第一个分组，以此类推
+	sregex_token_iterator end;
+	string ret = "[";
+	for (; pos != end; ++pos)
+	{
+		ret += pos->str(); //已包含引号
+	}
+	ret += "]";
+	return sciter::value( CharToWchar(ret.c_str()) );
 }
 
 sciter::value MainWindow::NA_debugLogs(sciter::value logs, sciter::value logType)
 {
 	//MessageBox(NULL, logs.to_string().c_str(), L"233",NULL);
-	if (pconsole == nullptr) return false;
+	if (pconsole == nullptr || !getDebugMode()) return false;
 	pconsole->printf("\n[");
 	if (logType == "DEBUG")
 	{

@@ -23,5 +23,6 @@ int uimain(std::function<int()> run) {
 	pwin->showDebugWindow();
 	pwin->load(WSTR("this://app/main.html"));
 	pwin->expand(false);
+	if(getDebugMode()) pwin->call_function("IA_DebugMode");
 	return run();
 }

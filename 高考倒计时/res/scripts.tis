@@ -16,12 +16,12 @@ function checkAmUpdate(data,status)
 {
     try{    
         var announcement = JSON.parse(data);
-        stdout.println("LastAnnouncementUpdate:", NA_getThemeOption("App","LastAnnouncementUpdate"));
+        console.info("LastAnnouncementUpdate:", NA_getThemeOption("App","LastAnnouncementUpdate"));
         if(NA_getThemeOption("App","LastAnnouncementUpdate")=="NULL"
         || NA_getThemeOption("App","LastAnnouncementUpdate")!=announcement.updated_at)
         {           
             var pubTime = new Date(announcement.updated_at).toLocaleString();
-            stdout.println("LatestAnnouncementUpdate:", announcement.updated_at, pubTime);
+            console.info("LatestAnnouncementUpdate:", announcement.updated_at, pubTime);
             var ret = view.msgbox(#information,String.printf("新公告于%s发布啦，是否打开设置页面查看？",pubTime),"提醒",[{id:#yes,text:"好的"},{id:#no,text:"下次一定"},{id:#cancel,text:"此公告不再提醒"}]);
             switch(ret)
             {
@@ -29,7 +29,7 @@ function checkAmUpdate(data,status)
                     NA_saveThemeOption("App","LastAnnouncementUpdate",announcement.updated_at);
                     break;
                 case #yes:
-                    stdout.println(self.url("win_setting.html"));
+                    console.log(self.url("win_setting.html"));
                     view.window({
                         url: self.url("win_setting.html"),
                         type:View.FRAME_WINDOW,
@@ -52,8 +52,8 @@ function checkAmUpdateErr(err,status)
 
 function self.ready() {
     // positioning in the middle of the screen:
-        stdout.println("Current WorkDir: ", NA_getWorkDir());
-    stdout.println("Current WindowTheme: ", NA_getThemeName());
+    console.log("Current WorkDir: ", NA_getWorkDir());
+    console.log("Current WindowTheme: ", NA_getThemeName());
     body.timer(1s, ::IA_loadTheme(NA_getThemeName()));
     view.request({
         type: #get,
@@ -97,21 +97,20 @@ function movable(ele) // install movable window handler
     {
         movableArea = ele;
     }
-    stdout.print("MovableArea:");
-    stdout.print(movableArea);
-    stdout.printf(" paras: %s\r\n",ele);
+    console.log("MovableArea:%s paras: %s\r\n",movableArea,ele);
     function doDrag() {
         while (dragging) {
             var (x,y) = view.box(#position,#border,#screen);
-            stdout.printf("Border(x:%d,y:%d)",x,y);
+            var str = String.printf("Border(x:%d,y:%d)",x,y);
             (x,y) = view.box(#position,#client,#screen);
-            stdout.printf(",Client(x:%d,y:%d)\n",x,y);
+            str += String.printf(",Client(x:%d,y:%d)",x,y);
+            console.log(str);
             view.doEvent();
         }
     }
 
     function onMouseDown(evt) {
-        stdout.println(evt.target,EleIsChild(evt.target,$(section#sec_menu)));
+        console.log("%s %s",evt.target,EleIsChild(evt.target,$(section#sec_menu)));
         if (evt.target !== movableArea && !(EleIsChild(evt.target,movableArea)) || EleIsChild(evt.target,$(section#sec_menu))) return false;
         xoff = evt.x;
         yoff = evt.y;

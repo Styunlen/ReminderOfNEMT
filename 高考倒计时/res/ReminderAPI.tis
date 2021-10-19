@@ -11,7 +11,7 @@ var datePbStart = Date.local(2021, 6, 7, 00, 00, 00); //进度条开始时间
 /***************
    API方法区
 ****************/
-IA_debugLogs("----ReminderApi scripts loading...");
+console.info("----ReminderApi scripts loading...");
 function NA_getThemeOption(themeName, optionName)
 {
     var ret = null;
@@ -156,4 +156,4 @@ function checkGfx() {
     return ["Unknown", "GDI+", "D2D/WARP", "D2D/DX"][view.backend];
 }
 
-IA_debugLogs("----ReminderApi loaded successfully!!");
+console.info("----ReminderApi loaded successfully!!");

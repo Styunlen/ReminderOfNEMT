@@ -27,7 +27,7 @@ function announcementReceivedError(err,status) {
     if(el==#undefined) return;
     $(#announcement_getting).style#display="none";
     var errTime = new Date().toString("%T");
-    stdout.printf("[%s]Get announcement failed.Error:%s,Status:%v\r\n",errTime,err.message,status);
+    console.err("[%s]Get announcement failed.Error:%s,Status:%v\r\n",errTime,err.message,status);
     var errMsg = String.printf("[%s]获取公告失败。错误代码:<a href=\"https://docs.microsoft.com/zh-CN/windows/win32/wininet/wininet-errors\">%s (单击以查阅错误代码的详细解释)</a>,HTTP状态码:%v",errTime,err.message,status);
     errMsg += String.printf("<br\>[%s]Get announcement failed.Error:<a href=\"https://docs.microsoft.com/zh-CN/windows/win32/wininet/wininet-errors\">%s (Click for a detailed explanation of the error code)</a>,Status:%v",errTime,err.message,status);
     el.html = errMsg;
@@ -65,4 +65,4 @@ event click $(.announcement_retry){
     getAnnouncement();
 }
 
-stdout.println("Announcement scripts loaded!");
+console.info("Announcement scripts loaded!");
