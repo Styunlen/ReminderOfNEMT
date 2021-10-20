@@ -360,9 +360,58 @@ a.button:hover{
 a.button:active{
     transform: scale(0.9);
 }
+
 #announcement_content{
     padding: 10px;
 }
+
+.toggle:disabled{
+    background: window-accent-color; 
+    border: window-accent-color;
+    fill:#000;
+}
+
+.toggle{
+    display:inline-block;
+    behavior:check;
+    flow:stack;
+    border:none;
+    background:none;
+    width:max-content;
+    height:1.4em;
+    padding:0 0 0 42dip;
+    cursor:pointer;
+}
+
+
+.toggle::marker {
+    width:2.5em; 
+    height:1.05em;
+    background:#fff;
+    border:0.14em solid #aaa;
+    border-radius:height(50%);
+    margin:* * * 0.21em;
+    foreground-image:url(stock:disk);
+    foreground-repeat:no-repeat;
+    foreground-position:0.35em 50%;
+    foreground-size:0.7em;
+    fill:#000;
+    stroke:none;
+}
+
+.toggle:checked::marker {
+    foreground-position:1.8em 50%;
+    background: window-accent-color; 
+    border:window-accent-color;
+    fill:#fff;
+    transition:foreground-position(sine-in,120ms,sine-out,120ms) background-color(linear,120ms) fill(linear,120ms) border(linear,120ms);
+}
+
+.toggle > .option:first-child { visibility:visible; }
+.toggle > .option:last-child { visibility:hidden; }
+.toggle:checked > .option:first-child { visibility:hidden; }
+.toggle:checked > .option:last-child { visibility:visible; }
+
 .proBarContainer{
     display: inline-block;
     width:200px;

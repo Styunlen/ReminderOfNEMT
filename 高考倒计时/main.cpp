@@ -21,8 +21,12 @@ int uimain(std::function<int()> run) {
 	
 	// note: this:://app URL is dedicated to the sciter::archive content associated with the application
 	pwin->showDebugWindow();
+#ifdef _DEBUG
+	pwin->load( CharToWchar( (getCurrentWorkDir() + "\\res\\main.html").c_str() ).c_str() );
+#else
 	pwin->load(WSTR("this://app/main.html"));
+#endif // _DEBUG
 	pwin->expand(false);
-	if(getDebugMode()) pwin->call_function("IA_DebugMode");
+	pwin->call_function("IA_DebugMode",getDebugMode());
 	return run();
 }

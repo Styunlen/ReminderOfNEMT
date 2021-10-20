@@ -22,7 +22,7 @@ function NA_getThemeOption(themeName, optionName)
     catch(e)
     {
         ret="NULL";
-        NA_debugLogs( String.printf("Sciter Debug Mode,called NA_getThemeOption() with retval: %s",ret) );
+        console.log( "Sciter Debug Mode,called NA_getThemeOption() with retval: %s",ret );
         return ret;
     }
 }
@@ -51,12 +51,50 @@ function toInt(i) {
 //初始化目标时间
 function timeInit()
 {
-    var dateNow = new Date();
-    //stdout.println(typeof(view.NA_getTime().toString()));
-    NA_debugLogs(strTimeset);
-    dateTarget = new Date(NA_getTime());
-    NA_debugLogs("Time inited successfully!");
-    NA_debugLogs( String.printf("timeNow: %s, timeSet: %s\n",dateNow.toString(), dateTarget.toString()) );
+    try{
+        console.info("Time initing...");
+        var dateNow = new Date();
+        //stdout.println(typeof(view.NA_getTime().toString()));
+        console.log(strTimeset);
+        var iType = view.G_NA_getAppOption("TimeGetType").toString();
+        console.log("TimeGetType", iType);
+        //0 Manual, 1 Auto
+        var dateNEMT = {start: Date.local(dateNow.year,6,7,00,00,00), end: Date.local(dateNow.year,6,10,00,00,00)};
+        console.log("dateNEMT: %v",dateNEMT);
+        switch(iType)
+        {
+            case "0":
+                dateTarget = new Date(NA_getTime());
+                break;
+            case "1":
+                if(dateNow.valueOf() > dateNEMT.start.valueOf())
+                {
+                    //If use this code: dateTarget = dateNEMT.start
+                    //The script would just let dateTarget point to the same
+                    //Object(Date) that dateNEMT.start refers to
+                    dateTarget = new Date(dateNEMT.start); //Copy the date
+                    dateTarget.year += 1;
+                    datePbStart = dateNEMT.start;
+                }else{
+                    dateTarget = new Date(dateNEMT.start); //Copy the date
+                    datePbStart = dateNEMT.start;
+                    datePbStart.year -= 1;
+                }
+                break;
+            default:
+                dateTarget = new Date(NA_getTime());
+                break;
+        }
+        console.log("TimeStart: %s, TimeTarget: %s",datePbStart,dateTarget);
+        console.log( "timeNow: %s, timeSet: %s\n",dateNow.toString(), dateTarget.toString() );
+        console.info("Time inited successfully!");
+    }
+    catch(e)
+    {
+        dateTarget = new Date(NA_getTime());
+        console.err("Time inited with exception");
+        console.err("err msg:",e.message,e.stackTrace);
+    }
 }
 timeInit();
 
@@ -97,7 +135,7 @@ function updateTime() {
         body.timer(1000, ::updateTime());
     } else {
        // $(#timeRemaining).html = "<p style=\"font-size:20dip;color:red\">十年寒窗日，只为今日试！<br>祝大家旗开得胜！</p>";
-        NA_debugLogs( String.printf("Timeset(%s) has passed!\r\n",dateTarget.toString()) );
+        console.warn( "Timeset(%s) has passed!\r\n",dateTarget.toString() );
         if(day != undefined)
         {
             day.text = "0";

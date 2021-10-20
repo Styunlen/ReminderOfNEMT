@@ -68,42 +68,25 @@
                 
             }
         }
-        var options = {theme:"简约(内置)",time:Date.local(2022, 1, 6, 00, 00, 00)}; //默认主题为简约，时间为一月选考时间
+        var options = {theme:"简约(内置)",time:Date.local(2022, 1, 6, 00, 00, 00),timeGetType:0}; //默认主题为简约，时间为一月选考时间
 
         function self.ready()
         {
+            stdout.println(View.isDebugEnabled,view.isDebugEnabled);
             view.windowIcon = "./favicon.ico";
             body.timer(1, ::this.attributes.addClass("shown"));
             var currentTheme = NA_getThemeName();//"Rect";
             console.info("Current theme via NA_getThemeName(): ",NA_getThemeName());
-            /*$(#themes).value.themeName = "Rect";
-            switch(currentStyle)
-            {
-                case "Circle":
-                    $(button[value=Circle]).value = true;
-                    break;
-                case "Rect":
-                    style = "Rect";
-                    $(button[value=Rect]).value = true;
-                    break;  
-                default:
-                    $(button[value=Circle]).value = true;
-                    break;
-            }*/
-            var strTimeset,dateTarget;
-            strTimeset = NA_getTime();
-            if(strTimeset == "NULL")
-                dateTarget = new Date(2022,01,06,00,00,00);
-            else
-                dateTarget = new Date(strTimeset);
             console.log("Timeset formatted: ",dateTarget.toString("%F"));
-            $(#calendar).value = dateTarget.toString("%F");//日历表的初始化格式为YYYY-MM-DD
+            $(#calendar).value = dateTarget;
             //Fixed 修复若打开设置窗口后没有使用日历表更改时间，则关闭窗口保存设置时目标日期永远是1月6号的Bug
             // @Time 2020-10-03
             options.time = dateTarget;
             //Fixed 修复新版窗口若打开后没有更改主题，则关闭窗口保存设置时主题永远是Circle的Bug
             // @Time 2020-10-03
             options.theme = currentTheme;
+            options.timeGetType = view.G_NA_getAppOption("TimeGetType").toString() == "1";
+            $(.toggle).state.checked = options.timeGetType;
             $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
             (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
             (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
@@ -123,13 +106,19 @@
             //stdout.println(typeof($(#calendar).value));
         });
 
+        $(.toggle).onClick = function(){
+            options.timeGetType = this.state.checked;
+        }
+
         $(#close).onClick = function() {
             body.attributes.removeClass("shown");
             console.info("Setting saving...");
             console.info("Current Window Theme change to: ", options.theme);
             console.info("Current Time set to: ", options.time.toString());
+            console.info("Current TargetTime GetType:",options.timeGetType)
             body.onAnimationEnd = function(){
                 NA_setTime(options.time);
+                view.G_NA_setAppOption("TimeGetType",options.timeGetType?"1":"0");
                 if(options.theme != NA_getThemeName())
                 {
                     NA_setThemeName(options.theme);//$(#themes).value.themeName);
@@ -242,7 +231,14 @@
                     </div>
                 </section>
                 <section style="background:rgba(red, green, blue, 0.8)">
-                    <widget #calendar value="2021-01-06" type="calendar" />
+                    <span>自动获取时间:</span>
+                    <div class="toggle">
+                        <div class="option">关闭</div>
+                        <div class="option">开启</div>
+                    </div>
+                    <br/>
+                    <br/> 
+                    <span>目标时间:</span><input id="calendar" type="date" name="date" value="2022-01-06" />
                 </section>
                 <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
                     <p>本软件已遵循GPL v3协议开源</p>

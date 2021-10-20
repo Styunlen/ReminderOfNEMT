@@ -14,7 +14,6 @@ var currentThemeObj = {
     themeDoc:null
 };
 var themeView = $(frame#theme_view);
-View.isDebugEnabled = -1;
 
 
 /***************
@@ -32,7 +31,11 @@ function NA_debugLogs(logs, logType="DEBUG")
         }
         catch(e)
         {
-            stdout.printf("[%s, @%s] %s\r\n", logType, time, logs);
+            if(View.isDebugEnabled == -1 || View.isDebugEnabled)
+            {
+                //等待后端输出方法加载完毕后再输出
+                self.timer(1000,function(){ console.log("[%s](%s) %s", logType, time, logs);return false;});
+            }
             return false;
         }
     }
@@ -77,8 +80,9 @@ var console={
             }
             if(args.length < fmts.length)
             {
-                this.warn("Not enough arguments passed for ");
+                this.warn("Not enough arguments passed for formatting string");
                 this.warn("note: placeholders and their parameters expect %d variadic arguments, but %d were provided",fmts.length, args.length);
+                debug stacktrace;
             }
             if(args.length > fmts.length)
             {
@@ -94,7 +98,7 @@ var console={
             for(var i = 0; i < args.length; i++)
             {
                 //stdout.println(args[i] instanceof #string);
-                ret += (args[i] instanceof String)? args[i]: String.printf(" %V", args[i]);
+                ret += (args[i] instanceof String)? String.printf(" %s", args[i]): String.printf(" %V", args[i]);
             }
         }       
         //NA_debugLogs(ret);
@@ -176,6 +180,7 @@ function IA_loadTheme(themeName)
 //加载完主题后，需要及时调整窗口
 function view_Update()
 {
+    console.info("View updating...");
     /*
         将主题标题添加进高考倒计时的标题中
     */
@@ -243,6 +248,7 @@ function view_Update()
     $(body).attributes.addClass("shown");
     view.on("statechange", onWinStateChange);
     view.on("closing", onWinClosing);
+    console.info("View updated successfully!");
 }
 
 function IA_debugLogs(logs)
@@ -250,14 +256,27 @@ function IA_debugLogs(logs)
     console.log(logs);
 }
 //用于开启调试模式
-function IA_DebugMode()
+function IA_DebugMode(isEnabled)
 {
-    View.isDebugEnabled = 1;
-    var debugStyleUrl = "./style_debug.css"; //The Default Theme is Circle 默认圆形窗口主题
-    var uiDebugStyle = $(style#ui-debug);
-    uiDebugStyle.deactivate();
-    uiDebugStyle.attributes["src"] = debugStyleUrl;
-    uiDebugStyle.activate();
+    if(isEnabled)
+    {
+        console.info("The Debug mode was enabled");
+        View.isDebugEnabled = 1;
+        var debugStyleUrl = "./style_debug.css"; //The Default Theme is Circle 默认圆形窗口主题
+        var uiDebugStyle = $(style#ui-debug);
+        uiDebugStyle.deactivate();
+        uiDebugStyle.attributes["src"] = debugStyleUrl;
+        uiDebugStyle.activate();
+    }
+    else{
+        console.info("The Debug mode was disabled");
+        View.isDebugEnabled = 0;
+        var debugStyleUrl = ""; //The Default Theme is Circle 默认圆形窗口主题
+        var uiDebugStyle = $(style#ui-debug);
+        uiDebugStyle.deactivate();
+        uiDebugStyle.attributes["src"] = debugStyleUrl;
+        uiDebugStyle.activate();
+    }
 }
 
 /*
@@ -267,7 +286,7 @@ function IA_DebugMode()
  */
 
  //这个函数用于将C++的函数定义到全局作用域，从而使得所有窗口即C++或脚本创建的窗口都可以访问公开的C++函数
- //解决措施来源于Sciter论坛：https://sciter.com/forums/topic/how-to-cal-host-when-i-create-a-new-window/
+ //解决措施来源于Sciter论坛：https://sciter.com/forums/topic/how-to-cal-host-when-i-create-a-new-window
 function NA_inited(){
     var thisView = view;
    // define global class method:
@@ -276,11 +295,14 @@ function NA_inited(){
         //如果全局函数与C++函数同名，会导致递归调用而爆栈，所以为全局函数添加前缀
         //然后将在下面和在API中定义的所有NA_函数try语句块中的view.NA_改为view.G_NA (可参考NA_getTime中的代码变更)
         //这样子在子窗口中调用NA_函数也可以正常运行了
+        View.G_NA_debugLogs = function(logs,logType) { return thisView.NA_debugLogs(logs,logType); };
+        console.info("Native functions initing...");
         if(View.G_NA_getWorkDir)
         {
             console.info(("Native functions have already inited!"));
             return;
         }
+        if(View.isDebugEnabled == #undefined) View.isDebugEnabled = -1;
         View.G_NA_getWorkDir = function() { return thisView.NA_getWorkDir(); };
         View.G_NA_getAppOption = function(optionName) { return thisView.NA_getAppOption(optionName); };
         View.G_NA_setAppOption = function(optionName,optionValue) { return thisView.NA_setAppOption(optionName,optionValue); };
@@ -288,11 +310,10 @@ function NA_inited(){
         View.G_NA_getThemeOption = function(themeName, optionName) { return thisView.NA_getThemeOption(themeName, optionName); };
         View.G_NA_getThemeList = function() { return thisView.NA_getThemeList(); };
         View.G_NA_getThemeScreenshot = function(themeName) { return thisView.NA_getThemeScreenshot(themeName); };
-        View.G_NA_debugLogs = function(logs,logType) { return thisView.NA_debugLogs(logs,logType); };
-        if(View.isDebugEnabled == -1) View.isDebugEnabled = 0;
         console.info("Native functions was defined in global View successfully");
    }catch(e){
-        console.info("NA_inited was called in sciter");
+        console.info("NA_inited was called in sciter or subWindow");
+        if(!view.parameters.hostview) View.isDebugEnabled = 0;
    }
 }
 NA_inited();

@@ -16,17 +16,17 @@ function checkAmUpdate(data,status)
 {
     try{    
         var announcement = JSON.parse(data);
-        console.info("LastAnnouncementUpdate:", NA_getThemeOption("App","LastAnnouncementUpdate"));
-        if(NA_getThemeOption("App","LastAnnouncementUpdate")=="NULL"
-        || NA_getThemeOption("App","LastAnnouncementUpdate")!=announcement.updated_at)
+        console.info("LastAnnouncementUpdate:", view.G_NA_getAppOption("LastAnnouncementUpdate"));
+        if(view.G_NA_getAppOption("LastAnnouncementUpdate")=="NULL"
+        || view.G_NA_getAppOption("LastAnnouncementUpdate")!=announcement.updated_at)
         {           
             var pubTime = new Date(announcement.updated_at).toLocaleString();
-            console.info("LatestAnnouncementUpdate:", announcement.updated_at, pubTime);
+            console.info("LatestAnnouncementUpdate:", pubTime);
             var ret = view.msgbox(#information,String.printf("新公告于%s发布啦，是否打开设置页面查看？",pubTime),"提醒",[{id:#yes,text:"好的"},{id:#no,text:"下次一定"},{id:#cancel,text:"此公告不再提醒"}]);
             switch(ret)
             {
                 case #cancel:
-                    NA_saveThemeOption("App","LastAnnouncementUpdate",announcement.updated_at);
+                    view.G_NA_setAppOption("LastAnnouncementUpdate",announcement.updated_at);
                     break;
                 case #yes:
                     console.log(self.url("win_setting.html"));
@@ -41,13 +41,13 @@ function checkAmUpdate(data,status)
         }
     }catch(ex){
         var errTime = new Date().toString("%T");
-        console.err( String.printf("尝试检查新公告失败。错误代码:%s\r\n",ex.message) );   
+        console.err( "尝试检查新公告失败。错误代码:%s",ex.message );   
     }
 }
 
 function checkAmUpdateErr(err,status)
 {
-    console.err( String.printf("获取公告失败。错误代码:%s,HTTP状态码:%v",err.message,status) );
+    console.err( "获取公告失败。错误代码:%s,HTTP状态码:%v", err.message, status );
 }
 
 function self.ready() {
@@ -60,7 +60,6 @@ function self.ready() {
         url:  "https://api.github.com/repos/Styunlen/ReminderOfNEMT/issues/3",
         success: checkAmUpdate,
         error:   checkAmUpdateErr,
-        headers:{Authorization: "token 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"},
         output:  #string,
         noCache: true,
     });//只考虑成功时的情况，若获取失败，则不执行检查函数

@@ -311,7 +311,12 @@ sciter::value MainWindow::NA_debugLogs(sciter::value logs, sciter::value logType
 {
 	//MessageBox(NULL, logs.to_string().c_str(), L"233",NULL);
 	if (pconsole == nullptr || !getDebugMode()) return false;
-	pconsole->printf("\n[");
+	Color(7);
+	pconsole->print("\n ");
+	pconsole->print(getFormattedTime().c_str());
+	pconsole->print(" ");
+	ResetColor();
+	pconsole->printf("[");
 	if (logType == "DEBUG")
 	{
 		Color(13);
@@ -332,10 +337,6 @@ sciter::value MainWindow::NA_debugLogs(sciter::value logs, sciter::value logType
 		Color(14);
 		pconsole->printf("WARNING");
 	}
-	ResetColor();
-	Color(7);
-	pconsole->print(", @");
-	pconsole->print( getFormattedTime().c_str() );
 	ResetColor();
 	pconsole->print("] ");
 	pconsole->print(logs.to_string().c_str());

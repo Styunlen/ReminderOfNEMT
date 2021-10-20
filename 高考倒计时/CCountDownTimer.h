@@ -27,7 +27,7 @@ using std::wstring;
 using std::regex;
 using namespace std::regex_constants;
 using std::sregex_token_iterator;
-class MainWindow;
+extern class MainWindow;
 
 /********************
 	全局变量声明区
