@@ -23,10 +23,11 @@ int uimain(std::function<int()> run) {
 	pwin->showDebugWindow();
 #ifdef _DEBUG
 	pwin->load( CharToWchar( (getCurrentWorkDir() + "\\res\\main.html").c_str() ).c_str() );
+	if (!getDebugMode()) pwin->load(WSTR("this://app/main.html"));
 #else
 	pwin->load(WSTR("this://app/main.html"));
 #endif // _DEBUG
 	pwin->expand(false);
-	pwin->call_function("IA_DebugMode",getDebugMode());
+	
 	return run();
 }

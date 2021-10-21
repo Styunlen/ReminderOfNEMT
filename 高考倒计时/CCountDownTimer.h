@@ -17,8 +17,10 @@
 //#include "sciter-x.h"
 //#include "sciter-x-host-callback.h"
 #include "sciter-x-window.hpp"
-#define debugLogs(logs) pwin->call_function("IA_debugLogs",sciter::value(logs))
 
+//#define debugLogs(logs) pwin->call_function("IA_debugLogs",sciter::value(logs))
+//以上代码有潜在崩溃的bug，具体查看listDirs中对debugLogs的调用(窗口还未初始化成功，就尝试调用前端方法，引发错误)
+#define debugLogs(logs) pwin->NA_debugLogs(logs)
 /********************
 	前向声明区
 ********************/
@@ -72,6 +74,7 @@ BEGIN_FUNCTION_MAP
 	FUNCTION_0("NA_getThemeList", NA_getThemeList);
 	FUNCTION_1("NA_getThemeScreenshot", NA_getThemeScreenshot);
 	FUNCTION_2("NA_debugLogs", NA_debugLogs);
+	FUNCTION_0("NA_getDebugMode", NA_getDebugMode);
 END_FUNCTION_MAP
 	sciter::value Test();
 	sciter::value NA_getAppOption(sciter::value optionName);
@@ -83,6 +86,7 @@ END_FUNCTION_MAP
 	sciter::value NA_getThemeScreenshot(sciter::value themeName); //返回指定主题的预览图的地址
 	//输出彩色调试信息，方便阅读
 	sciter::value NA_debugLogs(sciter::value logs,sciter::value logType="DEBUG" );
+	sciter::value NA_getDebugMode();
 	void showDebugWindow();
 	MainWindow() : window( SW_MAIN | SW_ENABLE_DEBUG) {}
 };

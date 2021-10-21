@@ -344,6 +344,11 @@ sciter::value MainWindow::NA_debugLogs(sciter::value logs, sciter::value logType
 	return sciter::value(true);
 }
 
+sciter::value MainWindow::NA_getDebugMode()
+{
+	return sciter::value(getDebugMode());
+}
+
 void MainWindow::showDebugWindow()
 {
 	if (getDebugMode())

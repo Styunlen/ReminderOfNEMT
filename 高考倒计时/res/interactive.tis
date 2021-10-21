@@ -181,74 +181,81 @@ function IA_loadTheme(themeName)
 function view_Update()
 {
     console.info("View updating...");
-    /*
-        将主题标题添加进高考倒计时的标题中
-    */
-    if( currentThemeObj.themeDoc )
+    try{
+        /*
+            将主题标题添加进高考倒计时的标题中
+        */
+        if( currentThemeObj.themeDoc )
+        {
+            var title = currentThemeObj.themeDoc.$(head>title);
+            view.windowCaption = "高考倒计时——" + title.text;
+            console.info("Add theme title to windowCaption:",title.text);
+        }
+
+        /*
+            调整窗口大小，恢复窗口位置
+        */
+        var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
+        /*var (tw, th) = currentThemeObj.themeDoc?currentThemeObj.themeDoc.$(body).box(#dimension):(0,0); //theme window size
+        stdout.println(tw,th);
+        tw += tw / 2; // to accomodate expanding radii
+        th += th / 2;
+        stdout.println(tw,th);*/
+        var (w,h)= currentThemeObj.themeDoc?currentThemeObj.themeDoc.$(body).box(#dimension):(200,200); //app window size without theme window
+        if(currentThemeObj.themeDoc.$(body))
+        {
+            $(#theme_view).style#width = String.printf("%d",w);
+            $(#theme_view).style#height = String.printf("%d",h);
+        }
+        //console.log("w,h: ",w,h);
+        w += w / 2;
+        h += h / 2;
+        h += 108;//增高窗口来容纳设置按钮
+        //stdout.println(w,h);
+        //默认最小窗口大小
+        if(w<100)
+        {
+            console.log(w);
+            w=100;
+        }
+        if(h<100)
+        {
+            console.log(h);
+            h=100;
+        }
+        var pos = NA_getPos().split(',');
+        if(pos.length > 1)
+        {
+            console.log("Restore the last Window Position x:",pos[0],",y:",pos[1]);
+            view.move(pos[0].toInteger(),pos[1].toInteger(),w,h);
+        }
+        else
+        {
+            stdout.print("Default display in the center of the screen");
+            view.move(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
+        }
+        stdout.printf("sx:%d,sy:%d,sw:%d,sh:%d,w:%d,h:%d\n",sx,sy,sw,sh,w,h);
+        stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
+        
+        /*
+            监听窗口事件
+            显示窗口图标
+            重置部分样式
+            最后激活窗口启动动画
+        */
+        view.windowIcon = "./favicon.ico";
+        console.log(checkGfx());
+        $(body).style#overflow = "visible";
+        $(body).attributes.addClass("shown");
+        view.on("statechange", onWinStateChange);
+        view.on("closing", onWinClosing);
+        console.info("View updated successfully!");
+    }catch(e)
     {
-        var title = currentThemeObj.themeDoc.$(head>title);
-        view.windowCaption = "高考倒计时——" + title.text;
-        console.info("Add theme title to windowCaption:",title.text);
+        console.err("View updated with exception!");
+        stdout.println(ex.message,ex.stackTrace);
     }
 
-    /*
-        调整窗口大小，恢复窗口位置
-    */
-    var (sx, sy, sw, sh) = view.screenBox(#workarea, #rectw);
-    /*var (tw, th) = currentThemeObj.themeDoc?currentThemeObj.themeDoc.$(body).box(#dimension):(0,0); //theme window size
-    stdout.println(tw,th);
-    tw += tw / 2; // to accomodate expanding radii
-    th += th / 2;
-    stdout.println(tw,th);*/
-    var (w,h)= currentThemeObj.themeDoc?currentThemeObj.themeDoc.$(body).box(#dimension):(200,200); //app window size without theme window
-    if(currentThemeObj.themeDoc.$(body))
-    {
-        $(#theme_view).style#width = String.printf("%d",w);
-        $(#theme_view).style#height = String.printf("%d",h);
-    }
-    //console.log("w,h: ",w,h);
-    w += w / 2;
-    h += h / 2;
-    h += 108;//增高窗口来容纳设置按钮
-    //stdout.println(w,h);
-    //默认最小窗口大小
-    if(w<100)
-    {
-        console.log(w);
-        w=100;
-    }
-    if(h<100)
-    {
-        console.log(h);
-        h=100;
-    }
-    var pos = NA_getPos().split(',');
-    if(pos.length > 1)
-    {
-        console.log("Restore the last Window Position x:",pos[0],",y:",pos[1]);
-        view.move(pos[0].toInteger(),pos[1].toInteger(),w,h);
-    }
-    else
-    {
-        stdout.print("Default display in the center of the screen");
-        view.move(sx + (sw - w) / 2, sy + (sh - h) / 2, w, h);
-    }
-    stdout.printf("sx:%d,sy:%d,sw:%d,sh:%d,w:%d,h:%d\n",sx,sy,sw,sh,w,h);
-    stdout.printf("(sx + (sw - w) / 2): %d ,(sy + (sh - h) / 2): %d\n",sx + (sw - w) / 2, sy + (sh - h) / 2);
-    
-    /*
-        监听窗口事件
-        显示窗口图标
-        重置部分样式
-        最后激活窗口启动动画
-    */
-    view.windowIcon = "./favicon.ico";
-    console.log(checkGfx());
-    $(body).style#overflow = "visible";
-    $(body).attributes.addClass("shown");
-    view.on("statechange", onWinStateChange);
-    view.on("closing", onWinClosing);
-    console.info("View updated successfully!");
 }
 
 function IA_debugLogs(logs)
@@ -256,26 +263,35 @@ function IA_debugLogs(logs)
     console.log(logs);
 }
 //用于开启调试模式
-function IA_DebugMode(isEnabled)
+function IA_DebugMode()
 {
-    if(isEnabled)
-    {
-        console.info("The Debug mode was enabled");
-        View.isDebugEnabled = 1;
-        var debugStyleUrl = "./style_debug.css"; //The Default Theme is Circle 默认圆形窗口主题
-        var uiDebugStyle = $(style#ui-debug);
-        uiDebugStyle.deactivate();
-        uiDebugStyle.attributes["src"] = debugStyleUrl;
-        uiDebugStyle.activate();
-    }
-    else{
-        console.info("The Debug mode was disabled");
-        View.isDebugEnabled = 0;
-        var debugStyleUrl = ""; //The Default Theme is Circle 默认圆形窗口主题
-        var uiDebugStyle = $(style#ui-debug);
-        uiDebugStyle.deactivate();
-        uiDebugStyle.attributes["src"] = debugStyleUrl;
-        uiDebugStyle.activate();
+    console.log("NA_getDebugMode():",view.G_NA_getDebugMode());
+    try{
+        var isEnabled = view.NA_getDebugMode(); 
+        //这里不用view.G_NA_getDebugMode的原因是，DebugMode激活一次就够了
+        //同样的创建view.G_NA_getDebugMode方法的原因，其实是为了让子窗口也能获取当前程序是否开启了调试模式
+        if(isEnabled)
+        {
+            console.info("The Debug mode was enabled");
+            View.isDebugEnabled = 1;
+            var debugStyleUrl = "./style_debug.css"; //The Default Theme is Circle 默认圆形窗口主题
+            var uiDebugStyle = $(style#ui-debug);
+            uiDebugStyle.deactivate();
+            uiDebugStyle.attributes["src"] = debugStyleUrl;
+            uiDebugStyle.activate();
+        }
+        else{
+            console.info("The Debug mode was disabled");
+            View.isDebugEnabled = 0;
+            var debugStyleUrl = ""; //The Default Theme is Circle 默认圆形窗口主题
+            var uiDebugStyle = $(style#ui-debug);
+            uiDebugStyle.deactivate();
+            uiDebugStyle.attributes["src"] = debugStyleUrl;
+            uiDebugStyle.activate();
+        }
+    }catch(e){
+        console.info("IA_DebugMode() called in Sciter or SubWindow!");
+        return;
     }
 }
 
@@ -302,7 +318,7 @@ function NA_inited(){
             console.info(("Native functions have already inited!"));
             return;
         }
-        if(View.isDebugEnabled == #undefined) View.isDebugEnabled = -1;
+        View.G_NA_getDebugMode = function() { return thisView.NA_getDebugMode() };
         View.G_NA_getWorkDir = function() { return thisView.NA_getWorkDir(); };
         View.G_NA_getAppOption = function(optionName) { return thisView.NA_getAppOption(optionName); };
         View.G_NA_setAppOption = function(optionName,optionValue) { return thisView.NA_setAppOption(optionName,optionValue); };
@@ -318,6 +334,7 @@ function NA_inited(){
 }
 NA_inited();
 console.info("----Interactive scripts loading...");
+IA_DebugMode();
 //通过C++获取配置中时间
 function NA_getTime()
 {
