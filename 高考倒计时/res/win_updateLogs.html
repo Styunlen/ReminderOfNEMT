@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<head>
+    <title>更新记录</title>
+    <link type="text/css" rel="stylesheet" href="./win_updateLogs.css">
+    <script type="text/tiscript">
+        view.windowIcon = "./favicon.ico";
+        var txtDays = Date.now().valueOf() - Date.local(2021, 6, 7, 00, 00, 00).valueOf();
+        txtDays /= 1000*86400;
+        txtDays = String.printf("%.2f",txtDays);
+        $(#txtDays).text = txtDays;
+    </script>
+</head>
+<html>
+    <body>
+        <div id="updateLogs" class="">
+            <h3>倒计时已上线 <span id="txtDays"></span> 天 </h3><br>
+            2021.xx.xx <br>
+            <span class="updateTag imp"></span>Improve<br>
+            <span class="updateTag fix"></span>Fix<br><br>
+            2021.xx.xx<br>
+            <span class="updateTag new"></span>New
+            <span class="updateTag del"></span>Del
+            2021.xx.xx<br>
+            <span class="updateTag new"></span>New
+            <span class="updateTag del"></span>Del
+            2021.xx.xx<br>
+            <span class="updateTag new"></span>New
+            <span class="updateTag del"></span>Del
+            2021.xx.xx<br>
+            <span class="updateTag new"></span>New
+            <span class="updateTag del"></span>Del
+        </div>
+    </body>
+</html>

@@ -38,9 +38,16 @@
             var hitText = document.getElementById("hitokoto");
             var hitStatus = document.getElementById("status")
             num = parseInt(document.getElementById("num").value);
-            var xhr = new XMLHttpRequest();
+            //var xhr = new XMLHttpRequest();
             count = 0;
             getCount = 0;
+            function getHitokotoType(type)
+            {
+                var hitokotoTypes = ["动画","漫画","游戏","文学","原创","网络","其他","影视","诗词","网易云","哲学","抖机灵"];
+                if(type.length > 1) return null;
+                var index = type.charCodeAt(0) - 97;
+                return hitokotoTypes[index];
+            }
             function getLoop(){
                 if(count < num)
                 {              
@@ -51,15 +58,16 @@
                         url: linkURL,
                         dataType: 'jsonp',
                         jsonp:"callback",
-                        async:false,
+                        async:true,
                         data:{
                             
                         },
                         success: function(ret){
                             getCount++;
-                            console.log(ret)
                             var data = JSON.parse(ret.toString());
-                            var text = data.hitokoto + "——" + (data.from_who!=null?data.from_who:"") + "「" + data.from + "」";
+                            console.log(data);
+                            var textType = "[<strong>" + getHitokotoType(data.type) + "</strong>] ";
+                            var text = textType + data.hitokoto + "——" + (data.from_who!=null?data.from_who:"") + "「" + data.from + "」";
                             console.log(text);
                             if(!textList.includes(text))
                             {
@@ -78,13 +86,11 @@
                                 textList.push(temp);
                                 return false;
                             }
-                            setTimeout(getLoop(),5000);
                         },
                         error:function(data) {
                             //console.log(data)
-                            setTimeout(getLoop(),5000);
                         },
-                    });
+                    }).then(()=>{setTimeout(getLoop(), 1000);}).fail(()=>{setTimeout(getLoop(), 1000);});
                     /*$.getJSON(linkURL,function(ret){                         
                             console.log(ret);
                             var data = JSON.parse(ret.toString());

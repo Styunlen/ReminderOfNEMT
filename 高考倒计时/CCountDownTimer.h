@@ -13,6 +13,7 @@
 #include <string>
 #include <ctime>
 #include <regex>
+#include <fstream>
 
 //#include "sciter-x.h"
 //#include "sciter-x-host-callback.h"
@@ -29,6 +30,7 @@ using std::wstring;
 using std::regex;
 using namespace std::regex_constants;
 using std::sregex_token_iterator;
+using std::ifstream;
 extern class MainWindow;
 
 /********************
@@ -75,6 +77,7 @@ BEGIN_FUNCTION_MAP
 	FUNCTION_1("NA_getThemeScreenshot", NA_getThemeScreenshot);
 	FUNCTION_2("NA_debugLogs", NA_debugLogs);
 	FUNCTION_0("NA_getDebugMode", NA_getDebugMode);
+	FUNCTION_2("NA_getHitokotos", NA_getHitokotos);
 END_FUNCTION_MAP
 	sciter::value Test();
 	sciter::value NA_getAppOption(sciter::value optionName);
@@ -87,6 +90,7 @@ END_FUNCTION_MAP
 	//输出彩色调试信息，方便阅读
 	sciter::value NA_debugLogs(sciter::value logs,sciter::value logType="DEBUG" );
 	sciter::value NA_getDebugMode();
+	sciter::value NA_getHitokotos(sciter::value types, sciter::value num);
 	void showDebugWindow();
 	MainWindow() : window( SW_MAIN | SW_ENABLE_DEBUG) {}
 };

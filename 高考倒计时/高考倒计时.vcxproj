@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+    <None Include="..\UpdateLog.md" />
     <None Include="res\interactive.tis" />
     <None Include="res\main.html" />
     <None Include="res\scripts.tis" />
@@ -154,7 +155,6 @@
     <Image Include="res\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\UpdateLog.txt" />
     <Text Include="backup.txt" />
   </ItemGroup>
   <ItemGroup>
