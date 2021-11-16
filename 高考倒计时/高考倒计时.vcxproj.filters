@@ -52,6 +52,9 @@
     <None Include="..\README.md">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="..\UpdateLog.md">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\favicon.ico">
@@ -64,9 +67,6 @@
   <ItemGroup>
     <Text Include="backup.txt">
       <Filter>旧版本代码备份</Filter>
-    </Text>
-    <Text Include="..\UpdateLog.txt">
-      <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

@@ -139,6 +139,12 @@
             Sciter.launch(this.attributes["href"]);
             return true;
         }
+        event click $(#btnUpdateLogs) {
+            view.dialog({
+                url: self.url("win_updateLogs.html"),
+                alignment: -5});
+            return true;
+        }
         $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
             (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
             (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
@@ -240,6 +246,17 @@
                     <span>目标时间:</span><input id="calendar" type="date" name="date" value="2022-01-06" />
                 </section>
                 <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
+                    <div class="pContent" id="contentAbout">
+                        <div id="imgLogo" class=""></div>
+                        <div id="txtVersionBox"><span class="txtVersion">21w39a3</span></div>
+                        <p class="pAbout">这里是九仞的高考倒计时(*^▽^*)<br>
+                            如果你喜欢这个小程序，可以<a class="link fixedColor" href="https://styunlen.cn/" target="_blank">关注我的个人博客</a>。
+                        </p>
+                        <div id="btnUpdateLogs" style="text-align: center;">
+                            <span>查看更新记录 </span><img src="./unfold.png" style="position: relative;top: 10px;" width="30px" height="30px" />
+                        </div>
+                    </div>
+
                     <p>本软件已遵循GPL v3协议开源</p>
                     <p></p>
                     <p>Developer: Styunlen(九仞)</p>
@@ -267,7 +284,7 @@ v2.8.9 build-836-β
                 </section>
                 <section>
                     <a class="button button-primary hitokoto_getMore" style="margin: auto auto;">获取更多</a>
-                    <p style="text-align: center;">感谢一言提供的API: <a href="https://developer.hitokoto.cn/sentence/">https://developer.hitokoto.cn/sentence/</a></p>
+                    <p style="text-align: center;">感谢一言提供的API: <a href="https://developer.hitokoto.cn/sentence/" target="_blank">https://developer.hitokoto.cn/sentence/</a></p>
                     <p style="text-align: center;" id="hitokoto_getting">
                         <span class="proBarContainer"><span class="proBar"></span></span>
                     </p>
@@ -286,7 +303,7 @@ v2.8.9 build-836-β
                 </section>
             </section>
         </section>
-        <p #copyright>Copyright(c) 2020 九仞 版权所有</p>
+        <p #copyright>Copyright(c) 2020-2021 九仞 版权所有</p>
     </section>
 </body>
 

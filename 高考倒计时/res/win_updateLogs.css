@@ -1,0 +1,46 @@
+html{
+    width: 400px;
+    height: 200px;
+    overflow-y: auto;
+}
+body{
+    margin: 5px;
+    padding: 0;
+}
+#updateLogs{
+    width:400px;
+    height: auto;
+    text-align: left;
+    behavior: check;
+}
+.updateTag {
+    display: inline-block;
+    padding: 5px;
+    margin: 5px 5px 5px 12px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: bold;
+}.updateTag.new {
+    background-color:seagreen;
+}
+.updateTag.imp {
+    background-color: skyblue;
+}
+.updateTag.fix {
+    background-color: orange;
+}
+.updateTag.del {
+    background-color:firebrick;
+}
+.updateTag.new::after {
+    content: "添加";
+}
+.updateTag.imp::after {
+    content: "优化";
+}
+.updateTag.fix::after {
+    content: "修复";
+}
+.updateTag.del::after {
+    content: "删除";
+}

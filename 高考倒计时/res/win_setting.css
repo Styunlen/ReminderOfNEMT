@@ -1,3 +1,7 @@
+/*
+状态栏与全局样式
+*/
+
 html {
     font: system;
     background-color: transparent;
@@ -73,6 +77,9 @@ body.hidden {
     visibility: hidden;
 }
 
+/*
+布局，侧边栏与设置页面容器的样式
+*/
 p#copyright {
     position: absolute;
     bottom: 2px;
@@ -137,19 +144,20 @@ section#optionsContentStack {
     height: *;
 }
 
+/*滚动条*/
 @set v-scroll-indicator {
 
-        .slider 
-        {
-            background:gray;
-            margin:0;
-        }
-
-        .base {
-            width:5dip; 
-        }
-    
+    .slider 
+    {
+        background:gray;
+        margin:0;
     }
+
+    .base {
+        width:5dip; 
+    }
+    
+}
 section#optionsContentStack>section {
     size: *;
     visibility: hidden;
@@ -197,25 +205,10 @@ section#optionsContentStack>section:animating {
     visibility: visible;
 }
 
-.StatusTitle{
-  display:block;
-  float: left;
-  padding:3px;
-  font-size: 12px;
-  font-weight: bold;
-  color:#E8E8E8;
-  text-align:center;
-  background-color:#555555;
-}
-.StatusContent{
-  display:block;
-  float: left;
-  margin-right:5px;
-  padding:3px;
-  font-size: 12px;
-  font-weight: bold;
-}
-.StatusTitle:hover,.StatusContent:hover{transform: scale(0.8);transition: transform(cubic-out, 600ms, none);}
+/*
+主题浏览器页面
+*/
+
 .themes{
     padding-top: 16px;
 }
@@ -365,6 +358,9 @@ a.button:active{
     padding: 10px;
 }
 
+/*
+时间设置页面
+*/
 .toggle:disabled{
     background: window-accent-color; 
     border: window-accent-color;
@@ -435,4 +431,62 @@ a.button:active{
     height:100%;
     background-color: #2271b1;
     transition: width linear 1s;
+}
+
+/*
+软件关于页面
+*/
+.StatusTitle{
+    display:block;
+    float: left;
+    padding:3px;
+    font-size: 12px;
+    font-weight: bold;
+    color:#E8E8E8;
+    text-align:center;
+    background-color:#555555;
+}
+.StatusContent{
+    display:block;
+    float: left;
+    margin-right:5px;
+    padding:3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.StatusTitle:hover,.StatusContent:hover{transform: scale(0.8);transition: transform(cubic-out, 600ms, none);}
+.fixedColor{
+    color:#f7955b;
+}
+.link
+{
+    text-decoration: none;
+}
+#contentAbout {
+    text-align: center;
+    height: 300px;
+}
+#imgLogo {
+    position: relative;
+    top: 10px;
+    left: calc(50% - 117.5px);
+    width: 235px;
+    height: 55px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-image: url(RemeinderLogo.png);
+    transition: .25s;
+}
+#txtVersionBox {
+    padding: 20px 0 15px 0;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    transition: .25s;
+}
+.txtVersion {
+    display: inline-block;
+    padding: 5px;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.05);
 }

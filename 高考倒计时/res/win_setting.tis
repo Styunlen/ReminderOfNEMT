@@ -5,13 +5,24 @@ event click $(a.theme_enable) {
     var button_activated = $(.activated);
     button_activated.attributes.removeClass("activated","disabled");
     button_activated.attributes.addClass("theme_enable");
+    var button_options = $(.theme_options);
+    button_activated.attributes.removeClass("theme_options");
+    button_options.text = "实时预览";
     this.attributes.addClass("activated","disabled");
+    this.next.attributes.addClass("theme_options");
+    console.log("%s",this.next);
+    this.next.text = "自定义";
     return true;
 }
 
 event click $(.theme-actions a.button-primary) {
     console.info("Theme {%s}'s preview button clicked\n",this.parent.parent[0].text);
     view.msgbox(#information,"该功能正在加急制作中...","致歉");
+    return true;
+}
+
+event click $(.theme-actions a.theme_options) {
+    view.msgbox(#information,"该功能正在加急制作中...233","致歉");
     return true;
 }
 
@@ -62,7 +73,7 @@ function loadThemeList()
         var el_themeActions = el_themeIdContainer.$append(<div class="theme-actions"></div>);
         if(themeName == currentThemeName)
         {
-            el_themeActions.$append(<a class="button disabled activated">启用</a> <a class="button button-primary">实时预览</a>);
+            el_themeActions.$append(<a class="button disabled activated">启用</a> <a class="button button-primary theme_options">自定义</a>);
         }
         else{
             el_themeActions.$append(<a class="button theme_enable">启用</a> <a class="button button-primary">实时预览</a>);
@@ -70,23 +81,36 @@ function loadThemeList()
     }
     //判断当前启用主题是否为内置主题
     var el_theme_enable = null;
+    var el_theme_options = null;
     switch (currentThemeName) {
         case "简约(内置)":
             el_theme_enable = $$(.theme_enable)[2];
             el_theme_enable.attributes.removeClass("theme_enable");
             el_theme_enable.attributes.addClass("activated","disabled");
+            el_theme_options = $$(.button-primary)[2];
+            el_theme_options.attributes.addClass("theme_options");
+            console.log("%s", el_theme_options);
+            el_theme_options.text = "自定义";
             console.info("Built-in theme {%s} is used\r\n",currentThemeName);
             break;
         case "矩形(内置)":
             el_theme_enable = $$(.theme_enable)[1];
             el_theme_enable.attributes.removeClass("theme_enable");
             el_theme_enable.attributes.addClass("activated","disabled");
+            el_theme_options = $$(.button-primary)[1];
+            el_theme_options.attributes.addClass("theme_options");
+            console.log("%s", el_theme_options);
+            el_theme_options.text = "自定义";
             console.info("Built-in theme {%s} is used\r\n",currentThemeName);
             break;
         case "圆形进度条(内置)":
             el_theme_enable = $$(.theme_enable)[0];
             el_theme_enable.attributes.removeClass("theme_enable");
             el_theme_enable.attributes.addClass("activated","disabled");
+            el_theme_options = $$(.button-primary)[0];
+            el_theme_options.attributes.addClass("theme_options");
+            console.log("%s", el_theme_options);
+            el_theme_options.text = "自定义";
             console.info("Built-in theme {%s} is used\r\n",currentThemeName);
             break;
     }

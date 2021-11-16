@@ -55,14 +55,14 @@ function self.ready() {
     console.log("Current WorkDir: ", NA_getWorkDir());
     console.log("Current WindowTheme: ", NA_getThemeName());
     body.timer(1s, ::IA_loadTheme(NA_getThemeName()));
-    view.request({
+    body.timer(1s,::view.request({
         type: #get,
         url:  "https://api.github.com/repos/Styunlen/ReminderOfNEMT/issues/3",
         success: checkAmUpdate,
         error:   checkAmUpdateErr,
         output:  #string,
         noCache: true,
-    });//只考虑成功时的情况，若获取失败，则不执行检查函数
+    }));//只考虑成功时的情况，若获取失败，则不执行检查函数
 }
 
 /***************

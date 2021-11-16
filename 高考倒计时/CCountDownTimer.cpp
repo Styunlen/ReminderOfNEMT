@@ -349,6 +349,22 @@ sciter::value MainWindow::NA_getDebugMode()
 	return sciter::value(getDebugMode());
 }
 
+inline string getHitokotoType(char type)
+{
+
+	char* hitokotoTypes[] = {"动画", "漫画", "游戏", "文学", "原创", "网络", "其他", "影视", "诗词", "网易云", "哲学", "抖机灵"};
+	int index = type - '97';
+	return hitokotoTypes[index];
+	
+}
+
+sciter::value MainWindow::NA_getHitokotos(sciter::value types, sciter::value num)
+{
+	ifstream infile;
+	infile.open("hitokoto/");
+	return sciter::value();
+}
+
 void MainWindow::showDebugWindow()
 {
 	if (getDebugMode())
