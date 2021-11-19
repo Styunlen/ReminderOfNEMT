@@ -75,6 +75,7 @@ BEGIN_FUNCTION_MAP
 	FUNCTION_2("NA_getThemeOption", NA_getThemeOption);
 	FUNCTION_0("NA_getThemeList", NA_getThemeList);
 	FUNCTION_1("NA_getThemeScreenshot", NA_getThemeScreenshot);
+	FUNCTION_1("NA_isOptionFileExt", NA_isOptionFileExt);
 	FUNCTION_2("NA_debugLogs", NA_debugLogs);
 	FUNCTION_0("NA_getDebugMode", NA_getDebugMode);
 	FUNCTION_2("NA_getHitokotos", NA_getHitokotos);
@@ -87,6 +88,7 @@ END_FUNCTION_MAP
 	sciter::value NA_getThemeOption(sciter::value themeName,sciter::value optionName);
 	sciter::value NA_getThemeList();
 	sciter::value NA_getThemeScreenshot(sciter::value themeName); //返回指定主题的预览图的地址
+	sciter::value NA_isOptionFileExt(sciter::value themeName); //返回指定主题是否存在设置页面
 	//输出彩色调试信息，方便阅读
 	sciter::value NA_debugLogs(sciter::value logs,sciter::value logType="DEBUG" );
 	sciter::value NA_getDebugMode();

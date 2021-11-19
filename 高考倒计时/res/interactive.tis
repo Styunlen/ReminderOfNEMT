@@ -326,6 +326,7 @@ function NA_inited(){
         View.G_NA_getThemeOption = function(themeName, optionName) { return thisView.NA_getThemeOption(themeName, optionName); };
         View.G_NA_getThemeList = function() { return thisView.NA_getThemeList(); };
         View.G_NA_getThemeScreenshot = function(themeName) { return thisView.NA_getThemeScreenshot(themeName); };
+        View.G_NA_isOptionFileExt = function(themeName) { return thisView.NA_isOptionFileExt(themeName); };
         console.info("Native functions was defined in global View successfully");
    }catch(e){
         console.info("NA_inited was called in sciter or subWindow");
@@ -464,7 +465,6 @@ function NA_getCurrentThemeDir()
     var ret = null;
     try{
         ret = NA_getThemesDir();
-        ret += "\\themes\\";
         ret += NA_getThemeName();
         ret += "\\";
         return ret;
@@ -501,7 +501,7 @@ function NA_getThemeScreenshot(themeName)
     var ret = null;
     try{
         ret = view.G_NA_getThemeScreenshot(themeName).toString();
-        console.log(ret);
+        //console.log(ret);
         if(ret == "NULL")
             ret = 'noPreview.png';
         ret = JSON.parse(ret);
@@ -520,6 +520,24 @@ function NA_getThemeScreenshot(themeName)
         console.err("err msg:",e.message,e.stackTrace);
         ret='noPreview.png';
         console.info("Sciter Debug Mode,called NA_getThemeScreenshot() with retval: ",ret);
+        return ret;
+    }
+}
+
+function NA_isOptionFileExt(themeName)
+{
+    var ret = null;
+    try{
+        ret = view.G_NA_isOptionFileExt(themeName).toString();
+        console.log(ret);
+        ret = (ret=='T') ? true: false;
+        return ret;
+    }
+    catch(e)
+    {
+        console.err("err msg:",e.message,e.stackTrace);
+        ret=false;
+        console.info("Sciter Debug Mode,called NA_isOptionFileExt() with retval: ",ret);
         return ret;
     }
 }

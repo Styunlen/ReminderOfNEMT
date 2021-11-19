@@ -1,21 +1,32 @@
 include "interactive.tis";
+
 event click $(a.theme_enable) {
     console.info("Current theme changes to: {%s}\n",this.parent.parent[0].text);
+    //获取即将激活的主题
     options.theme = this.parent.parent[0].text;
+    //获取当前激活的主题的激活按钮，然后将他重置为未激活状态
     var button_activated = $(.activated);
     button_activated.attributes.removeClass("activated","disabled");
     button_activated.attributes.addClass("theme_enable");
-    var button_options = $(.theme_options);
     button_activated.attributes.removeClass("theme_options");
+    button_activated.state.disabled = false;
+    //获取当前激活的主题的设置按钮，然后将他重置为未激活状态
+    var button_options = $(.theme_options);
     button_options.text = "实时预览";
+    button_options.state.disabled = false;
+    //将即将激活的主题的激活按钮禁用
     this.attributes.addClass("activated","disabled");
+    this.state.disabled = true;
+    //将即将激活的主题的预览按钮变为设置按钮
     this.next.attributes.addClass("theme_options");
-    console.log("%s",this.next);
     this.next.text = "自定义";
+    //如果即将激活的主题不存在设置页面，则禁用他的设置按钮
+    if(!NA_isOptionFileExt(options.theme)) this.next.state.disabled = true;
     return true;
 }
 
 event click $(.theme-actions a.button-primary) {
+    if(this.attributes.hasClass("theme_options")) return;
     console.info("Theme {%s}'s preview button clicked\n",this.parent.parent[0].text);
     view.msgbox(#information,"该功能正在加急制作中...","致歉");
     return true;
@@ -23,6 +34,13 @@ event click $(.theme-actions a.button-primary) {
 
 event click $(.theme-actions a.theme_options) {
     view.msgbox(#information,"该功能正在加急制作中...233","致歉");
+    console.log("%s","file://" + NA_getThemesDir() + this.parent.parent[0].text + "/options.html");
+    var optionsUrl = String.printf("file://%s%s%s",NA_getThemesDir(),this.parent.parent[0].text,"/options.html");
+    view.dialog({
+        url: self.url("win_themeOptions.html"),
+        parameters: {url: optionsUrl},
+        alignment: -5
+    });
     return true;
 }
 
@@ -79,6 +97,16 @@ function loadThemeList()
             el_themeActions.$append(<a class="button theme_enable">启用</a> <a class="button button-primary">实时预览</a>);
         }
     }
+    //禁用激活主题的激活按钮
+    if($(a.theme_enable))
+    {
+        $(a.theme_enable).state.disabled = true;
+    }
+    //如果激活主题不存在设置页面，则禁用他的设置按钮
+    if($(.theme_options) && !NA_isOptionFileExt($(.theme_options).parent.parent[0].text))
+    {
+        $(.theme_options).state.disabled = true;
+    }
     //判断当前启用主题是否为内置主题
     var el_theme_enable = null;
     var el_theme_options = null;
@@ -89,7 +117,9 @@ function loadThemeList()
             el_theme_enable.attributes.addClass("activated","disabled");
             el_theme_options = $$(.button-primary)[2];
             el_theme_options.attributes.addClass("theme_options");
-            console.log("%s", el_theme_options);
+            el_theme_enable.state.disabled = true;
+            el_theme_options.state.disabled = true;
+            //console.log("%s", el_theme_options);
             el_theme_options.text = "自定义";
             console.info("Built-in theme {%s} is used\r\n",currentThemeName);
             break;
@@ -99,7 +129,7 @@ function loadThemeList()
             el_theme_enable.attributes.addClass("activated","disabled");
             el_theme_options = $$(.button-primary)[1];
             el_theme_options.attributes.addClass("theme_options");
-            console.log("%s", el_theme_options);
+            //console.log("%s", el_theme_options);
             el_theme_options.text = "自定义";
             console.info("Built-in theme {%s} is used\r\n",currentThemeName);
             break;
@@ -109,7 +139,7 @@ function loadThemeList()
             el_theme_enable.attributes.addClass("activated","disabled");
             el_theme_options = $$(.button-primary)[0];
             el_theme_options.attributes.addClass("theme_options");
-            console.log("%s", el_theme_options);
+            //console.log("%s", el_theme_options);
             el_theme_options.text = "自定义";
             console.info("Built-in theme {%s} is used\r\n",currentThemeName);
             break;

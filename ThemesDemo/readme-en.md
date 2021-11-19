@@ -12,6 +12,8 @@
 
 A full theme might contains following files.
 
+Subfolders are supported.
+
 |Theme Name|
 
 ​	├─  main.html
@@ -19,6 +21,8 @@ A full theme might contains following files.
 ​	├─ options.html
 
 ​	├─ scripts.tis
+
+​	├─ (screenshot|preview).(jpg|png|gif|bmp) #preview image，two file names and four filetype are supported
 
 ​	└─ style.css
 

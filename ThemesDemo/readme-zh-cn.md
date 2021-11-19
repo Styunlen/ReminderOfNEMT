@@ -12,6 +12,8 @@
 
 一个完整的主题可能包含以下文件
 
+可包含子文件夹
+
 |Theme Name|
 
 ​	├─  main.html
@@ -19,6 +21,8 @@
 ​	├─ options.html
 
 ​	├─ scripts.tis
+
+​	├─ (screenshot|preview).(jpg|png|gif|bmp) #预览图，支持两种文件名和四种文件格式
 
 ​	└─ style.css
 

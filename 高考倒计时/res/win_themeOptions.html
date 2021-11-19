@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head #MainHead>
+    <title>高考倒计时</title>
+    <!-- <link href="./style-circle.css" rel="stylesheet" type="text/css"> -->
+    <link rel="shortcuticon" href="./favicon.ico" />
+    <meta charset="UTF-8"/>
+    <style>
+        html{
+            width: 800px;
+            height: 600px;
+            overflow: visible;
+            padding: 2dip;
+        }
+        section#sec_main{
+            margin: auto auto;
+            horizontal-align: center;
+            overflow: hidden;
+            height: 500px;
+        }
+        #theme_view{
+            overflow: visible;
+        }
+    </style>
+    <!-- 用于开启UI调试 -->
+    <style id="ui-debug" src="" />
+
+    <script type="text/tiscript">
+        var optionsUrl = view.parameters.url.toString();
+        try{
+            console.info("Try To Load Theme Options html:", optionsUrl);
+            view.load(optionsUrl);
+            console.info("Loaded successfully");
+        }
+        catch(ex)
+        {
+            console.err("Load failed!");
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

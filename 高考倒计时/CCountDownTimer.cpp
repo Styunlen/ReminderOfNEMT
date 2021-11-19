@@ -293,7 +293,7 @@ sciter::value MainWindow::NA_getThemeList()
 
 sciter::value MainWindow::NA_getThemeScreenshot(sciter::value themeName)
 {
-	regex e("\"(screenshot|preview).(jpg|png|gif)\"", std::regex_constants::icase);
+	regex e("\"(screenshot|preview).(jpg|png|gif|bmp)\"", std::regex_constants::icase);
 	string str = getCurrentWorkDir() + "\\themes\\" + WcharToChar( themeName.to_string().c_str() );
 	str = WcharToChar(ListFiles(str).c_str());
 	sregex_token_iterator pos(str.cbegin(), str.cend(), e, 0);// 0表示匹配结果的整个字符串，正则表达式中还有三个分组，如果参数为1表示第一个分组，以此类推
@@ -305,6 +305,16 @@ sciter::value MainWindow::NA_getThemeScreenshot(sciter::value themeName)
 	}
 	ret += "]";
 	return sciter::value( CharToWchar(ret.c_str()) );
+}
+
+sciter::value MainWindow::NA_isOptionFileExt(sciter::value themeName)
+{
+	regex re("\"(options.html|setting.html)\"", std::regex_constants::icase);
+	string str = getCurrentWorkDir() + "\\themes\\" + WcharToChar(themeName.to_string().c_str());
+	str = WcharToChar(ListFiles(str).c_str());
+	bool isExt = std::regex_search(str,re);
+	wstring ret = isExt ? L"T" : L"F";
+	return sciter::value(ret);
 }
 
 sciter::value MainWindow::NA_debugLogs(sciter::value logs, sciter::value logType)
