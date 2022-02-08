@@ -1,15 +1,35 @@
 html{
     width: 400px;
-    height: 200px;
-    overflow-y: auto;
+    height: 300px;
+    padding-right: 2px;
+    overflow-y: scroll-indicator;
+    vertical-scrollbar:v-scroll-indicator;
+}
+/* 滚动条 */
+@set v-scroll-indicator {
+
+    .slider 
+    {
+        background:gray;
+        margin:0;
+    }
+
+    .base {
+        width:5dip; 
+    }
+    
 }
 body{
     margin: 5px;
     padding: 0;
 }
 #updateLogs{
-    width:400px;
-    height: auto;
+    width:360px;
+    height: 160px;
+    margin: auto auto;
+    padding-right: 2px;
+    overflow-y: scroll-indicator;
+    vertical-scrollbar:v-scroll-indicator;
     text-align: left;
     behavior: check;
 }
@@ -23,7 +43,7 @@ body{
 }.updateTag.new {
     background-color:seagreen;
 }
-.updateTag.imp {
+.updateTag.imp,.updateTag.edit {
     background-color: skyblue;
 }
 .updateTag.fix {
@@ -35,6 +55,9 @@ body{
 .updateTag.new::after {
     content: "添加";
 }
+.updateTag.edit::after {
+    content: "更改";
+}
 .updateTag.imp::after {
     content: "优化";
 }
@@ -44,3 +67,43 @@ body{
 .updateTag.del::after {
     content: "删除";
 }
+#aboutContents a{
+    text-decoration: none;
+}
+#developerList{
+    list-style-type: none;
+}
+#developerList>li{
+    float: left;
+    padding-right: 20px;
+    text-align: center;
+}
+#developerList img{
+    width: 100px;
+    height: 100px;
+}
+.StatusTitle{
+    display:block;
+    float: left;
+    clear: left;
+    width: 60px;
+    padding:3px;
+    margin-top:5px;
+    margin-left: 36px;
+    font-size: 12px;
+    font-weight: bold;
+    color:#E8E8E8;
+    text-align:center;
+    background-color:#555555;
+}
+.StatusContent{
+    display:block;
+    float: left;
+    width: 160px;
+    margin-top:5px;
+    padding:3px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+.StatusTitle:hover,.StatusContent:hover,.updateTag:hover{transform: scale(0.8);transition: transform(cubic-out, 600ms, none);}

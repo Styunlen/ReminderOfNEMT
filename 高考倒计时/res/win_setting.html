@@ -68,7 +68,7 @@
                 
             }
         }
-        var options = {theme:"简约(内置)",time:Date.local(2022, 1, 6, 00, 00, 00),timeGetType:0}; //默认主题为简约，时间为一月选考时间
+        var options = {theme:"简约(内置)",time:Date.local(2022, 6, 7, 00, 00, 00),timeGetType:0}; //默认主题为简约，时间为六月高考时间
 
         function self.ready()
         {
@@ -86,9 +86,7 @@
             options.theme = currentTheme;
             options.timeGetType = view.G_NA_getAppOption("TimeGetType").toString() == "1";
             $(.toggle).state.checked = options.timeGetType;
-            $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
-            (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
-            (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
+            $(.txtVersion).text = APPVER;
             self.timer(1000ms, getHitokoto);
             getAnnouncement();
             var startIndex = view.parameters.startIndex;
@@ -100,6 +98,7 @@
             }
         }
         $(#calendar).on("change",function(){
+            console.log($(#calendar).value);
             console.log("时间更改为", $(#calendar).value.toString()," 时间戳:",$(#calendar).value.valueOf());
             options.time = $(#calendar).value;
             //stdout.println(typeof($(#calendar).value));
@@ -109,6 +108,7 @@
             options.timeGetType = this.state.checked;
         }
 
+        // 关闭
         $(#close).onClick = function() {
             body.attributes.removeClass("shown");
             console.info("Setting saving...");
@@ -134,20 +134,21 @@
                 view.close("设置窗口关闭");
             };       
         }
+
+        // 打开链接
         event click $(a[href]) {
             stdout.printf("link (%s) clicked\n",this.attributes["href"]);
             Sciter.launch(this.attributes["href"]);
             return true;
         }
+
+        // 打开更新日志
         event click $(#btnUpdateLogs) {
             view.dialog({
                 url: self.url("win_updateLogs.html"),
                 alignment: -5});
             return true;
         }
-        $(#EngineVer).text = String.printf("%d.%d.%d.%d.%s",
-            (Sciter.VERSION >> 16) & 0xffff, Sciter.VERSION & 0xffff,
-            (Sciter.REVISION >> 16) & 0xffff, Sciter.REVISION & 0xffff,Sciter.BUILD.toString());
     </script>
 
 
@@ -248,38 +249,29 @@
                 <section style="background:rgba(red, green, blue, 0.8);padding:0 10dip 0 10dip;">
                     <div class="pContent" id="contentAbout">
                         <div id="imgLogo" class=""></div>
-                        <div id="txtVersionBox"><span class="txtVersion">21w39a3</span></div>
+                        <div id="txtVersionBox"><span class="txtVersion"></span></div>
                         <p class="pAbout">这里是九仞的高考倒计时(*^▽^*)<br>
                             如果你喜欢这个小程序，可以<a class="link fixedColor" href="https://styunlen.cn/" target="_blank">关注我的个人博客</a>。
                         </p>
                         <div id="btnUpdateLogs" style="text-align: center;">
                             <span>查看更新记录 </span><img src="./unfold.png" style="position: relative;top: 10px;" width="30px" height="30px" />
                         </div>
-                    </div>
-
-                    <p>本软件已遵循GPL v3协议开源</p>
-                    <p></p>
-                    <p>Developer: Styunlen(九仞)</p>
-                    <p>Language: C++, HTML+CSS, Tiscript</p>
-                    <p>UI: Sciter</br>
-                        (Embeddable HTML/CSS/script engine for modern UI development)
-                    </p>
-                    <p>Blog: <a href="https://styunlen.cn/" target="_blank">https://styunlen.cn/</a></p>
-                    <p>Github: <a href="https://github.com/Styunlen/ReminderOfNEMT"
-                            target="_blank">https://github.com/Styunlen/ReminderOfNEMT</a></p>
-                    <p>QQ: 1208533483 (请备注来源)</p>
-                    <p>E-mail: 1208533483@qq.com</p>
-                    <div style="position: relative;left:45dip;">
-                        <div class="StatusTitle">Version</div>
-                        <div class="StatusContent" style="color: #D5EAF6;background-color: #007EC6;">
-v2.8.9 build-836-β
-                        </div>
-                        <div class="StatusTitle">Sciter</div>
-                        <div class="StatusContent" #EngineVer style="color: #FAFDF2;background-color: #B2D742;"></div>
-                        <div class="StatusTitle" style="margin-top:5px;clear:left">License</div>
-                        <div class="StatusContent" style="margin-top:5px;color: #FFE9DE;background-color: #FE7D37;">
-                            GPL v3
-                        </div>
+                        <hr/>
+                        <p>致敬开发者们</p>
+                        <ul id="developerList">
+                            <li>
+                                <img src="avatar1.jpg">
+                                <p>九仞</p>
+                            </li>
+                            <li>
+                                <img src="avatar2.jpg">
+                                <p>一博</p>
+                            </li>
+                            <li>
+                                <img src="avatar3.jpg">
+                                <p>玉米</p>
+                            </li>
+                        </ul>
                     </div>
                 </section>
                 <section>
@@ -303,7 +295,7 @@ v2.8.9 build-836-β
                 </section>
             </section>
         </section>
-        <p #copyright>Copyright(c) 2020-2021 九仞 版权所有</p>
+        <p #copyright>Copyright(c) 2020-2022 九仞 版权所有</p>
     </section>
 </body>
 

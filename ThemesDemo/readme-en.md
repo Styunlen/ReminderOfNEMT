@@ -14,6 +14,8 @@ A full theme might contains following files.
 
 Subfolders are supported.
 
+> tips: All the files are suggested to be encoded with utf-8(with bom),in case of exception of decoding.
+
 |Theme Name|
 
 ​	├─  main.html

@@ -14,6 +14,7 @@ var currentThemeObj = {
     themeDoc:null
 };
 var themeView = $(frame#theme_view);
+const APPVER = "v2.10.0 build-850";
 
 
 /***************
@@ -342,8 +343,23 @@ function NA_getTime()
     var ret = null;
     try{
         ret = view.G_NA_getAppOption("Time").toString();
-        if(ret == "NULL")
+        console.log("ret: %s",ret);
+        if(ret == "NULL" || ret == "")
         {
+            var dateNow = new Date();
+            var dateNEMT = {start: Date.local(dateNow.year,6,7,00,00,00), end: Date.local(dateNow.year,6,10,00,00,00)};
+            if(dateNow.valueOf() > dateNEMT.end.valueOf())
+            {
+                //If use this code: dateTarget = dateNEMT.start
+                //The script would just let dateTarget point to the same
+                //Object(Date) that dateNEMT.start refers to
+                ret = new Date(dateNEMT.start); //Copy the date
+                ret.year += 1;
+                ret = ret.toString();
+            }else{
+                ret = new Date(dateNEMT.start); //Copy the date
+                ret.toString();
+            }
             ret="2022-06-07T00:00:00+08:00";
         }
         return ret;

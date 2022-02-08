@@ -17,6 +17,8 @@ body {
     line-height: 1.6em;
     background: window-accent-color;
     flow: horizontal;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 #header>caption {
@@ -56,6 +58,8 @@ button.window#close {
     width: 600dip;
     height: 400dip;
     background: white;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
 body {
@@ -331,6 +335,9 @@ a.button-primary {
 .activated{
     content: "已启用";
 }
+.optNotExt{
+    content: "无设置";
+}
 a.button, a.button-primary, a.button-secondary {
     display: inline-block;
     text-decoration: none;
@@ -436,25 +443,6 @@ a.button:active{
 /*
 软件关于页面
 */
-.StatusTitle{
-    display:block;
-    float: left;
-    padding:3px;
-    font-size: 12px;
-    font-weight: bold;
-    color:#E8E8E8;
-    text-align:center;
-    background-color:#555555;
-}
-.StatusContent{
-    display:block;
-    float: left;
-    margin-right:5px;
-    padding:3px;
-    font-size: 12px;
-    font-weight: bold;
-}
-.StatusTitle:hover,.StatusContent:hover{transform: scale(0.8);transition: transform(cubic-out, 600ms, none);}
 .fixedColor{
     color:#f7955b;
 }
@@ -464,7 +452,6 @@ a.button:active{
 }
 #contentAbout {
     text-align: center;
-    height: 300px;
 }
 #imgLogo {
     position: relative;
@@ -489,4 +476,16 @@ a.button:active{
     padding: 5px;
     border-radius: 3px;
     background-color: rgba(0, 0, 0, 0.05);
+}
+#developerList{
+    position: relative;
+}
+#developerList>li{
+    float: left;
+    padding-left: 20px;
+    list-style-type: none;
+}
+#developerList img{
+    width: 100px;
+    height: 100px;
 }

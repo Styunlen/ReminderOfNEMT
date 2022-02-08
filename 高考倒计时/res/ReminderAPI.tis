@@ -67,7 +67,7 @@ function timeInit()
                 dateTarget = new Date(NA_getTime());
                 break;
             case "1":
-                if(dateNow.valueOf() > dateNEMT.start.valueOf())
+                if(dateNow.valueOf() > dateNEMT.end.valueOf())
                 {
                     //If use this code: dateTarget = dateNEMT.start
                     //The script would just let dateTarget point to the same
@@ -91,9 +91,9 @@ function timeInit()
     }
     catch(e)
     {
-        dateTarget = new Date(NA_getTime());
         console.err("Time inited with exception");
         console.err("err msg:",e.message,e.stackTrace);
+        dateTarget = new Date(NA_getTime());
     }
 }
 timeInit();

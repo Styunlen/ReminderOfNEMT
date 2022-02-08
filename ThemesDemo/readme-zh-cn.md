@@ -14,6 +14,8 @@
 
 可包含子文件夹
 
+> 推荐使用utf-8(with bom)编码保存所有文件，以防出现乱码
+
 |Theme Name|
 
 ​	├─  main.html

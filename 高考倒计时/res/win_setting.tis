@@ -2,26 +2,35 @@ include "interactive.tis";
 
 event click $(a.theme_enable) {
     console.info("Current theme changes to: {%s}\n",this.parent.parent[0].text);
-    //获取即将激活的主题
+    // 获取即将激活的主题
     options.theme = this.parent.parent[0].text;
-    //获取当前激活的主题的激活按钮，然后将他重置为未激活状态
+    // 获取当前激活的主题的激活按钮，然后将他重置为未激活状态
     var button_activated = $(.activated);
     button_activated.attributes.removeClass("activated","disabled");
     button_activated.attributes.addClass("theme_enable");
-    button_activated.attributes.removeClass("theme_options");
     button_activated.state.disabled = false;
-    //获取当前激活的主题的设置按钮，然后将他重置为未激活状态
+    // 获取当前激活的主题的设置按钮，然后将他重置为未激活状态
     var button_options = $(.theme_options);
     button_options.text = "实时预览";
-    button_options.state.disabled = false;
-    //将即将激活的主题的激活按钮禁用
+    button_options.attributes.removeClass("theme_options");
+    // 设置按钮因为设置页面不存在而被禁用时需要移除禁用样式
+    if(button_options.state.disabled == true)
+    {
+        button_options.state.disabled = false;
+        button_options.attributes.removeClass("disabled","optNotExt")
+    }   
+    // 将即将激活的主题的激活按钮禁用
     this.attributes.addClass("activated","disabled");
     this.state.disabled = true;
-    //将即将激活的主题的预览按钮变为设置按钮
+    // 将即将激活的主题的预览按钮变为设置按钮
     this.next.attributes.addClass("theme_options");
     this.next.text = "自定义";
-    //如果即将激活的主题不存在设置页面，则禁用他的设置按钮
-    if(!NA_isOptionFileExt(options.theme)) this.next.state.disabled = true;
+    // 如果即将激活的主题不存在设置页面，则禁用他的设置按钮
+    if(!NA_isOptionFileExt(options.theme))
+    {
+        this.next.state.disabled = true;
+        this.next.attributes.addClass("disabled","optNotExt")
+    }
     return true;
 }
 
@@ -98,14 +107,15 @@ function loadThemeList()
         }
     }
     //禁用激活主题的激活按钮
-    if($(a.theme_enable))
+    if($(a.activated))
     {
-        $(a.theme_enable).state.disabled = true;
+        $(a.activated).state.disabled = true;
     }
     //如果激活主题不存在设置页面，则禁用他的设置按钮
     if($(.theme_options) && !NA_isOptionFileExt($(.theme_options).parent.parent[0].text))
     {
         $(.theme_options).state.disabled = true;
+        $(.theme_options).attributes.addClass("disabled","optNotExt")
     }
     //判断当前启用主题是否为内置主题
     var el_theme_enable = null;
