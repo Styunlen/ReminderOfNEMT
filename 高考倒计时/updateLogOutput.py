@@ -27,3 +27,4 @@ with open("updateLogs.txt","r",encoding="utf8") as f:
 
 with open("updateLogsFormatted.txt","w") as f:
     f.writelines(ret)
+os.system("updateLogsFormatted.txt")

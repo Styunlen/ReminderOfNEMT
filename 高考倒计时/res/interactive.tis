@@ -14,7 +14,7 @@ var currentThemeObj = {
     themeDoc:null
 };
 var themeView = $(frame#theme_view);
-const APPVER = "v2.10.0 build-850";
+const APPVER = "v2.10.1 build-850";
 
 
 /***************
