@@ -1,23 +1,29 @@
-# ¸ß¿¼µ¹¼ÆÊ±Ð¡³ÌÐò
+# é«˜è€ƒå€’è®¡æ—¶å°ç¨‹åº
 
-## ³ÌÐò½éÉÜ
+## ç¨‹åºä»‹ç»
 
-Ò»¸öÄÜ¹»ÏÔÊ¾¸ß¿¼ËùÊ£ÈÕÆÚµÄ×ÀÃæÐ¡³ÌÐò£¬ÒÔºó»áÖð²½Ìí¼ÓÆäËû¹¦ÄÜ
+ä¸€ä¸ªèƒ½å¤Ÿæ˜¾ç¤ºé«˜è€ƒæ‰€å‰©æ—¥æœŸçš„æ¡Œé¢å°ç¨‹åºï¼Œä»¥åŽä¼šé€æ­¥æ·»åŠ å…¶ä»–åŠŸèƒ½
 
-## °²×°½Ì³Ì
+## ç¨‹åºé¢„è§ˆ
+![preview](https://styunlen.cn/wp-content/uploads/2020/10/iq_1iihknoixs9k2pwg.png)
+![preview](https://github.com/Styunlen/ReminderOfNEMT/blob/master/%E9%AB%98%E8%80%83%E5%80%92%E8%AE%A1%E6%97%B6/themes/demo-scriptInsideHTML/preview.png?raw=true)
+![preview](https://github.com/Styunlen/ReminderOfNEMT/blob/master/%E9%AB%98%E8%80%83%E5%80%92%E8%AE%A1%E6%97%B6/themes/CairBin/preview.png?raw=true)
+![preview](https://styunlen.cn/wp-content/uploads/2022/09/6b0a6a27a3afbb1b-1.png)
 
-ÔÚReleaseÖÐÏÂÔØ×îÐÂ°æ±¾µÄÑ¹Ëõ°ü£¬È»ºóÑ¡Ôñ×Ô¼ºµçÄÔµÄ°æ±¾½âÑ¹
+## å®‰è£…æ•™ç¨‹
 
-²»ÖªµÀ×Ô¼ºµçÄÔÊÇX86»¹ÊÇX64µÄÐ¡»ï°é¿ÉÓÒ¼ü¼ÆËã»ú£¬µ¥»÷ÊôÐÔ£¬¾Í¿ÉÒÔ¿´µ½×Ô¼º¼ÆËã»úÊÇ32Î»µÄ»¹ÊÇ64Î»µÄÁË
+åœ¨Releaseä¸­ä¸‹è½½æœ€æ–°ç‰ˆæœ¬çš„åŽ‹ç¼©åŒ…ï¼Œç„¶åŽé€‰æ‹©è‡ªå·±ç”µè„‘çš„ç‰ˆæœ¬è§£åŽ‹
 
-## ¿ª»úÆô¶¯
+ä¸çŸ¥é“è‡ªå·±ç”µè„‘æ˜¯X86è¿˜æ˜¯X64çš„å°ä¼™ä¼´å¯å³é”®è®¡ç®—æœºï¼Œå•å‡»å±žæ€§ï¼Œå°±å¯ä»¥çœ‹åˆ°è‡ªå·±è®¡ç®—æœºæ˜¯32ä½çš„è¿˜æ˜¯64ä½çš„äº†
 
-°´×¡`WIN`+ `R`»ò´ò¿ªÈÎÎñ¹ÜÀíÆ÷£¬Ñ¡ÔñÆô¶¯£¬´ò¿ªÔËÐÐ
+## å¼€æœºå¯åŠ¨
 
-ÊäÈëShell:StartUp,»Ø³µ¼´¿É´ò¿ªÆô¶¯ÎÄ¼þ¼Ð
+æŒ‰ä½`WIN`+ `R`æˆ–æ‰“å¼€ä»»åŠ¡ç®¡ç†å™¨ï¼Œé€‰æ‹©å¯åŠ¨ï¼Œæ‰“å¼€è¿è¡Œ
 
-½«¸ß¿¼µ¹¼ÆÊ±³ÌÐòµÄ¿ì½Ý·½Ê½£¬×¢ÒâÊÇ¿ì½Ý·½Ê½ÍÏÈëÎÄ¼þ¼ÐÄÚ£¬¼´¿ÉÍê³É¿ª»úÆô¶¯
+è¾“å…¥Shell:StartUp,å›žè½¦å³å¯æ‰“å¼€å¯åŠ¨æ–‡ä»¶å¤¹
 
-## ½áÓï
+å°†é«˜è€ƒå€’è®¡æ—¶ç¨‹åºçš„å¿«æ·æ–¹å¼ï¼Œæ³¨æ„æ˜¯å¿«æ·æ–¹å¼æ‹–å…¥æ–‡ä»¶å¤¹å†…ï¼Œå³å¯å®Œæˆå¼€æœºå¯åŠ¨
 
-¿ª·¢ÕßÏµ²Î¼Ó2021Äê¸ß¿¼µÄ¸ßÈýÑ§×Ó£¬2020-2021¼ä¿ÉÄÜÎÞÁ¦Ìí¼ÓÐÂÓ±¹¦ÄÜ£¬Ö»±£Ö¤»ù´¡¹¦ÄÜµÄÕý³£¸üÐÂ£¬¿ª·¢Õß¼Æ»®´óÑ§ÆÚ¼äÎªÆäÌí¼ÓÐÂÓ±¹¦ÄÜ£¬²¢½ÓÊÜ¶¨ÖÆ¡£
+## ç»“è¯­
+
+å¼€å‘è€…ç³»å‚åŠ 2021å¹´é«˜è€ƒçš„é«˜ä¸‰å­¦å­ï¼Œ2020-2021é—´å¯èƒ½æ— åŠ›æ·»åŠ æ–°é¢–åŠŸèƒ½ï¼Œåªä¿è¯åŸºç¡€åŠŸèƒ½çš„æ­£å¸¸æ›´æ–°ï¼Œå¼€å‘è€…è®¡åˆ’å¤§å­¦æœŸé—´ä¸ºå…¶æ·»åŠ æ–°é¢–åŠŸèƒ½ï¼Œå¹¶æŽ¥å—å®šåˆ¶ã€‚
